@@ -1,0 +1,90 @@
+# === THEMES CONFIG ========================================
+#   Here you will find all the themes registered by the
+#   plugin. Be careful to follow the default format and
+#   read the theming guide or the plugin will start
+#   spewing out nasty errors.
+# ==========================================================
+
+# ===== NOTE ===============================================
+#   You should not mess with the version node, it is a way
+#   for the plugin to detect if the templates do not match
+#   a possible new version or updates. Back up this file
+#   and download a new one if the plugin mentions any
+#   errors regarding 'theme config outdated'.
+# ==========================================================
+version: 1.0
+
+# === THEMING GUIDE ========================================
+#
+# ====== Main Pattern Map
+#   This will dictate what characters will go where, what
+#   sub patterns will go where, etc. It is highly recomended
+#   that you follow the 'default' template provided, so that
+#   data can be accurate and the plugin won't start throwing
+#   all kinds of errors.
+#
+# ====== <d/?> - Direct Patterns
+#   These keys will immediately point the generator towards
+#   the 'patterns/direct-pattern' section and look for the
+#   corresponding character to replace in the main map.
+#   The generator will process them first.
+#
+# ====== <s/?> - Sub Patterns
+#   These keys will point to the 'sub-pattern' section and
+#   replace them in the main pattern map. During generation
+#   of the compass string, the plugin will look for the
+#   corresponding character and process them before the
+#   post-process comes in.
+#
+# ====== Post Processing
+#   <str> represents the generated string, post process will
+#   not affect the direction of the compass at all, rather
+#   only add on gimmicks such as brackets or the cursor
+#   function, which is exclusive to post processing.
+# ==========================================================
+themes:
+  default:
+    meta:
+      name: "&lMidnight"
+      desc: "&7The default theme.%nl%&7The moon fills you with determination."
+    patterns:
+      main-pattern-map: "<d/S>;<s/sep>;<d/W>;<s/sep>;<d/N>;<s/sep>;<d/E>;<s/sep>"
+      direct-pattern:
+        <d/S>: "&f&l&n S "
+        <d/W>: "&f&l&n W "
+        <d/N>: "&f&l&n N "
+        <d/E>: "&f&l&n E "
+      sub-pattern:
+        <s/sep>:
+          pattern-map: "<1>;<2>;<3>;<3>;<4>;<4>;<4>;<4>;<4>;<4>;<3>;<3>;<2>;<1>"
+          <1>: "&8\u2588"
+          <2>: "&8\u2593"
+          <3>: "&8\u2592"
+          <4>: "&8\u2591"
+    post-process:
+      pattern-map: "<(><str><)>"
+      <(>: "&f["
+      <)>: "&f]"
+
+  midnight-dark:
+    meta:
+      name: "&lMidnight"
+      desc: "&7The default theme.%nl%&7The moon fills you with determination."
+    patterns:
+      main-pattern-map: "<d/S>;<s/sep>;<d/W>;<s/sep>;<d/N>;<s/sep>;<d/E>;<s/sep>"
+      direct-pattern:
+        <d/S>: "&f&l&n S "
+        <d/W>: "&f&l&n W "
+        <d/N>: "&f&l&n N "
+        <d/E>: "&f&l&n E "
+      sub-pattern:
+        <s/sep>:
+          pattern-map: "<1>;<2>;<3>;<3>;<4>;<4>;<4>;<4>;<4>;<4>;<3>;<3>;<2>;<1>"
+          <1>: "&0\u2588"
+          <2>: "&0\u2593"
+          <3>: "&0\u2592"
+          <4>: "&0\u2591"
+    post-process:
+      pattern-map: "<(><str><)>"
+      <(>: "&f["
+      <)>: "&f]"

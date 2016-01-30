@@ -1,0 +1,14 @@
+name: Compassance
+author: hexSquared
+main: com.hexsquared.compassance.Compassance
+version: B0.1
+
+description: A cooler compass.
+
+commands:
+  test:
+    description: hi
+    usage: /<command>
+  tcomp:
+      description: hi
+      usage: /<command>
