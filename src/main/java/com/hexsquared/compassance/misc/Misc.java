@@ -9,7 +9,7 @@ public class Misc
 
     public static String formatColorString(String s)
     {
-        return s.replace('&','\u00A7').replaceAll("%nl%", String.valueOf('\n'));
+        return s.replace('&','\u00A7');
     }
 
     public static void logHandle(Level l, String msg)

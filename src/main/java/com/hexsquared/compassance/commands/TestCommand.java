@@ -1,6 +1,6 @@
 package com.hexsquared.compassance.commands;
 
-import com.hexsquared.compassance.gui.MenuGUI;
+import com.hexsquared.compassance.Compassance;
 import com.hexsquared.compassance.managers.compass.CompassStringGenerator;
 import com.hexsquared.compassance.managers.settings.paths.PlayerSettings;
 import com.hexsquared.compassance.managers.themes.Theme;
@@ -37,18 +37,25 @@ public class TestCommand implements CommandExecutor {
 
             sender.sendMessage("Name: " + theme.getName());
             sender.sendMessage(Misc.formatColorString("Desc: " + theme.getDesc()));
-            sender.sendMessage("PatternMap: " + theme.getMain_PatternMap());
+            sender.sendMessage("PatternMap: " + theme.getData_main_PatternMap());
 
             sender.sendMessage("DirectReplacers:");
-            for (String s : theme.getPattern_DirectReplacers().keySet()) {
-                sender.sendMessage(Misc.formatColorString("   " + s + " : " + theme.getPattern_DirectReplacers().get(s)));
+            for (String s : theme.getData_DirectReplacers().keySet()) {
+                sender.sendMessage(Misc.formatColorString("   " + s + " : " + theme.getData_DirectReplacers().get(s)));
             }
             sender.sendMessage("SubPatternMap:");
-            for (String s : theme.getPattern_subPatternMap().keySet()) {
-                sender.sendMessage("   " + s + " : " + theme.getPattern_subPatternMap().get(s));
-                for (String s2 : theme.getPattern_subPatternReplacers().get(s).keySet()) {
-                    sender.sendMessage("         " + s2 + " : " + theme.getPattern_subPatternReplacers().get(s).get(s2));
+            for (String s : theme.getData_subPatternMap().keySet()) {
+                sender.sendMessage("   " + s + " : " + theme.getData_subPatternMap().get(s));
+                for (String s2 : theme.getData_subPatternReplacers().get(s).keySet()) {
+                    sender.sendMessage("         " + s2 + " : " + theme.getData_subPatternReplacers().get(s).get(s2));
                 }
+            }
+
+
+            sender.sendMessage("Final:");
+            sender.sendMessage(" PatternMap: " + theme.getFinal_PatternMap());
+            for (String s : theme.getFinal_DirectReplacers().keySet()) {
+                sender.sendMessage(Misc.formatColorString("   " + s + " : " + theme.getFinal_DirectReplacers().get(s)));
             }
 
             sender.sendMessage(theme.getStringMapFull());
@@ -84,7 +91,7 @@ public class TestCommand implements CommandExecutor {
         {
             //sender.sendMessage(getConfigManager().getThemeConfig().getDefaults().getString("version") + " default vs have " + getConfigManager().getThemeConfig().getString("version"));
             //sender.sendMessage(Bukkit.getVersion()+" getVersion and getBukkitVersion "+Bukkit.getBukkitVersion());
-            new MenuGUI().show((Player) sender);
+            Compassance.getMainMenu().show((Player) sender);
             return true;
         }
 

@@ -74,19 +74,33 @@ public class CompassStringGenerator
             appendRead++;
         }
 
-        String finalString = strBuild.toString();
+        // PROCESSING
 
-        for(String s : theme.getPattern_DirectReplacers().keySet())
+        String processsedString = strBuild.toString();
+
+        for(String s : theme.getData_DirectReplacers().keySet())
         {
-            finalString = finalString.replaceAll(s,theme.getPattern_DirectReplacers().get(s));
+            processsedString = processsedString.replaceAll(s,theme.getData_DirectReplacers().get(s));
         }
 
-        for(String s : theme.getPattern_subPatternMap().keySet())
+        for(String s : theme.getData_subPatternMap().keySet())
         {
-            for(String s2 : theme.getPattern_subPatternReplacers().get(s).keySet())
+            for(String s2 : theme.getData_subPatternReplacers().get(s).keySet())
             {
-                finalString = finalString.replaceAll(s2,theme.getPattern_subPatternReplacers().get(s).get(s2));
+                processsedString = processsedString.replaceAll(s2,theme.getData_subPatternReplacers().get(s).get(s2));
             }
+        }
+
+        // POST PROCESSING
+
+        String finalString = theme.getFinal_PatternMap();
+        finalString = finalString.replaceAll(";","");
+
+        finalString = finalString.replaceAll("<str>",processsedString);
+
+        for (String s : theme.getFinal_DirectReplacers().keySet())
+        {
+            finalString = finalString.replaceAll(s,theme.getFinal_DirectReplacers().get(s));
         }
 
         return Misc.formatColorString(finalString);

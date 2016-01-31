@@ -99,4 +99,9 @@ public class ThemeManager {
     {
         return defaultID;
     }
+
+    public HashMap<String,Theme> getThemes()
+    {
+        return themes;
+    }
 }

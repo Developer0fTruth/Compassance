@@ -10,14 +10,17 @@ public class Theme {
 
     private final String id;
 
-    private String name;
-    private String desc;
+    private String meta_name;
+    private String meta_desc;
 
-    private String main_PatternMap;
-    private HashMap<String,String> pattern_subPatternMap;
+    private String data_main_PatternMap;
+    private HashMap<String,String> data_DirectReplacers;
 
-    private HashMap<String,String> pattern_DirectReplacers;
-    private HashMap<String,HashMap<String,String>> pattern_subPatternReplacers;
+    private HashMap<String,String> data_subPatternMap;
+    private HashMap<String,HashMap<String,String>> data_subPatternReplacers;
+
+    private String final_PatternMap;
+    private HashMap<String,String> final_DirectReplacers;
 
     boolean hasError;
 
@@ -25,9 +28,10 @@ public class Theme {
     {
         this.id = id;
 
-        pattern_DirectReplacers = new HashMap<>();
-        pattern_subPatternMap = new HashMap<>();
-        pattern_subPatternReplacers = new HashMap<>();
+        data_DirectReplacers = new HashMap<>();
+        data_subPatternMap = new HashMap<>();
+        data_subPatternReplacers = new HashMap<>();
+        final_DirectReplacers = new HashMap<>();
 
         loadData();
         hasError = testForErrors();
@@ -40,18 +44,13 @@ public class Theme {
      */
     public void loadData()
     {
-        this.name = getConfigManager().getThemeConfig().getString(String.format(ThemeSettings.THEME_META_NAME,id));
-        this.desc = getConfigManager().getThemeConfig().getString(String.format(ThemeSettings.THEME_META_DESC,id));
-        this.main_PatternMap = getConfigManager().getThemeConfig().getString(String.format(ThemeSettings.THEME_DATA_MAIN_PATTERN_MAP,id));
+        this.meta_name = getConfigManager().getThemeConfig().getString(String.format(ThemeSettings.THEME_META_NAME,id));
+        this.meta_desc = getConfigManager().getThemeConfig().getString(String.format(ThemeSettings.THEME_META_DESC,id));
+        this.data_main_PatternMap = getConfigManager().getThemeConfig().getString(String.format(ThemeSettings.THEME_DATA_MAIN_PATTERN_MAP,id));
 
-        String[] mainPatternReplacers = main_PatternMap.split(";");
+        String[] mainPatternReplacers = data_main_PatternMap.split(";");
         for(String s : mainPatternReplacers)
         {
-            if(s.startsWith("<d/"))
-            {
-                String d_replacer = getConfigManager().getThemeConfig().getString(String.format(ThemeSettings.THEME_DATA_DIRECT_REPLACER,id,s));
-                pattern_DirectReplacers.put(s,d_replacer);
-            }
             if(s.startsWith("<s/"))
             {
                 String subPatternMap = getConfigManager().getThemeConfig().getString(String.format(ThemeSettings.THEME_DATA_SUBPATTERN_MAP,id,s));
@@ -64,10 +63,26 @@ public class Theme {
                     map.put(s2,getConfigManager().getThemeConfig().getString(String.format(ThemeSettings.THEME_DATA_SUBPATTERN_MAP_REPLACER,id,s,s2)));
                 }
 
-                pattern_subPatternMap.put(s,subPatternMap);
-                pattern_subPatternReplacers.put(s,map);
+                data_subPatternMap.put(s,subPatternMap);
+                data_subPatternReplacers.put(s,map);
+            }
+            else
+            {
+                String d_replacer = getConfigManager().getThemeConfig().getString(String.format(ThemeSettings.THEME_DATA_DIRECT_REPLACER,id,s));
+                data_DirectReplacers.put(s,d_replacer);
             }
         }
+
+        this.final_PatternMap = getConfigManager().getThemeConfig().getString(String.format(ThemeSettings.THEME_FINAL_MAIN_PATTERN_MAP,id));
+        String[] finalPatternReplacers = final_PatternMap.split(";");
+
+        for(String s : finalPatternReplacers)
+        {
+            String d_replacer = getConfigManager().getThemeConfig().getString(String.format(ThemeSettings.THEME_FINAL_DIRECT_REPLACER,id,s));
+            final_DirectReplacers.put(s,d_replacer);
+        }
+
+        final_DirectReplacers.remove("<str>");
     }
 
     /*
@@ -78,9 +93,9 @@ public class Theme {
     {
         if(!hasErrors())
         {
-            String strMap = main_PatternMap;
-            for (String s : getPattern_subPatternMap().keySet()) {
-                strMap = strMap.replaceAll(s, getPattern_subPatternMap().get(s));
+            String strMap = data_main_PatternMap;
+            for (String s : getData_subPatternMap().keySet()) {
+                strMap = strMap.replaceAll(s, getData_subPatternMap().get(s));
             }
             return strMap;
         }
@@ -110,27 +125,27 @@ public class Theme {
     {
         try
         {
-            String strMap = main_PatternMap;
+            String strMap = data_main_PatternMap;
 
-            for (String s : getPattern_DirectReplacers().keySet())
+            for (String s : getData_DirectReplacers().keySet())
             {
-                strMap = strMap.replaceAll(s, getPattern_DirectReplacers().get(s));
+                strMap = strMap.replaceAll(s, getData_DirectReplacers().get(s));
             }
 
-            for (String s : getPattern_subPatternMap().keySet()) {
-                strMap = strMap.replaceAll(s, getPattern_subPatternMap().get(s));
+            for (String s : getData_subPatternMap().keySet()) {
+                strMap = strMap.replaceAll(s, getData_subPatternMap().get(s));
             }
 
-            for(String s : getPattern_DirectReplacers().keySet())
+            for(String s : getData_DirectReplacers().keySet())
             {
-                strMap = strMap.replaceAll(s,getPattern_DirectReplacers().get(s));
+                strMap = strMap.replaceAll(s, getData_DirectReplacers().get(s));
             }
 
-            for(String s : getPattern_subPatternMap().keySet())
+            for(String s : getData_subPatternMap().keySet())
             {
-                for(String s2 : getPattern_subPatternReplacers().get(s).keySet())
+                for(String s2 : getData_subPatternReplacers().get(s).keySet())
                 {
-                    strMap = strMap.replaceAll(s2,getPattern_subPatternReplacers().get(s).get(s2));
+                    strMap = strMap.replaceAll(s2, getData_subPatternReplacers().get(s).get(s2));
                 }
             }
         }
@@ -143,7 +158,7 @@ public class Theme {
 
     public String getName()
     {
-        return this.name;
+        return this.meta_name;
     }
 
     public String getId()
@@ -153,27 +168,37 @@ public class Theme {
 
     public String getDesc()
     {
-        return this.desc;
+        return this.meta_desc;
     }
 
-    public String getMain_PatternMap()
+    public String getData_main_PatternMap()
     {
-        return this.main_PatternMap;
+        return this.data_main_PatternMap;
     }
 
-    public HashMap<String, String> getPattern_DirectReplacers()
+    public HashMap<String, String> getData_DirectReplacers()
     {
-        return this.pattern_DirectReplacers;
+        return this.data_DirectReplacers;
     }
 
-    public HashMap<String, String> getPattern_subPatternMap()
+    public HashMap<String, String> getData_subPatternMap()
     {
-        return pattern_subPatternMap;
+        return data_subPatternMap;
     }
 
-    public HashMap<String,HashMap<String,String>> getPattern_subPatternReplacers()
+    public HashMap<String,HashMap<String,String>> getData_subPatternReplacers()
     {
-        return pattern_subPatternReplacers;
+        return data_subPatternReplacers;
+    }
+
+    public String getFinal_PatternMap()
+    {
+        return this.final_PatternMap;
+    }
+
+    public HashMap<String, String> getFinal_DirectReplacers()
+    {
+        return this.final_DirectReplacers;
     }
 
 }

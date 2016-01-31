@@ -7,10 +7,11 @@ public class ThemeSettings
 
     public static final String THEME_DATA_MAIN_PATTERN_MAP = "themes.%s.data.main-pattern-map";
 
-    public static final String THEME_DATA_DIRECT_REPLACER = "themes.%s.data.direct.%s"; //id,direction-id
+    public static final String THEME_DATA_DIRECT_REPLACER = "themes.%s.data.direct.%s"; //id,replacer,id
 
     public static final String THEME_DATA_SUBPATTERN_MAP = "themes.%s.data.sub-pattern.%s.pattern-map"; //id,sep-id
     public static final String THEME_DATA_SUBPATTERN_MAP_REPLACER = "themes.%s.data.sub-pattern.%s.%s"; //id,sep-id,replacer-id
 
     public static final String THEME_FINAL_MAIN_PATTERN_MAP = "themes.%s.final.pattern-map";
+    public static final String THEME_FINAL_DIRECT_REPLACER = "themes.%s.final.%s";
 }

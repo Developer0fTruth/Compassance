@@ -15,28 +15,30 @@ This will dictate what characters will go where, what sub patterns will go where
 
 **Post Processing** `final` are not implemented yet.
 
-    default:            # This is the ID of the theme.
-      meta:             # General info.
-        name: "&lMidnight"
-        desc: "&7The default theme.%nl%&7The moon fills you with determination."
-      data:
-        main-pattern-map: "<S>;<s/sep>;<W>;<s/sep>;<N>;<s/sep>;<E>;<s/sep>"
-        direct:         # Replace any keys shown below right after pattern is generated.
-          <d/S>: "&f&l&n S "
-          <d/W>: "&f&l&n W "
-          <d/N>: "&f&l&n N "
-          <d/E>: "&f&l&n E "
-        sub-pattern:
-          <s/sep>:      # Replaces any <s/sep> with the pattern map shown below.
-            pattern-map: "<1>;<2>;<3>;<3>;<4>;<4>;<4>;<4>;<4>;<4>;<3>;<3>;<2>;<1>"
-            <1>: "&8\u2588"
-            <2>: "&8\u2593"
-            <3>: "&8\u2592"
-            <4>: "&8\u2591"
-      final:            # Not implemented yet.
-        pattern-map: "<(>[str]<)>"
-        <(>: "&f["
-        <)>: "&f]"
+```yml
+default:            # This is the ID of the theme.
+  meta:             # General info.
+    name: "&lMidnight"
+    desc: "&7The default theme.%nl%&7The moon fills you with determination."
+  data:
+    main-pattern-map: "<S>;<s/sep>;<W>;<s/sep>;<N>;<s/sep>;<E>;<s/sep>"
+    direct:         # Replace any keys shown below right after pattern is generated.
+      <d/S>: "&f&l&n S "
+      <d/W>: "&f&l&n W "
+      <d/N>: "&f&l&n N "
+      <d/E>: "&f&l&n E "
+    sub-pattern:
+      <s/sep>:      # Replaces any <s/sep> with the pattern map shown below.
+        pattern-map: "<1>;<2>;<3>;<3>;<4>;<4>;<4>;<4>;<4>;<4>;<3>;<3>;<2>;<1>"
+        <1>: "&8\u2588"
+        <2>: "&8\u2593"
+        <3>: "&8\u2592"
+        <4>: "&8\u2591"
+  final:            # Not implemented yet.
+    pattern-map: "<(>[str]<)>"
+    <(>: "&f["
+    <)>: "&f]"
+```
         
 #### Development Information
 This project is developed in Java 7. No APIs to hook up because most of the code relates to the theming anyways.

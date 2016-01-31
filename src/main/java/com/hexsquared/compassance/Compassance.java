@@ -2,6 +2,9 @@ package com.hexsquared.compassance;
 
 import com.hexsquared.compassance.commands.ReloadCommand;
 import com.hexsquared.compassance.commands.TestCommand;
+import com.hexsquared.compassance.gui.MainMenu;
+import com.hexsquared.compassance.gui.SettingsMenu;
+import com.hexsquared.compassance.gui.ThemeMenu;
 import com.hexsquared.compassance.listeners.PlayerJoinListener;
 import com.hexsquared.compassance.listeners.PlayerQuitListener;
 import com.hexsquared.compassance.managers.compass.CompassTaskManager;
@@ -15,6 +18,10 @@ public class Compassance extends JavaPlugin
     private static ConfigFileManager configManager;
     private static CompassTaskManager compassTaskManager;
     private static ThemeManager themeManager;
+
+    private static MainMenu mainMenu;
+    private static SettingsMenu settingsMenu;
+    private static ThemeMenu themeMenu;
 
     public static Compassance getInstance()
     {
@@ -36,6 +43,21 @@ public class Compassance extends JavaPlugin
         return themeManager;
     }
 
+    public static ThemeMenu getThemeMenu()
+    {
+        return themeMenu;
+    }
+
+    public static SettingsMenu getSettingsMenu()
+    {
+        return settingsMenu;
+    }
+
+    public static MainMenu getMainMenu()
+    {
+        return mainMenu;
+    }
+
 
     public void onEnable()
     {
@@ -43,6 +65,9 @@ public class Compassance extends JavaPlugin
         configManager = new ConfigFileManager();
         themeManager = new ThemeManager();
         compassTaskManager = new CompassTaskManager();
+        mainMenu = new MainMenu();
+        settingsMenu = new SettingsMenu();
+        themeMenu = new ThemeMenu();
 
         themeManager.loadThemes();
         compassTaskManager.newTaskAll();
@@ -52,6 +77,8 @@ public class Compassance extends JavaPlugin
 
         new PlayerJoinListener();
         new PlayerQuitListener();
+
+
     }
 
 

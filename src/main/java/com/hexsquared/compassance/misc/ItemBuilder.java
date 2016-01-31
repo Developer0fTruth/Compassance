@@ -7,6 +7,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class ItemBuilder implements Serializable
@@ -62,7 +63,8 @@ public class ItemBuilder implements Serializable
         ArrayList<String> textList = new ArrayList<>();
         for (String text : texts)
         {
-            textList.add(Misc.formatColorString(text));
+            String[] lines = Misc.formatColorString(text).split("%nl%");
+            Collections.addAll(textList, lines);
         }
         loreList = textList;
         return this;

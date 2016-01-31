@@ -25,7 +25,7 @@ public class CompassTaskManager
             CompassUpdateTask updateTask = new CompassUpdateTask(p);
             tasks.put(p, updateTask);
             PlayerSettings.updateProfile(p);
-            /*DEBUG*/ Compassance.getInstance().getServer().broadcastMessage("created new task");
+            // /*DEBUG*/ Compassance.getInstance().getServer().broadcastMessage("created new task");
 
             if(getConfigManager().getPlayerSettings().getBoolean(String.format(PlayerSettings.COMPASS_ENABLE, p.getUniqueId().toString())))
             {
@@ -42,7 +42,7 @@ public class CompassTaskManager
             if(!instance.isActive())
             {
                 instance.start();
-                /*DEBUG*/ Compassance.getInstance().getServer().broadcastMessage("started task");
+                // /*DEBUG*/ Compassance.getInstance().getServer().broadcastMessage("started task");
             }
         }
     }
@@ -54,7 +54,7 @@ public class CompassTaskManager
             if (instance.isActive())
             {
                 instance.stop();
-                /*DEBUG*/ Compassance.getInstance().getServer().broadcastMessage("stopped task");
+                // /*DEBUG*/ Compassance.getInstance().getServer().broadcastMessage("stopped task");
             }
         }
     }
@@ -65,7 +65,7 @@ public class CompassTaskManager
         {
             stopTask(p);
             tasks.remove(p);
-            /*DEBUG*/ Compassance.getInstance().getServer().broadcastMessage("deleted task");
+            // /*DEBUG*/ Compassance.getInstance().getServer().broadcastMessage("deleted task");
         }
     }
 
