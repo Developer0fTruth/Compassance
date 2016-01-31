@@ -53,7 +53,6 @@ public class CompassUpdateTask
                         return;
                     }
 
-
                     CompassStringGenerator gen = new CompassStringGenerator(th, p.getLocation().getYaw(), false);
                     ActionBarUtil.sendActionBar(p, gen.getString());
                 }

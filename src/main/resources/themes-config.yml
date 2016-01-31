@@ -23,7 +23,7 @@ version: 1.0
 #   data can be accurate and the plugin won't start throwing
 #   all kinds of errors.
 #
-# ====== <d/?> - Direct Patterns
+# ====== <?> - Direct Patterns
 #   These keys will immediately point the generator towards
 #   the 'patterns/direct-pattern' section and look for the
 #   corresponding character to replace in the main map.
@@ -37,19 +37,22 @@ version: 1.0
 #   post-process comes in.
 #
 # ====== Post Processing
-#   <str> represents the generated string, post process will
+#   [str] represents the generated string, post process will
 #   not affect the direction of the compass at all, rather
 #   only add on gimmicks such as brackets or the cursor
 #   function, which is exclusive to post processing.
+#
+#   [str] is required by default.
+#
 # ==========================================================
 themes:
   default:
     meta:
       name: "&lMidnight"
       desc: "&7The default theme.%nl%&7The moon fills you with determination."
-    patterns:
-      main-pattern-map: "<d/S>;<s/sep>;<d/W>;<s/sep>;<d/N>;<s/sep>;<d/E>;<s/sep>"
-      direct-pattern:
+    data:
+      main-pattern-map: "<S>;<s/sep>;<W>;<s/sep>;<N>;<s/sep>;<E>;<s/sep>"
+      direct:
         <d/S>: "&f&l&n S "
         <d/W>: "&f&l&n W "
         <d/N>: "&f&l&n N "
@@ -61,18 +64,17 @@ themes:
           <2>: "&8\u2593"
           <3>: "&8\u2592"
           <4>: "&8\u2591"
-    post-process:
-      pattern-map: "<(><str><)>"
+    final:
+      pattern-map: "<(>[str]<)>"
       <(>: "&f["
       <)>: "&f]"
-
   midnight-dark:
     meta:
       name: "&lMidnight"
       desc: "&7The default theme.%nl%&7The moon fills you with determination."
-    patterns:
-      main-pattern-map: "<d/S>;<s/sep>;<d/W>;<s/sep>;<d/N>;<s/sep>;<d/E>;<s/sep>"
-      direct-pattern:
+    data:
+      main-pattern-map: "<S>;<s/sep>;<W>;<s/sep>;<N>;<s/sep>;<E>;<s/sep>"
+      direct:
         <d/S>: "&f&l&n S "
         <d/W>: "&f&l&n W "
         <d/N>: "&f&l&n N "
@@ -84,7 +86,7 @@ themes:
           <2>: "&0\u2593"
           <3>: "&0\u2592"
           <4>: "&0\u2591"
-    post-process:
-      pattern-map: "<(><str><)>"
+    final:
+      pattern-map: "<(>[str]<)>"
       <(>: "&f["
       <)>: "&f]"

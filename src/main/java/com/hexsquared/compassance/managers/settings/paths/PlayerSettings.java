@@ -18,7 +18,6 @@ public class PlayerSettings
         getConfigManager().getPlayerSettings().set(String.format(PlayerSettings.PLAYER_NAME, p.getPlayer().getUniqueId().toString()), p.getName());
 
         String selectedTheme = getConfigManager().getPlayerSettings().getString(String.format(PlayerSettings.THEME_SELECTED, p.getPlayer().getUniqueId().toString()));
-        p.sendMessage(selectedTheme);
         if (selectedTheme == null || getThemeManager().getTheme(selectedTheme) == null)
         {
             getConfigManager().getPlayerSettings().set(String.format(PlayerSettings.THEME_SELECTED, p.getPlayer().getUniqueId().toString()), getThemeManager().getDefaultID());

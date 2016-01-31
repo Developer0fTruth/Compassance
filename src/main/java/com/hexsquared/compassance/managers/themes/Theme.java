@@ -42,26 +42,26 @@ public class Theme {
     {
         this.name = getConfigManager().getThemeConfig().getString(String.format(ThemeSettings.THEME_META_NAME,id));
         this.desc = getConfigManager().getThemeConfig().getString(String.format(ThemeSettings.THEME_META_DESC,id));
-        this.main_PatternMap = getConfigManager().getThemeConfig().getString(String.format(ThemeSettings.THEME_REPLACER_MAIN_PATTERN_MAP,id));
+        this.main_PatternMap = getConfigManager().getThemeConfig().getString(String.format(ThemeSettings.THEME_DATA_MAIN_PATTERN_MAP,id));
 
         String[] mainPatternReplacers = main_PatternMap.split(";");
         for(String s : mainPatternReplacers)
         {
             if(s.startsWith("<d/"))
             {
-                String d_replacer = getConfigManager().getThemeConfig().getString(String.format(ThemeSettings.THEME_REPLACER_PATTERN_DIRECT_REPLACER,id,s));
+                String d_replacer = getConfigManager().getThemeConfig().getString(String.format(ThemeSettings.THEME_DATA_DIRECT_REPLACER,id,s));
                 pattern_DirectReplacers.put(s,d_replacer);
             }
             if(s.startsWith("<s/"))
             {
-                String subPatternMap = getConfigManager().getThemeConfig().getString(String.format(ThemeSettings.THEME_REPLACER_SUBPATTERN_MAP,id,s));
+                String subPatternMap = getConfigManager().getThemeConfig().getString(String.format(ThemeSettings.THEME_DATA_SUBPATTERN_MAP,id,s));
 
                 String[] subPatternReplacers = subPatternMap.split(";");
                 HashMap<String,String> map = new HashMap<>();
 
                 for(String s2 : subPatternReplacers)
                 {
-                    map.put(s2,getConfigManager().getThemeConfig().getString(String.format(ThemeSettings.THEME_REPLACER_SUBPATTERN_MAP_REPLACER,id,s,s2)));
+                    map.put(s2,getConfigManager().getThemeConfig().getString(String.format(ThemeSettings.THEME_DATA_SUBPATTERN_MAP_REPLACER,id,s,s2)));
                 }
 
                 pattern_subPatternMap.put(s,subPatternMap);

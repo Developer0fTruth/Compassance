@@ -1,11 +1,11 @@
 package com.hexsquared.compassance.commands;
 
+import com.hexsquared.compassance.gui.MenuGUI;
 import com.hexsquared.compassance.managers.compass.CompassStringGenerator;
 import com.hexsquared.compassance.managers.settings.paths.PlayerSettings;
 import com.hexsquared.compassance.managers.themes.Theme;
 import com.hexsquared.compassance.misc.ActionBarUtil;
 import com.hexsquared.compassance.misc.Misc;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -82,8 +82,9 @@ public class TestCommand implements CommandExecutor {
 
         if (args.length == 1 && args[0].equalsIgnoreCase("version"))
         {
-            sender.sendMessage(getConfigManager().getThemeConfig().getDefaults().getString("version") + " default vs have " + getConfigManager().getThemeConfig().getString("version"));
-            sender.sendMessage(Bukkit.getVersion()+" getVersion and getBukkitVersion "+Bukkit.getBukkitVersion());
+            //sender.sendMessage(getConfigManager().getThemeConfig().getDefaults().getString("version") + " default vs have " + getConfigManager().getThemeConfig().getString("version"));
+            //sender.sendMessage(Bukkit.getVersion()+" getVersion and getBukkitVersion "+Bukkit.getBukkitVersion());
+            new MenuGUI().show((Player) sender);
             return true;
         }
 
