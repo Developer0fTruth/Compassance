@@ -7,6 +7,7 @@ import com.hexsquared.compassance.misc.ItemBuilder;
 import com.hexsquared.compassance.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -40,23 +41,23 @@ public class ThemeMenu implements Listener
         {
             Theme t = Compassance.getThemeManager().getTheme(id);
 
-            byte data = 8;
+            byte data = 7;
 
             if (selectedTheme.equalsIgnoreCase(id))
             {
-                data = 10;
+                data = 11;
             }
 
-            ItemBuilder itmBuild1 = new ItemBuilder().material(Material.INK_SACK).data(data).amt(1)
-                    .name(Misc.formatColorString("&r"+t.getName()))
-                    .lore("", Misc.formatColorString(t.getDesc()));
+            ItemBuilder itmBuild1 = new ItemBuilder().material(Material.STAINED_GLASS_PANE).data(data).amt(1)
+                    .name(Misc.formatColor("&r"+t.getName()))
+                    .lore("", Misc.formatColor(t.getDesc()));
             inv.setItem(i, itmBuild1.toItemStack());
 
             ii++;
 
-            int add = ii > 4 ? 3 : 2;
+            int add = ii > 7 ? 3 : 1;
 
-            if(ii > 4)
+            if(ii > 7)
             {
                 ii = 1;
             }
@@ -77,6 +78,7 @@ public class ThemeMenu implements Listener
     {
         Inventory inv = e.getInventory();
         Player p = (Player) e.getWhoClicked();
+        int slot = e.getSlot();
 
         if(inv.getName().equalsIgnoreCase(name))
         {
@@ -90,24 +92,30 @@ public class ThemeMenu implements Listener
 
                 ii++;
 
-                if(ii > 4)
+                if(ii > 7)
                 {
                     ii = 1;
                     iii++;
                 }
 
-                if (e.getSlot() == 10 + (2 * (i-1)) + (iii))
+                if (slot == 10 + (i - 1) + (iii) && inv.getContents()[slot].getType() != Material.AIR)
                 {
+                    p.playSound(p.getLocation(), Sound.CLICK,0.5f,1);
+
                     String clickedId = Compassance.getThemeManager().getThemes().keySet().toArray()[i-1].toString();
+
                     getConfigManager().getPlayerSettings().set(String.format(PlayerSettings.THEME_SELECTED, p.getPlayer().getUniqueId()), clickedId);
                     getCompassTaskManager().refresh(p);
-                    e.getWhoClicked().sendMessage(Misc.formatColorString(String.format("&a&lCOMPASS &8» &7Switching your selected theme to &r%s.",Compassance.getThemeManager().getTheme(clickedId).getName())));
+
+                    e.getWhoClicked().sendMessage(Misc.formatColor(String.format("&a&lCOMPASS &8» &7Switching your selected theme to &r%s&7.",Compassance.getThemeManager().getTheme(clickedId).getName())));
+
                     show(p);
                 }
             }
 
             if (e.getSlot() == 49)
             {
+                p.playSound(p.getLocation(),Sound.CLICK,0.5f,1);
                 Compassance.getMainMenu().show(p);
             }
         }

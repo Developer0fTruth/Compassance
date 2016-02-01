@@ -34,6 +34,8 @@ public class ThemeManager {
         Set<String> allThemes;
         allThemes = Compassance.getConfigManager().getThemeConfig().getConfigurationSection("themes").getKeys(false);
 
+        int i = 0;
+
         if (!allThemes.contains(defaultID))
         {
             Misc.logHandle(Level.SEVERE, String.format(
@@ -44,12 +46,18 @@ public class ThemeManager {
 
         for(String s : allThemes)
         {
+            if (i >= 35)
+            {
+                break;
+            }
+
             Theme t = new Theme(s);
 
             if(!t.hasErrors())
             {
-                Misc.logHandle(Level.INFO, String.format("Loaded theme %s ID '%s'.", Misc.formatColorString(t.getName()), t.getId()));
+                Misc.logHandle(Level.INFO, String.format("Loaded theme %s ID '%s'.", Misc.formatColor(t.getName()), t.getId()));
                 themes.put(s, new Theme(s));
+                i++;
             }
             else
             {

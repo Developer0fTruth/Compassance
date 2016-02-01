@@ -12,6 +12,7 @@ public class Theme {
 
     private String meta_name;
     private String meta_desc;
+    private String meta_perm;
 
     private String data_main_PatternMap;
     private HashMap<String,String> data_DirectReplacers;
@@ -46,8 +47,9 @@ public class Theme {
     {
         this.meta_name = getConfigManager().getThemeConfig().getString(String.format(ThemeSettings.THEME_META_NAME,id));
         this.meta_desc = getConfigManager().getThemeConfig().getString(String.format(ThemeSettings.THEME_META_DESC,id));
-        this.data_main_PatternMap = getConfigManager().getThemeConfig().getString(String.format(ThemeSettings.THEME_DATA_MAIN_PATTERN_MAP,id));
+        this.meta_perm = getConfigManager().getThemeConfig().getString(String.format(ThemeSettings.THEME_META_PERM,id));
 
+        this.data_main_PatternMap = getConfigManager().getThemeConfig().getString(String.format(ThemeSettings.THEME_DATA_MAIN_PATTERN_MAP,id));
         String[] mainPatternReplacers = data_main_PatternMap.split(";");
         for(String s : mainPatternReplacers)
         {
@@ -156,19 +158,24 @@ public class Theme {
         return false;
     }
 
-    public String getName()
-    {
-        return this.meta_name;
-    }
-
     public String getId()
     {
         return id;
     }
 
+    public String getName()
+    {
+        return this.meta_name;
+    }
+
     public String getDesc()
     {
         return this.meta_desc;
+    }
+
+    public String getPerm()
+    {
+        return meta_perm;
     }
 
     public String getData_main_PatternMap()

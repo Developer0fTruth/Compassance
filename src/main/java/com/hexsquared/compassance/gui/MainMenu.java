@@ -1,17 +1,16 @@
 package com.hexsquared.compassance.gui;
 
 import com.hexsquared.compassance.Compassance;
-import com.hexsquared.compassance.managers.settings.paths.PlayerSettings;
 import com.hexsquared.compassance.misc.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
-import static com.hexsquared.compassance.Compassance.getConfigManager;
 import static com.hexsquared.compassance.Compassance.getInstance;
 import static org.bukkit.Bukkit.getPluginManager;
 
@@ -34,10 +33,10 @@ public class MainMenu implements Listener
                 .lore("", "&7Click to enter the preferences","&7menu to adjust personal settings.");
         inv.setItem(11, itmBuild.toItemStack());
 
-//        ItemBuilder itmBuild1 = new ItemBuilder().material(Material.PAINTING).data((byte) 0).amt(1)
-//                .name("&a&lTarget Tracking")
-//                .lore("&cNot implemented yet.","","&7Track a target on your compass." );
-//        inv.setItem(13, itmBuild1.toItemStack());
+        ItemBuilder itmBuild1 = new ItemBuilder().material(Material.BARRIER).data((byte) 0).amt(1)
+                .name("&c&lExit")
+                .lore("","&7Close the menu." );
+        inv.setItem(13, itmBuild1.toItemStack());
 
         ItemBuilder itmBuild2 = new ItemBuilder().material(Material.PAINTING).data((byte) 0).amt(1)
                 .name("&a&lTheming")
@@ -57,15 +56,19 @@ public class MainMenu implements Listener
         {
             e.setCancelled(true);
 
-            p.sendMessage(""+e.getSlot());
-
             switch (e.getSlot())
             {
                 case 11:
                     Compassance.getSettingsMenu().show(p);
+                    p.playSound(p.getLocation(), Sound.CLICK,0.5f,1);
+                    break;
+                case 13:
+                    p.playSound(p.getLocation(), Sound.CLICK,0.5f,1);
+                    p.closeInventory();
                     break;
                 case 15:
                     Compassance.getThemeMenu().show(p);
+                    p.playSound(p.getLocation(), Sound.CLICK,0.5f,1);
                     break;
             }
         }

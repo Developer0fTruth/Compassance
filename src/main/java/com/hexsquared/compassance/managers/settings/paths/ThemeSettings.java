@@ -4,6 +4,7 @@ public class ThemeSettings
 {
     public static final String THEME_META_NAME = "themes.%s.meta.name";
     public static final String THEME_META_DESC = "themes.%s.meta.desc";
+    public static final String THEME_META_PERM = "themes.%s.meta.permission";
 
     public static final String THEME_DATA_MAIN_PATTERN_MAP = "themes.%s.data.main-pattern-map";
 

@@ -63,7 +63,7 @@ public class ItemBuilder implements Serializable
         ArrayList<String> textList = new ArrayList<>();
         for (String text : texts)
         {
-            String[] lines = Misc.formatColorString(text).split("%nl%");
+            String[] lines = Misc.formatColor(text).split("%nl%");
             Collections.addAll(textList, lines);
         }
         loreList = textList;
@@ -82,7 +82,7 @@ public class ItemBuilder implements Serializable
         ItemMeta itmMeta = item.getItemMeta();
         if (name != null && !name.isEmpty())
         {
-            itmMeta.setDisplayName(Misc.formatColorString(name));
+            itmMeta.setDisplayName(Misc.formatColor(name));
         }
         if (loreList != null)
         {
