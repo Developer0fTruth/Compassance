@@ -1,7 +1,7 @@
 package com.hexsquared.compassance.commands;
 
 import com.hexsquared.compassance.Compassance;
-import com.hexsquared.compassance.managers.compass.CompassStringGenerator;
+import com.hexsquared.compassance.managers.compass.generator.CompassStringGenerator;
 import com.hexsquared.compassance.managers.settings.paths.PlayerSettings;
 import com.hexsquared.compassance.managers.themes.Theme;
 import com.hexsquared.compassance.misc.ActionBarUtil;
@@ -102,6 +102,25 @@ public class TestCommand implements CommandExecutor {
             angle = (float) (-(angle / Math.PI) * 360) / 2 + 180;
 
             p.sendMessage(String.valueOf(angle));
+            return true;
+        }
+
+        if (args.length == 4 && args[0].equalsIgnoreCase("loc"))
+        {
+            Player p = (Player) sender;
+            try
+            {
+                Double x = Double.parseDouble(args[1]);
+                Double y = Double.parseDouble(args[2]);
+                Double z = Double.parseDouble(args[3]);
+                Compassance.getTrackingManager().newTracking(p,new Location(p.getWorld(),x,y,z));
+
+                getCompassTaskManager().refresh(p);
+            }
+            catch(Exception e)
+            {
+                p.sendMessage("error");
+            }
             return true;
         }
 

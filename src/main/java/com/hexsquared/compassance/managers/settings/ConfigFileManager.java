@@ -18,11 +18,11 @@ public class ConfigFileManager
 {
     // Files
     private File playerSettingsFile;
-    public FileConfiguration playerSettings;
+    private FileConfiguration playerSettings;
     private final String playerSettingsFileName;
 
     private File themeConfigFile;
-    public FileConfiguration themeConfig;
+    private FileConfiguration themeConfig;
     private final String themeConfigFileName;
 
     public ConfigFileManager()

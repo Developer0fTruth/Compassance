@@ -1,4 +1,4 @@
-package com.hexsquared.compassance.managers.compass;
+package com.hexsquared.compassance.managers.compass.generator;
 
 import com.hexsquared.compassance.managers.themes.Theme;
 import com.hexsquared.compassance.misc.Misc;
@@ -6,35 +6,49 @@ import org.bukkit.Location;
 
 public class CompassStringGenerator
 {
-
     private Theme theme;
     private double yaw;
-    //private boolean cursor;
+    private boolean cursor;
 
     private Location l1;
     private Location l2;
 
+    /**
+     * @param t Theme string, referenced from ThemeManager.
+     * @param y Yaw rotational value.
+     * @param c Use a cursor.
+     */
     public CompassStringGenerator(Theme t, double y, boolean c)
     {
         this.theme = t;
         this.yaw = y;
-        //this.cursor = c;
+        this.cursor = c;
     }
 
+    /**
+     * @param l1 Original location.
+     * @param l2 Targetted location.
+     * @param t Theme string, referenced from ThemeManager.
+     * @param y Yaw rotational value.
+     * @param c Use a cursor.
+     */
     public CompassStringGenerator(Location l1, Location l2, Theme t, double y, boolean c)
     {
         this.theme = t;
         this.yaw = y;
         this.l1 = l1;
         this.l2 = l2;
+        this.cursor = c;
     }
 
+    /**
+     * @return Returns generated string from the created instance.
+     */
     public String getString()
     {
         yaw = 360 + yaw;
 
         if(yaw > 360) yaw -= 360;
-
 
         double ratio = yaw / 360;
 
@@ -66,34 +80,49 @@ public class CompassStringGenerator
             else if (num < 0)
                 num = num + length;
 
-            if(arr[num] != null)
+            if(arr[num] != null || !arr[num].isEmpty())
             {
                 String appending = arr[num];
-//                if(cursor)
-//                {
-//                    if(i == (((length / 2) + 2) / 2)+1)
-//                    {
-//
-//                    }
-//                }
+
                 if(l1 != null && l2 != null)
                 {
-                    float angle = (float) (Math.atan2(l1.getX()-l2.getX(), l1.getZ()-l2.getZ()));
-                    angle = (float) (-(angle / Math.PI) * 360) / 2 + 180;
+                    double angle = (Math.atan2(l1.getX()-l2.getX(), l1.getZ()-l2.getZ()));
+                    angle = (-(angle / Math.PI) * 360) / 2 + 180;
+                    //angle += step*2;
 
                     if (angle >= step * num && angle <= step * (num + 1))
                     {
-                        appending = "&f[+]";
+                        String target = theme.getTargetNode();
+                        if (target != null)
+                        {
+                            target = target.replaceAll("<str>", appending).replaceAll(";", "");
+                            appending = target;
+                        }
                     }
                 }
+
+                if(cursor)
+                {
+                    if(i == (((length / 2) + 2) / 2))
+                    {
+                        String cursor = theme.getCursorNode();
+                        if (cursor != null)
+                        {
+                            cursor = cursor.replaceAll("<str>", appending).replaceAll(";", "");
+                            appending = cursor;
+                        }
+                    }
+                }
+
                 strBuild.append(appending);
             }
 
             appendRead++;
         }
 
-        // PROCESSING
-
+        /*
+         * PROCESSING
+         */
         String processsedString = strBuild.toString();
 
         for(String s : theme.getData_DirectReplacers().keySet())
@@ -105,8 +134,9 @@ public class CompassStringGenerator
                 processsedString = processsedString.replaceAll(s2,theme.getData_subPatternReplacers().get(s).get(s2));
 
 
-        // POST PROCESSING
-
+        /*
+         * POST PROCESSING
+         */
         String finalString = theme.getFinal_PatternMap();
         finalString = finalString.replaceAll(";","");
 

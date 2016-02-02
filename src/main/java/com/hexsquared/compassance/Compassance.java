@@ -7,7 +7,8 @@ import com.hexsquared.compassance.gui.SettingsMenu;
 import com.hexsquared.compassance.gui.ThemeMenu;
 import com.hexsquared.compassance.listeners.PlayerJoinListener;
 import com.hexsquared.compassance.listeners.PlayerQuitListener;
-import com.hexsquared.compassance.managers.compass.CompassTaskManager;
+import com.hexsquared.compassance.managers.compass.tasks.CompassTaskManager;
+import com.hexsquared.compassance.managers.compass.tasks.tracking.TrackingManager;
 import com.hexsquared.compassance.managers.settings.ConfigFileManager;
 import com.hexsquared.compassance.managers.themes.ThemeManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,6 +19,7 @@ public class Compassance extends JavaPlugin
     private static ConfigFileManager configManager;
     private static CompassTaskManager compassTaskManager;
     private static ThemeManager themeManager;
+    private static TrackingManager trackingManager;
 
     private static MainMenu mainMenu;
     private static SettingsMenu settingsMenu;
@@ -58,13 +60,20 @@ public class Compassance extends JavaPlugin
         return mainMenu;
     }
 
+    public static TrackingManager getTrackingManager()
+    {
+        return trackingManager;
+    }
 
     public void onEnable()
     {
         instance = this;
+
         configManager = new ConfigFileManager();
         themeManager = new ThemeManager();
         compassTaskManager = new CompassTaskManager();
+        trackingManager = new TrackingManager();
+
         mainMenu = new MainMenu();
         settingsMenu = new SettingsMenu();
         themeMenu = new ThemeMenu();
@@ -77,8 +86,6 @@ public class Compassance extends JavaPlugin
 
         new PlayerJoinListener();
         new PlayerQuitListener();
-
-
     }
 
 

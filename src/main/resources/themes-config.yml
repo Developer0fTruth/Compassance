@@ -52,6 +52,9 @@ themes:
       desc: "&7The default theme.%nl%&7The moon fills you with determination."
     data:
       main-pattern-map: "<S>;<s/sep>;<W>;<s/sep>;<N>;<s/sep>;<E>;<s/sep>"
+      function:
+        cursor: "&f[;<str>;&f]"
+        target: "&9\u2588"
       direct:
         <S>: "&f&l&n S "
         <W>: "&f&l&n W "
@@ -74,6 +77,9 @@ themes:
       desc: "&7Light the night."
     data:
       main-pattern-map: "<S>;<s/sep>;<W>;<s/sep>;<N>;<s/sep>;<E>;<s/sep>"
+      function:
+        cursor: "&f[;<str>;&f]"
+        target: "&9\u2591"
       direct:
         <S>: "&f&l&n S "
         <W>: "&f&l&n W "
@@ -96,6 +102,9 @@ themes:
       desc: "&7Baby moon-moon."
     data:
       main-pattern-map: "<S>;<s/sep>;<W>;<s/sep>;<N>;<s/sep>;<E>;<s/sep>"
+      function:
+        cursor: "&f[;<str>;&f]"
+        target: "&9\u2588"
       direct:
         <S>: "&f&l&n S "
         <W>: "&f&l&n W "

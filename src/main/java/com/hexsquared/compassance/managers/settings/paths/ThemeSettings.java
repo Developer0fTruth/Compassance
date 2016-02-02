@@ -8,6 +8,9 @@ public class ThemeSettings
 
     public static final String THEME_DATA_MAIN_PATTERN_MAP = "themes.%s.data.main-pattern-map";
 
+    public static final String THEME_DATA_FUNC_CURSOR = "themes.%s.data.function.cursor";
+    public static final String THEME_DATA_FUNC_TARGET = "themes.%s.data.function.target";
+
     public static final String THEME_DATA_DIRECT_REPLACER = "themes.%s.data.direct.%s"; //id,replacer,id
 
     public static final String THEME_DATA_SUBPATTERN_MAP = "themes.%s.data.sub-pattern.%s.pattern-map"; //id,sep-id

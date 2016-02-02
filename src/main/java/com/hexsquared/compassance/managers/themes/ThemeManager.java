@@ -20,7 +20,7 @@ public class ThemeManager {
         defaultID = "default";
     }
 
-    /*
+    /**
      * Load all themes using the enabled-theme
      * StringList, 'default' is expected to
      * present at all times.
@@ -53,7 +53,7 @@ public class ThemeManager {
 
             Theme t = new Theme(s);
 
-            if(!t.hasErrors())
+            if(!t.haveErrors())
             {
                 Misc.logHandle(Level.INFO, String.format("Loaded theme %s ID '%s'.", Misc.formatColor(t.getName()), t.getId()));
                 themes.put(s, new Theme(s));
@@ -77,14 +77,11 @@ public class ThemeManager {
                 "Successfully loaded %s theme(s) with %s theme-related errors.", themes.size(), errors));
     }
 
-    public void unloadTheme(String s)
-    {
-        if(themes.containsKey(s))
-        {
-            themes.remove(s);
-        }
-    }
-
+    /**
+     * Grabs the theme instance.
+     * @param s Theme id
+     * @return Theme instance
+     */
     public Theme getTheme(String s)
     {
         if(themes.get(s) == null)

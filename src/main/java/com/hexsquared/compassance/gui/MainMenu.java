@@ -27,21 +27,20 @@ public class MainMenu implements Listener
     {
         Inventory inv = Bukkit.createInventory(p, 3*9, name);
 
-
-        ItemBuilder itmBuild = new ItemBuilder().material(Material.NAME_TAG).data((byte) 0).amt(1)
+        inv.setItem(11,
+                new ItemBuilder().material(Material.NAME_TAG).data((byte) 0).amt(1)
                 .name("&a&lSettings")
-                .lore("", "&7Click to enter the preferences","&7menu to adjust personal settings.");
-        inv.setItem(11, itmBuild.toItemStack());
+                .lore("", "&7Click to enter the preferences","&7menu to adjust personal settings.").toItemStack());
 
-        ItemBuilder itmBuild1 = new ItemBuilder().material(Material.BARRIER).data((byte) 0).amt(1)
+        inv.setItem(13,
+                new ItemBuilder().material(Material.BARRIER).data((byte) 0).amt(1)
                 .name("&c&lExit")
-                .lore("","&7Close the menu." );
-        inv.setItem(13, itmBuild1.toItemStack());
+                .lore("","&7Close the menu." ).toItemStack());
 
-        ItemBuilder itmBuild2 = new ItemBuilder().material(Material.PAINTING).data((byte) 0).amt(1)
+        inv.setItem(15,
+                new ItemBuilder().material(Material.PAINTING).data((byte) 0).amt(1)
                 .name("&a&lTheming")
-                .lore("", "&7Select and customize your compass to","&7your favorite style.");
-        inv.setItem(15, itmBuild2.toItemStack());
+                .lore("", "&7Select and customize your compass to","&7your favorite style.").toItemStack());
 
         p.openInventory(inv);
     }

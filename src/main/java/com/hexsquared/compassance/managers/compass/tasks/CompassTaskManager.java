@@ -1,7 +1,6 @@
-package com.hexsquared.compassance.managers.compass;
+package com.hexsquared.compassance.managers.compass.tasks;
 
 import com.hexsquared.compassance.Compassance;
-import com.hexsquared.compassance.managers.compass.tasks.CompassUpdateTask;
 import com.hexsquared.compassance.managers.settings.paths.PlayerSettings;
 import org.bukkit.entity.Player;
 
@@ -11,13 +10,17 @@ import static com.hexsquared.compassance.Compassance.getConfigManager;
 
 public class CompassTaskManager
 {
-    HashMap<Player,CompassUpdateTask> tasks;
+    private HashMap<Player,CompassUpdateTask> tasks;
 
     public CompassTaskManager()
     {
         tasks = new HashMap<>();
     }
 
+    /**
+     * Creates a new task for this player.
+     * @param p Player
+     */
     public void newTask(Player p)
     {
         if (!tasks.containsKey(p))
@@ -25,7 +28,6 @@ public class CompassTaskManager
             CompassUpdateTask updateTask = new CompassUpdateTask(p);
             tasks.put(p, updateTask);
             PlayerSettings.updateProfile(p);
-            // /*DEBUG*/ Compassance.getInstance().getServer().broadcastMessage("created new task");
 
             if(getConfigManager().getPlayerSettings().getBoolean(String.format(PlayerSettings.COMPASS_ENABLE, p.getUniqueId().toString())))
             {
@@ -34,6 +36,10 @@ public class CompassTaskManager
         }
     }
 
+    /**
+     * Start the task for this player.
+     * @param p Player
+     */
     public void startTask(Player p)
     {
         if(tasks.containsKey(p))
@@ -42,10 +48,14 @@ public class CompassTaskManager
             if(!instance.isActive())
             {
                 instance.start();
-                // /*DEBUG*/ Compassance.getInstance().getServer().broadcastMessage("started task");
             }
         }
     }
+
+    /**
+     * Stop the task for this player.
+     * @param p Player
+     */
     public void stopTask(Player p)
     {
         if(tasks.containsKey(p))
@@ -54,21 +64,26 @@ public class CompassTaskManager
             if (instance.isActive())
             {
                 instance.stop();
-                // /*DEBUG*/ Compassance.getInstance().getServer().broadcastMessage("stopped task");
             }
         }
     }
 
+    /**
+     * Delete the task for this player.
+     * @param p Player
+     */
     public void endTask(Player p)
     {
         if(tasks.containsKey(p))
         {
             stopTask(p);
             tasks.remove(p);
-            // /*DEBUG*/ Compassance.getInstance().getServer().broadcastMessage("deleted task");
         }
     }
 
+    /**
+     * Creates a new task for all online players.
+     */
     public void newTaskAll()
     {
         for (Player e : Compassance.getInstance().getServer().getOnlinePlayers())
@@ -77,6 +92,9 @@ public class CompassTaskManager
         }
     }
 
+    /**
+     * Stop all tasks registered.
+     */
     public void stopTaskAll()
     {
         for (Player e : tasks.keySet())
@@ -85,18 +103,29 @@ public class CompassTaskManager
         }
     }
 
+    /**
+     * Stop and delete all registered tasks.
+     */
     public void endTaskAll()
     {
         stopTaskAll();
         tasks.clear();
     }
 
+    /**
+     * Refresh all tasks. (Recreate all tasks).
+     */
     public void refreshAll()
     {
         endTaskAll();
         newTaskAll();
     }
 
+
+    /**
+     * Recreate task for the player.
+     * @param p Player
+     */
     public void refresh(Player p)
     {
         if(tasks.containsKey(p))

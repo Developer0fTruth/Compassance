@@ -17,13 +17,11 @@ public class ReloadCommand implements CommandExecutor
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
     {
-        Compassance.getCompassTaskManager().endTaskAll();
-
         Compassance.getConfigManager().loadThemeConfig();
         Compassance.getConfigManager().loadPlayerConfig();
         Compassance.getThemeManager().loadThemes();
 
-        Compassance.getCompassTaskManager().newTaskAll();
+        Compassance.getCompassTaskManager().refreshAll();
 
         return true;
     }
