@@ -6,11 +6,9 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 
-import static com.hexsquared.compassance.Compassance.getConfigManager;
-
 public class CompassTaskManager
 {
-    private HashMap<Player,CompassUpdateTask> tasks;
+    private HashMap<Player, CompassUpdateTask> tasks;
 
     public CompassTaskManager()
     {
@@ -19,6 +17,7 @@ public class CompassTaskManager
 
     /**
      * Creates a new task for this player.
+     *
      * @param p Player
      */
     public void newTask(Player p)
@@ -29,7 +28,7 @@ public class CompassTaskManager
             tasks.put(p, updateTask);
             PlayerSettings.updateProfile(p);
 
-            if(getConfigManager().getPlayerSettings().getBoolean(String.format(PlayerSettings.COMPASS_ENABLE, p.getUniqueId().toString())))
+            if (Compassance.instance.configManager.getPlayerSettings().getBoolean(String.format(PlayerSettings.SETTING_ENABLE, p.getUniqueId().toString())))
             {
                 startTask(p);
             }
@@ -38,14 +37,15 @@ public class CompassTaskManager
 
     /**
      * Start the task for this player.
+     *
      * @param p Player
      */
     public void startTask(Player p)
     {
-        if(tasks.containsKey(p))
+        if (tasks.containsKey(p))
         {
             CompassUpdateTask instance = tasks.get(p);
-            if(!instance.isActive())
+            if (!instance.isActive())
             {
                 instance.start();
             }
@@ -54,11 +54,12 @@ public class CompassTaskManager
 
     /**
      * Stop the task for this player.
+     *
      * @param p Player
      */
     public void stopTask(Player p)
     {
-        if(tasks.containsKey(p))
+        if (tasks.containsKey(p))
         {
             CompassUpdateTask instance = tasks.get(p);
             if (instance.isActive())
@@ -70,11 +71,12 @@ public class CompassTaskManager
 
     /**
      * Delete the task for this player.
+     *
      * @param p Player
      */
     public void endTask(Player p)
     {
-        if(tasks.containsKey(p))
+        if (tasks.containsKey(p))
         {
             stopTask(p);
             tasks.remove(p);
@@ -86,7 +88,7 @@ public class CompassTaskManager
      */
     public void newTaskAll()
     {
-        for (Player e : Compassance.getInstance().getServer().getOnlinePlayers())
+        for (Player e : Compassance.instance.getServer().getOnlinePlayers())
         {
             newTask(e);
         }
@@ -124,15 +126,16 @@ public class CompassTaskManager
 
     /**
      * Recreate task for the player.
+     *
      * @param p Player
      */
     public void refresh(Player p)
     {
-        if(tasks.containsKey(p))
+        if (tasks.containsKey(p))
         {
             endTask(p);
-            newTask(p);
         }
+        newTask(p);
     }
 
 }

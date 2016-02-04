@@ -10,17 +10,17 @@ public class Misc
 
     public static String formatColor(String s)
     {
-        return s.replace('&','\u00A7');
+        return s.replace('&', '\u00A7');
     }
 
     public static void logHandle(Level l, String msg)
     {
         String note = "|+| ";
-        if(l == Level.SEVERE)
+        if (l == Level.SEVERE)
         {
             note = "!#! ";
         }
-        Compassance.getInstance().getLogger().log(l,note+msg);
+        Compassance.instance.getLogger().log(l, note + msg);
     }
 
     public static boolean permHandle(Player p, String perm, boolean ifPermIsNull)

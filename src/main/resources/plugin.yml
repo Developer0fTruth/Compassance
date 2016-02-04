@@ -6,6 +6,9 @@ version: B0.1
 description: A cooler compass.
 
 commands:
+  compass:
+    description: Open up the compass setting menu.
+    usage: /<command>
   test:
     description: hi
     usage: /<command>

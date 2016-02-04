@@ -1,5 +1,6 @@
 package com.hexsquared.compassance.managers.settings;
 
+import com.hexsquared.compassance.Compassance;
 import com.hexsquared.compassance.misc.FileUtil;
 import com.hexsquared.compassance.misc.Misc;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -12,31 +13,25 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 
-import static com.hexsquared.compassance.Compassance.getInstance;
-
 public class ConfigFileManager
 {
+    private final String playerSettingsFileName;
+    private final String themeConfigFileName;
     // Files
     private File playerSettingsFile;
     private FileConfiguration playerSettings;
-    private final String playerSettingsFileName;
-
     private File themeConfigFile;
     private FileConfiguration themeConfig;
-    private final String themeConfigFileName;
 
     public ConfigFileManager()
     {
         this.themeConfigFileName = "themes-config.yml";
         this.playerSettingsFileName = "players-config.yml";
-
-        loadThemeConfig();
-        loadPlayerConfig();
     }
 
     public FileConfiguration getPlayerSettings()
     {
-        if(playerSettings == null)
+        if (playerSettings == null)
         {
             loadPlayerConfig();
         }
@@ -45,7 +40,7 @@ public class ConfigFileManager
 
     public FileConfiguration getThemeConfig()
     {
-        if(themeConfig == null)
+        if (themeConfig == null)
         {
             loadThemeConfig();
         }
@@ -57,7 +52,7 @@ public class ConfigFileManager
 
         if (playerSettingsFile == null)
         {
-            playerSettingsFile = new File(getInstance().getDataFolder(), playerSettingsFileName);
+            playerSettingsFile = new File(Compassance.instance.getDataFolder(), playerSettingsFileName);
 
             if (!playerSettingsFile.exists())
             {
@@ -65,13 +60,13 @@ public class ConfigFileManager
                 {
                     Misc.logHandle(Level.INFO, String.format("Making directory for file '%s'.", playerSettingsFileName));
                 }
-                FileUtil.copyFile(getInstance().getResource(playerSettingsFileName), playerSettingsFile);
+                FileUtil.copyFile(Compassance.instance.getResource(playerSettingsFileName), playerSettingsFile);
                 Misc.logHandle(Level.INFO, String.format("Copying file '%s' from jar to disk.", playerSettingsFileName));
             }
         }
         playerSettings = YamlConfiguration.loadConfiguration(playerSettingsFile);
 
-        Reader defConfigStream = new InputStreamReader(getInstance().getResource(playerSettingsFileName), StandardCharsets.UTF_8);
+        Reader defConfigStream = new InputStreamReader(Compassance.instance.getResource(playerSettingsFileName), StandardCharsets.UTF_8);
         YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
         playerSettings.setDefaults(defConfig);
 
@@ -81,28 +76,28 @@ public class ConfigFileManager
     {
         if (themeConfigFile == null)
         {
-            themeConfigFile = new File(getInstance().getDataFolder(), themeConfigFileName);
+            themeConfigFile = new File(Compassance.instance.getDataFolder(), themeConfigFileName);
 
             if (!themeConfigFile.exists())
             {
                 if (themeConfigFile.getParentFile().mkdirs())
                 {
-                    Misc.logHandle(Level.INFO, String.format("Making directory for file '%s'.",themeConfigFileName));
+                    Misc.logHandle(Level.INFO, String.format("Making directory for file '%s'.", themeConfigFileName));
                 }
-                FileUtil.copyFile(getInstance().getResource(themeConfigFileName), themeConfigFile);
+                FileUtil.copyFile(Compassance.instance.getResource(themeConfigFileName), themeConfigFile);
                 Misc.logHandle(Level.INFO, String.format("Copying file '%s' from jar to disk.", themeConfigFileName));
             }
         }
         themeConfig = YamlConfiguration.loadConfiguration(themeConfigFile);
 
-        Reader defConfigStream = new InputStreamReader(getInstance().getResource(themeConfigFileName), StandardCharsets.UTF_8);
+        Reader defConfigStream = new InputStreamReader(Compassance.instance.getResource(themeConfigFileName), StandardCharsets.UTF_8);
         YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
         themeConfig.setDefaults(defConfig);
     }
 
-    public void savePlayerSettings() 
+    public void savePlayerSettings()
     {
-        if(playerSettings == null || playerSettingsFile == null)
+        if (playerSettings == null || playerSettingsFile == null)
         {
             Misc.logHandle(Level.SEVERE, String.format("Attempted saving file '%s' but it doesn't exist.", playerSettingsFileName));
             return;
@@ -120,12 +115,12 @@ public class ConfigFileManager
 
     public void saveThemeSettings()
     {
-        if(themeConfig == null || themeConfigFile == null)
+        if (themeConfig == null || themeConfigFile == null)
         {
             Misc.logHandle(Level.SEVERE, String.format("Attempted saving file '%s' but it doesn't exist.", themeConfigFileName));
             return;
         }
-        try 
+        try
         {
             getThemeConfig().save(themeConfigFile);
 

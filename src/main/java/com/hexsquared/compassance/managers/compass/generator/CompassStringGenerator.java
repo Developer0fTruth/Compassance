@@ -28,9 +28,9 @@ public class CompassStringGenerator
     /**
      * @param l1 Original location.
      * @param l2 Targetted location.
-     * @param t Theme string, referenced from ThemeManager.
-     * @param y Yaw rotational value.
-     * @param c Use a cursor.
+     * @param t  Theme string, referenced from ThemeManager.
+     * @param y  Yaw rotational value.
+     * @param c  Use a cursor.
      */
     public CompassStringGenerator(Location l1, Location l2, Theme t, double y, boolean c)
     {
@@ -48,7 +48,7 @@ public class CompassStringGenerator
     {
         yaw = 360 + yaw;
 
-        if(yaw > 360) yaw -= 360;
+        if (yaw > 360) yaw -= 360;
 
         double ratio = yaw / 360;
 
@@ -62,31 +62,26 @@ public class CompassStringGenerator
 
         StringBuilder strBuild = new StringBuilder();
 
-        for(int i = 0;i < (length / 2) + 3;i++)
+        for (int i = 0; i < (length / 2) + 3; i++)
         {
             int num;
 
-            if(appendRead < 0)
-                num = length + appendRead;
-            else if(appendRead >= length)
-                num = appendRead - length;
-            else
-                num = appendRead;
+            if (appendRead < 0) num = length + appendRead;
+            else if (appendRead >= length) num = appendRead - length;
+            else num = appendRead;
 
             num--;
 
-            if(num >= length)
-                num = num - length;
-            else if (num < 0)
-                num = num + length;
+            if (num >= length) num = num - length;
+            else if (num < 0) num = num + length;
 
-            if(arr[num] != null || !arr[num].isEmpty())
+            if (arr[num] != null || !arr[num].isEmpty())
             {
                 String appending = arr[num];
 
-                if(l1 != null && l2 != null)
+                if (l1 != null && l2 != null)
                 {
-                    double angle = (Math.atan2(l1.getX()-l2.getX(), l1.getZ()-l2.getZ()));
+                    double angle = (Math.atan2(l1.getX() - l2.getX(), l1.getZ() - l2.getZ()));
                     angle = (-(angle / Math.PI) * 360) / 2 + 180;
                     //angle += step*2;
 
@@ -101,9 +96,9 @@ public class CompassStringGenerator
                     }
                 }
 
-                if(cursor)
+                if (cursor)
                 {
-                    if(i == (((length / 2) + 2) / 2))
+                    if (i == (((length / 2) + 2) / 2))
                     {
                         String cursor = theme.getCursorNode();
                         if (cursor != null)
@@ -125,25 +120,25 @@ public class CompassStringGenerator
          */
         String processsedString = strBuild.toString();
 
-        for(String s : theme.getData_DirectReplacers().keySet())
-            processsedString = processsedString.replaceAll(s,theme.getData_DirectReplacers().get(s));
+        for (String s : theme.getData_DirectReplacers().keySet())
+            processsedString = processsedString.replaceAll(s, theme.getData_DirectReplacers().get(s));
 
 
-        for(String s : theme.getData_subPatternMap().keySet())
-            for(String s2 : theme.getData_subPatternReplacers().get(s).keySet())
-                processsedString = processsedString.replaceAll(s2,theme.getData_subPatternReplacers().get(s).get(s2));
+        for (String s : theme.getData_subPatternMap().keySet())
+            for (String s2 : theme.getData_subPatternReplacers().get(s).keySet())
+                processsedString = processsedString.replaceAll(s2, theme.getData_subPatternReplacers().get(s).get(s2));
 
 
         /*
          * POST PROCESSING
          */
         String finalString = theme.getFinal_PatternMap();
-        finalString = finalString.replaceAll(";","");
+        finalString = finalString.replaceAll(";", "");
 
-        finalString = finalString.replaceAll("<str>",processsedString);
+        finalString = finalString.replaceAll("<str>", processsedString);
 
         for (String s : theme.getFinal_DirectReplacers().keySet())
-            finalString = finalString.replaceAll(s,theme.getFinal_DirectReplacers().get(s));
+            finalString = finalString.replaceAll(s, theme.getFinal_DirectReplacers().get(s));
 
         return Misc.formatColor(finalString);
     }

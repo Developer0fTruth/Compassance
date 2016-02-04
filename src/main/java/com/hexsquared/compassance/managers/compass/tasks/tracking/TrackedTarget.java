@@ -10,12 +10,6 @@ public class TrackedTarget
     private Location location;
     private TrackingType type;
 
-    enum TrackingType
-    {
-        DYNAMIC,
-        STATIC
-    }
-
     public TrackedTarget(Entity e)
     {
         target = e;
@@ -31,11 +25,17 @@ public class TrackedTarget
 
     public Location getLocation()
     {
-        if(type == TrackingType.DYNAMIC)
+        if (type == TrackingType.DYNAMIC)
         {
             location = target.getLocation();
         }
         return location;
+    }
+
+    enum TrackingType
+    {
+        DYNAMIC,
+        STATIC
     }
 
 }

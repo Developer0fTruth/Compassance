@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class TrackingManager
 {
 
-    private HashMap<Player,TrackedTarget> targetsMap;
+    private HashMap<Player, TrackedTarget> targetsMap;
 
     public TrackingManager()
     {
@@ -18,7 +18,7 @@ public class TrackingManager
 
     public void newTracking(Player p, Entity e)
     {
-        if(targetsMap.containsKey(p))
+        if (targetsMap.containsKey(p))
         {
             targetsMap.remove(p);
         }
@@ -27,7 +27,7 @@ public class TrackingManager
 
     public void newTracking(Player p, Location l)
     {
-        if(targetsMap.containsKey(p))
+        if (targetsMap.containsKey(p))
         {
             targetsMap.remove(p);
         }
@@ -41,7 +41,7 @@ public class TrackingManager
 
     public void removeTrackingFrom(Player p)
     {
-        if(targetsMap.containsKey(p))
+        if (targetsMap.containsKey(p))
         {
             targetsMap.remove(p);
         }

@@ -4,22 +4,20 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import static com.hexsquared.compassance.Compassance.getCompassTaskManager;
-import static com.hexsquared.compassance.Compassance.getInstance;
-import static com.hexsquared.compassance.Compassance.getTrackingManager;
+import static com.hexsquared.compassance.Compassance.instance;
 import static org.bukkit.Bukkit.getPluginManager;
 
 public class PlayerQuitListener implements Listener
 {
     public PlayerQuitListener()
     {
-        getPluginManager().registerEvents(this, getInstance());
+        getPluginManager().registerEvents(this, instance);
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e)
     {
-        getCompassTaskManager().endTask(e.getPlayer());
-        getTrackingManager().removeTrackingFrom(e.getPlayer());
+        instance.compassTaskManager.endTask(e.getPlayer());
+        instance.trackingManager.removeTrackingFrom(e.getPlayer());
     }
 }

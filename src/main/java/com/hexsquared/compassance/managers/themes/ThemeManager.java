@@ -7,9 +7,10 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.logging.Level;
 
-public class ThemeManager {
+public class ThemeManager
+{
 
-    private HashMap<String,Theme> themes;
+    private HashMap<String, Theme> themes;
 
     private String defaultID;
 
@@ -32,19 +33,18 @@ public class ThemeManager {
         int errors = 0;
 
         Set<String> allThemes;
-        allThemes = Compassance.getConfigManager().getThemeConfig().getConfigurationSection("themes").getKeys(false);
+        allThemes = Compassance.instance.configManager.getThemeConfig().getConfigurationSection("themes").getKeys(false);
 
         int i = 0;
 
         if (!allThemes.contains(defaultID))
         {
-            Misc.logHandle(Level.SEVERE, String.format(
-                    "Default theme '%s' is not found. Therefore other themes will not be loaded.", defaultID));
+            Misc.logHandle(Level.SEVERE, String.format("Default theme '%s' is not found. Therefore other themes will not be loaded.", defaultID));
             defaultHasErrors = true;
             return;
         }
 
-        for(String s : allThemes)
+        for (String s : allThemes)
         {
             if (i >= 35)
             {
@@ -53,7 +53,7 @@ public class ThemeManager {
 
             Theme t = new Theme(s);
 
-            if(!t.haveErrors())
+            if (!t.haveErrors())
             {
                 Misc.logHandle(Level.INFO, String.format("Loaded theme %s ID '%s'.", Misc.formatColor(t.getName()), t.getId()));
                 themes.put(s, new Theme(s));
@@ -61,10 +61,9 @@ public class ThemeManager {
             }
             else
             {
-                if(s.equals(defaultID))
+                if (s.equals(defaultID))
                 {
-                    Misc.logHandle(Level.SEVERE, String.format(
-                            "Default theme '%s' is not properly formatted. Therefore other themes will not be loaded.", defaultID));
+                    Misc.logHandle(Level.SEVERE, String.format("Default theme '%s' is not properly formatted. Therefore other themes will not be loaded.", defaultID));
                     defaultHasErrors = true;
                     return;
                 }
@@ -73,28 +72,26 @@ public class ThemeManager {
             }
         }
 
-        Misc.logHandle(Level.INFO, String.format(
-                "Successfully loaded %s theme(s) with %s theme-related errors.", themes.size(), errors));
+        Misc.logHandle(Level.INFO, String.format("Successfully loaded %s theme(s) with %s theme-related errors.", themes.size(), errors));
     }
 
     /**
      * Grabs the theme instance.
+     *
      * @param s Theme id
+     *
      * @return Theme instance
      */
     public Theme getTheme(String s)
     {
-        if(themes.get(s) == null)
+        if (themes.get(s) == null)
         {
-            if(defaultHasErrors)
+            if (defaultHasErrors)
             {
-                Misc.logHandle(Level.SEVERE, String.format(
-                        "Attempted to get theme '%s', but default theme '%s' is not properly formatted. " +
-                                "Therefore access to other themes will be automatically denied.", s, defaultID));
+                Misc.logHandle(Level.SEVERE, String.format("Attempted to get theme '%s', but default theme '%s' is not properly formatted. " + "Therefore access to other themes will be automatically denied.", s, defaultID));
                 return null;
             }
-            Misc.logHandle(Level.SEVERE, String.format(
-                    "Attempted to get theme '%s', but it is not found.", s));
+            Misc.logHandle(Level.SEVERE, String.format("Attempted to get theme '%s', but it is not found.", s));
             return null;
         }
         return themes.get(s);
@@ -105,7 +102,7 @@ public class ThemeManager {
         return defaultID;
     }
 
-    public HashMap<String,Theme> getThemes()
+    public HashMap<String, Theme> getThemes()
     {
         return themes;
     }

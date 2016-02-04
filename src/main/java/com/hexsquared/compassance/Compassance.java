@@ -1,5 +1,6 @@
 package com.hexsquared.compassance;
 
+import com.hexsquared.compassance.commands.CompassCommand;
 import com.hexsquared.compassance.commands.ReloadCommand;
 import com.hexsquared.compassance.commands.TestCommand;
 import com.hexsquared.compassance.gui.MainMenu;
@@ -15,61 +16,25 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Compassance extends JavaPlugin
 {
-    private static Compassance instance;
-    private static ConfigFileManager configManager;
-    private static CompassTaskManager compassTaskManager;
-    private static ThemeManager themeManager;
-    private static TrackingManager trackingManager;
+    public static Compassance instance;
 
-    private static MainMenu mainMenu;
-    private static SettingsMenu settingsMenu;
-    private static ThemeMenu themeMenu;
+    public ConfigFileManager configManager;
+    public CompassTaskManager compassTaskManager;
+    public ThemeManager themeManager;
+    public TrackingManager trackingManager;
 
-    public static Compassance getInstance()
-    {
-        return instance;
-    }
-
-    public static ConfigFileManager getConfigManager()
-    {
-        return configManager;
-    }
-
-    public static CompassTaskManager getCompassTaskManager()
-    {
-        return compassTaskManager;
-    }
-
-    public static ThemeManager getThemeManager()
-    {
-        return themeManager;
-    }
-
-    public static ThemeMenu getThemeMenu()
-    {
-        return themeMenu;
-    }
-
-    public static SettingsMenu getSettingsMenu()
-    {
-        return settingsMenu;
-    }
-
-    public static MainMenu getMainMenu()
-    {
-        return mainMenu;
-    }
-
-    public static TrackingManager getTrackingManager()
-    {
-        return trackingManager;
-    }
+    public MainMenu mainMenu;
+    public SettingsMenu settingsMenu;
+    public ThemeMenu themeMenu;
 
     public void onEnable()
     {
         instance = this;
 
         configManager = new ConfigFileManager();
+        configManager.loadThemeConfig();
+        configManager.loadPlayerConfig();
+
         themeManager = new ThemeManager();
         compassTaskManager = new CompassTaskManager();
         trackingManager = new TrackingManager();
@@ -81,20 +46,20 @@ public class Compassance extends JavaPlugin
         themeManager.loadThemes();
         compassTaskManager.newTaskAll();
 
+        new CompassCommand();
         new ReloadCommand();
         new TestCommand();
 
         new PlayerJoinListener();
         new PlayerQuitListener();
-    }
 
+
+    }
 
     public void onDisable()
     {
         configManager.savePlayerSettings();
 
         instance = null;
-        configManager = null;
     }
-
 }

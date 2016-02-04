@@ -8,10 +8,10 @@ import org.bukkit.entity.Player;
 
 public class ActionBarUtil
 {
-    public static void sendActionBar(Player p,String str)
+    public static void sendActionBar(Player p, String str)
     {
         IChatBaseComponent c = ChatSerializer.a("{\"text\": \"" + str.replace("\"", "") + "\"}");
-        PacketPlayOutChat packet = new PacketPlayOutChat(c,(byte) 2);
+        PacketPlayOutChat packet = new PacketPlayOutChat(c, (byte) 2);
         ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
     }
 }

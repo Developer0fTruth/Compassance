@@ -10,7 +10,7 @@ import com.hexsquared.compassance.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import static com.hexsquared.compassance.Compassance.*;
+import static com.hexsquared.compassance.Compassance.instance;
 
 public class CompassUpdateTask
 {
@@ -23,24 +23,22 @@ public class CompassUpdateTask
     private boolean cursor;
     private boolean alwaysOn;
 
-
     private TrackedTarget target;
-
-
     private double yaw;
 
     /**
      * Create a new task for player p.
      * Values will be handled.
+     *
      * @param p Player
      */
     public CompassUpdateTask(Player p)
     {
         this.p = p;
-        this.theme = getConfigManager().getPlayerSettings().getString(String.format(PlayerSettings.THEME_SELECTED, p.getPlayer().getUniqueId().toString()));
-        this.cursor = getConfigManager().getPlayerSettings().getBoolean(String.format(PlayerSettings.COMPASS_CURSOR, p.getPlayer().getUniqueId().toString()));
-        this.alwaysOn = getConfigManager().getPlayerSettings().getBoolean(String.format(PlayerSettings.COMPASS_ALWAYSON, p.getPlayer().getUniqueId().toString()));
-        this.target = getTrackingManager().getTargetOf(p);
+        this.theme = instance.configManager.getPlayerSettings().getString(String.format(PlayerSettings.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId().toString()));
+        this.cursor = instance.configManager.getPlayerSettings().getBoolean(String.format(PlayerSettings.SETTING_CURSOR, p.getPlayer().getUniqueId().toString()));
+        this.alwaysOn = instance.configManager.getPlayerSettings().getBoolean(String.format(PlayerSettings.SETTING_ALWAYSON, p.getPlayer().getUniqueId().toString()));
+        this.target = instance.trackingManager.getTargetOf(p);
 
         this.running = false;
     }
@@ -58,49 +56,49 @@ public class CompassUpdateTask
      */
     public void start()
     {
-        if(!running)
+        if (!running)
         {
             running = true;
 
-            taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Compassance.getInstance(), new Runnable()
+            taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Compassance.instance, new Runnable()
             {
                 @Override
                 public void run()
                 {
-                    if(!alwaysOn && yaw == p.getLocation().getYaw())
+                    if (!alwaysOn && yaw == p.getLocation().getYaw())
                     {
                         return;
                     }
 
-                    final Theme th = Compassance.getThemeManager().getTheme(theme);
+                    final Theme th = Compassance.instance.themeManager.getTheme(theme);
 
-                    if(th == null)
+                    if (th == null)
                     {
                         p.sendMessage("&a&lCOMPASS &8» &cYour selected theme doesn't exist. Switching to default.");
-                        getConfigManager().getPlayerSettings().set(String.format(PlayerSettings.THEME_SELECTED, p.getPlayer().getUniqueId()), getThemeManager().getDefaultID());
-                        getCompassTaskManager().refresh(p);
+                        instance.configManager.getPlayerSettings().set(String.format(PlayerSettings.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId()), instance.themeManager.getDefaultID());
+                        instance.compassTaskManager.refresh(p);
                         return;
                     }
 
-                    if(!Misc.permHandle(p,th.getPerm(),true))
+                    if (!Misc.permHandle(p, th.getPerm(), true))
                     {
-                        if(th.getId().equalsIgnoreCase(getThemeManager().getDefaultID()))
+                        if (th.getId().equalsIgnoreCase(instance.themeManager.getDefaultID()))
                         {
                             p.sendMessage("&a&lCOMPASS &8» &cYou don't have permission for default theme. Toggling off compass.");
-                            getConfigManager().getPlayerSettings().set(String.format(PlayerSettings.COMPASS_ENABLE, p.getPlayer().getUniqueId().toString()),false);
-                            getCompassTaskManager().refresh(p);
-                            ActionBarUtil.sendActionBar(p,"");
+                            instance.configManager.getPlayerSettings().set(String.format(PlayerSettings.SETTING_ENABLE, p.getPlayer().getUniqueId().toString()), false);
+                            instance.compassTaskManager.refresh(p);
+                            ActionBarUtil.sendActionBar(p, "");
                         }
                         else
                         {
                             p.sendMessage("&a&lCOMPASS &8» &cYou don't have permission for this theme. Switching to default.");
-                            getConfigManager().getPlayerSettings().set(String.format(PlayerSettings.THEME_SELECTED, p.getPlayer().getUniqueId()), getThemeManager().getDefaultID());
-                            getCompassTaskManager().refresh(p);
+                            instance.configManager.getPlayerSettings().set(String.format(PlayerSettings.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId()), instance.themeManager.getDefaultID());
+                            instance.compassTaskManager.refresh(p);
                         }
                     }
 
                     CompassStringGenerator gen;
-                    if(target != null)
+                    if (target != null && target.getLocation() != null)
                     {
                         gen = new CompassStringGenerator(p.getLocation(), target.getLocation(), th, p.getLocation().getYaw(), cursor);
                     }

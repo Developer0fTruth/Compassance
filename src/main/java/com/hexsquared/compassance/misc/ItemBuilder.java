@@ -18,7 +18,7 @@ public class ItemBuilder implements Serializable
 
     String name;
     ArrayList<String> loreList;
-    HashMap<Enchantment,Integer> enchantList;
+    HashMap<Enchantment, Integer> enchantList;
 
     public ItemBuilder()
     {
@@ -60,25 +60,25 @@ public class ItemBuilder implements Serializable
 
     public ItemBuilder lore(String... texts)
     {
-        ArrayList<String> textList = new ArrayList<>();
+        ArrayList<String> list = new ArrayList<>();
         for (String text : texts)
         {
             String[] lines = Misc.formatColor(text).split("%nl%");
-            Collections.addAll(textList, lines);
+            Collections.addAll(list, lines);
         }
-        loreList = textList;
+        loreList = list;
         return this;
     }
 
     public ItemBuilder enchant(Enchantment e, int l)
     {
-        enchantList.put(e,l);
+        enchantList.put(e, l);
         return this;
     }
 
     public ItemStack toItemStack()
     {
-        ItemStack item = new ItemStack(mat,amount,data);
+        ItemStack item = new ItemStack(mat, amount, data);
         ItemMeta itmMeta = item.getItemMeta();
         if (name != null && !name.isEmpty())
         {
@@ -88,9 +88,9 @@ public class ItemBuilder implements Serializable
         {
             itmMeta.setLore(loreList);
         }
-        for(Enchantment e : enchantList.keySet())
+        for (Enchantment e : enchantList.keySet())
         {
-            item.addUnsafeEnchantment(e,enchantList.get(e));
+            item.addUnsafeEnchantment(e, enchantList.get(e));
         }
         item.setItemMeta(itmMeta);
         return item;
