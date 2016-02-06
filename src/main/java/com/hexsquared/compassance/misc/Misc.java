@@ -1,10 +1,7 @@
 package com.hexsquared.compassance.misc;
 
 import com.hexsquared.compassance.Compassance;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.SpawnEgg;
 
 import java.util.logging.Level;
 
@@ -29,10 +26,5 @@ public class Misc
     public static boolean permHandle(Player p, String perm, boolean ifPermIsNull)
     {
         return perm != null && p.hasPermission(perm) || perm == null && ifPermIsNull;
-    }
-
-    public static ItemStack getEgg(Entity e)
-    {
-        return new SpawnEgg(e.getType()).toItemStack();
     }
 }

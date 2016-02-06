@@ -5,6 +5,7 @@ import com.hexsquared.compassance.managers.compass.generator.CompassStringGenera
 import com.hexsquared.compassance.managers.settings.paths.PlayerSettings;
 import com.hexsquared.compassance.managers.themes.Theme;
 import com.hexsquared.compassance.misc.ActionBarUtil;
+import com.hexsquared.compassance.misc.ItemBuilder;
 import com.hexsquared.compassance.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -14,6 +15,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.SpawnEgg;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -195,6 +199,8 @@ public class TestCommand implements CommandExecutor
 
             for (Entity e : p.getWorld().getEntities())
             {
+                if(list.size() >= 28) break;
+                if (e == p) continue;
                 if (e instanceof LivingEntity)
                 {
                     double d = p.getLocation().distanceSquared(e.getLocation());
@@ -207,13 +213,41 @@ public class TestCommand implements CommandExecutor
 
             list = new TreeMap<>(list);
 
+            Inventory inv = Bukkit.createInventory(null, 6 * 9, "Debug");
+
+            int i = 1;
+            int itemSlot = 10;
+            int wrapCounter = 1;
+
             for (double d : list.keySet())
             {
-                double d1 = Math.round(d * 100);
+                if (i > 28) break;
+
+                double d1 = Math.sqrt(d);
+                d1 = Math.round(d1 * 100);
                 d1 /= 100;
 
-                p.sendMessage(d1 + " " + list.get(d).getName() + " uuid " + list.get(d).getUniqueId());
+                Entity e = list.get(d);
+
+                ItemStack spawnEgg = new SpawnEgg(list.get(d).getType()).toItemStack();
+
+                inv.setItem(itemSlot,
+                        new ItemBuilder()
+                                .amt(1)
+                                .material(spawnEgg.getType())
+                                .data(spawnEgg.getDurability())
+                                .name("&7&l"+e.getName())
+                                .lore("&fD: &b"+d1,"&fUUID: &b"+e.getUniqueId().toString())
+                                .toItemStack());
+
+                i++;
+                wrapCounter++;
+                itemSlot += wrapCounter > 7 ? 3 : 1;
+                if (wrapCounter > 7) wrapCounter = 1;
             }
+
+            p.openInventory(inv);
+
             return true;
         }
 

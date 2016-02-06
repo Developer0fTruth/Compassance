@@ -115,6 +115,7 @@ public class SettingsMenu implements Listener
                             Compassance.instance.configManager.getPlayerSettings().set(str, !b);
                             Compassance.instance.compassTaskManager.refresh(p);
                             show(p);
+                            return;
                         }
                         i += 2;
                     }

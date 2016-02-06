@@ -41,13 +41,13 @@ public class MainMenu implements Listener
                         .name("&b&lTracking")
                         .lore(
                                 "",
-                                b ? "&7Tracking a player:" : null,
-                                b ? "    &f/compass trk pl &b-player" : "&fIf you enable tracking of locations",
-                                b ? "" : "&fand other players, &cother players",
-                                b ? "&7Tracking a location:" : "&ccan attempt to track you.",
-                                b ? "    &f/compass trk loc &b-x -y -z" : null,
-                                b ? "%nl%&fYou are susceptible to being%nl%&ftracked for other people.%nl% " : "",
-                                b ? "&7Click to disable." : "&7Click to enable."
+                                b ? "&7Tracking a player:"                                                          : null,
+                                b ? "    &f/compass trk pl &b-player"                                               : "&fIf you enable tracking of locations",
+                                b ? ""                                                                              : "&fand other players, &cother players",
+                                b ? "&7Tracking a location:"                                                        : "&ccan attempt to track you.",
+                                b ? "    &f/compass trk loc &b-x -y -z"                                             : null,
+                                b ? "%nl%&fYou are susceptible to being%nl%&ftracked for other people.%nl% "        : "",
+                                b ? "&7Click to disable."                                                           : "&7Click to enable."
                         ).toItemStack());
 
         inv.setItem(14,

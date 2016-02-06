@@ -14,7 +14,7 @@ public class ItemBuilder implements Serializable
 {
     Material mat;
     int amount;
-    byte data;
+    short data;
 
     String name;
     ArrayList<String> loreList;
@@ -34,7 +34,7 @@ public class ItemBuilder implements Serializable
         return this;
     }
 
-    public ItemBuilder data(byte b)
+    public ItemBuilder data(short b)
     {
         data = b;
         return this;

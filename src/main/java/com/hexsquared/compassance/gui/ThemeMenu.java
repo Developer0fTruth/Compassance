@@ -27,10 +27,10 @@ public class ThemeMenu implements Listener
 
     public void show(Player p)
     {
-        Inventory inv = Bukkit.createInventory(null, 6 * 9, name);
+        Inventory inv = Bukkit.createInventory(p, 6 * 9, name);
 
-        int i = 10;
-        int ii = 1;
+        int itemSlot = 10;
+        int wrapCounter = 1;
 
         String selectedTheme = instance.configManager.getPlayerSettings().getString(String.format(PlayerSettings.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId()));
 
@@ -38,29 +38,17 @@ public class ThemeMenu implements Listener
         {
             Theme t = Compassance.instance.themeManager.getTheme(id);
 
-            byte data = 7;
-
-            if (selectedTheme.equalsIgnoreCase(id))
-            {
-                data = 11;
-            }
+            byte data = (byte) (selectedTheme.equalsIgnoreCase(id) ? 11 : 7);
 
             ItemBuilder itmBuild1 =
                     new ItemBuilder().material(Material.STAINED_GLASS_PANE).data(data).amt(1)
                             .name(Misc.formatColor("&r" + t.getName()))
                             .lore("", Misc.formatColor(t.getDesc()));
-            inv.setItem(i, itmBuild1.toItemStack());
+            inv.setItem(itemSlot, itmBuild1.toItemStack());
 
-            ii++;
-
-            int add = ii > 7 ? 3 : 1;
-
-            if (ii > 7)
-            {
-                ii = 1;
-            }
-
-            i += add;
+            wrapCounter++;
+            itemSlot += wrapCounter > 7 ? 3 : 1;
+            if (wrapCounter > 7) wrapCounter = 1;
         }
 
         ItemBuilder itmBuild1 =
@@ -83,21 +71,20 @@ public class ThemeMenu implements Listener
         {
             e.setCancelled(true);
 
-            int ii = 0;
-            int iii = 0;
+            int itemSlot = 10;
+            int wrapCounter = 1;
+
+            if (e.getSlot() == 49)
+            {
+                p.playSound(p.getLocation(), Sound.CLICK, 0.5f, 1);
+                Compassance.instance.mainMenu.show(p);
+                return;
+            }
 
             for (int i = 1; i <= Compassance.instance.themeManager.getThemes().keySet().size(); i++)
             {
 
-                ii++;
-
-                if (ii > 7)
-                {
-                    ii = 1;
-                    iii++;
-                }
-
-                if (slot == 10 + (i - 1) + (iii) && inv.getContents()[slot].getType() != Material.AIR)
+                if (slot == itemSlot && inv.getContents()[slot].getType() != Material.AIR)
                 {
                     p.playSound(p.getLocation(), Sound.CLICK, 0.5f, 1);
 
@@ -109,13 +96,12 @@ public class ThemeMenu implements Listener
                     e.getWhoClicked().sendMessage(Misc.formatColor(String.format("&a&lCOMPASS &8» &7Switching your selected theme to &r%s&7.", Compassance.instance.themeManager.getTheme(clickedId).getName())));
 
                     show(p);
+                    return;
                 }
-            }
 
-            if (e.getSlot() == 49)
-            {
-                p.playSound(p.getLocation(), Sound.CLICK, 0.5f, 1);
-                Compassance.instance.mainMenu.show(p);
+                wrapCounter++;
+                itemSlot += wrapCounter > 7 ? 3 : 1;
+                if (wrapCounter > 7) wrapCounter = 1;
             }
         }
     }
