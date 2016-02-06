@@ -11,7 +11,13 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
 
 import static com.hexsquared.compassance.Compassance.instance;
 
@@ -39,37 +45,38 @@ public class TestCommand implements CommandExecutor
                 return true;
             }
 
-            sender.sendMessage("Displaying data for theme:\n" + theme.getName());
+            sender.sendMessage("Displaying parsed data for theme " + theme.getId());
 
-            sender.sendMessage("Name: " + theme.getName());
-            sender.sendMessage(Misc.formatColor("Desc: " + theme.getDesc()));
-            sender.sendMessage("PatternMap: " + theme.getData_main_PatternMap());
+            sender.sendMessage(Misc.formatColor("&9&lMeta :"));
+            sender.sendMessage(Misc.formatColor("  &8Name : &r" + theme.getName()));
+            sender.sendMessage(Misc.formatColor("  &8Desc : &r" + theme.getDesc()));
+            sender.sendMessage(Misc.formatColor("  &8Main Pattern Map : &r") + theme.getData_main_PatternMap());
 
-            sender.sendMessage("DirectReplacers:");
+            sender.sendMessage(Misc.formatColor("&9&lDirect Replacers :"));
             for (String s : theme.getData_DirectReplacers().keySet())
             {
-                sender.sendMessage(Misc.formatColor("   " + s + " : " + theme.getData_DirectReplacers().get(s)));
+                sender.sendMessage(Misc.formatColor("  &8" + s + " : &r" + theme.getData_DirectReplacers().get(s)));
             }
-            sender.sendMessage("SubPatternMap:");
+            sender.sendMessage(Misc.formatColor("&9&lSub-Patterns :"));
             for (String s : theme.getData_subPatternMap().keySet())
             {
-                sender.sendMessage("   " + s + " : " + theme.getData_subPatternMap().get(s));
+                sender.sendMessage(Misc.formatColor("  &8" + s + " : &r") + theme.getData_subPatternMap().get(s));
                 for (String s2 : theme.getData_subPatternReplacers().get(s).keySet())
                 {
-                    sender.sendMessage("         " + s2 + " : " + theme.getData_subPatternReplacers().get(s).get(s2));
+                    sender.sendMessage(Misc.formatColor("    &8" + s2 + " : &r" + theme.getData_subPatternReplacers().get(s).get(s2)));
                 }
             }
 
-
-            sender.sendMessage("Final:");
-            sender.sendMessage(" PatternMap: " + theme.getFinal_PatternMap());
+            sender.sendMessage(Misc.formatColor("&9&lPost Processing : "));
+            sender.sendMessage("  " + theme.getFinal_PatternMap());
             for (String s : theme.getFinal_DirectReplacers().keySet())
             {
-                sender.sendMessage(Misc.formatColor("   " + s + " : " + theme.getFinal_DirectReplacers().get(s)));
+                sender.sendMessage(Misc.formatColor("  &8" + s + " : &r" + theme.getFinal_DirectReplacers().get(s)));
             }
 
-            sender.sendMessage(theme.getStringMapFull());
-            sender.sendMessage(String.valueOf(theme.getStringMapArray().length));
+//            sender.sendMessage("");
+//            sender.sendMessage(theme.getStringMapFull());
+//            sender.sendMessage(String.valueOf(theme.getStringMapArray().length));
 
             if (sender instanceof Player)
             {
@@ -178,11 +185,35 @@ public class TestCommand implements CommandExecutor
             return true;
         }
 
-        if (args.length == 2 && args[0].equalsIgnoreCase("theme"))
+        if (args.length == 2 && args[0].equalsIgnoreCase("tracklist"))
         {
             Player p = (Player) sender;
-            instance.configManager.getPlayerSettings().set(String.format(PlayerSettings.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId()), args[1]);
-            instance.compassTaskManager.refresh(p);
+
+            double rad = Math.pow(10, 2);
+
+            Map<Double, Entity> list = new HashMap<>();
+
+            for (Entity e : p.getWorld().getEntities())
+            {
+                if (e instanceof LivingEntity)
+                {
+                    double d = p.getLocation().distanceSquared(e.getLocation());
+                    if (d <= rad)
+                    {
+                        list.put(d, e);
+                    }
+                }
+            }
+
+            list = new TreeMap<>(list);
+
+            for (double d : list.keySet())
+            {
+                double d1 = Math.round(d * 100);
+                d1 /= 100;
+
+                p.sendMessage(d1 + " " + list.get(d).getName() + " uuid " + list.get(d).getUniqueId());
+            }
             return true;
         }
 

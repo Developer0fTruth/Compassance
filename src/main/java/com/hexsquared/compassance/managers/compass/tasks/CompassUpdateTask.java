@@ -23,7 +23,6 @@ public class CompassUpdateTask
     private boolean cursor;
     private boolean alwaysOn;
 
-    private TrackedTarget target;
     private double yaw;
 
     /**
@@ -38,7 +37,7 @@ public class CompassUpdateTask
         this.theme = instance.configManager.getPlayerSettings().getString(String.format(PlayerSettings.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId().toString()));
         this.cursor = instance.configManager.getPlayerSettings().getBoolean(String.format(PlayerSettings.SETTING_CURSOR, p.getPlayer().getUniqueId().toString()));
         this.alwaysOn = instance.configManager.getPlayerSettings().getBoolean(String.format(PlayerSettings.SETTING_ALWAYSON, p.getPlayer().getUniqueId().toString()));
-        this.target = instance.trackingManager.getTargetOf(p);
+
 
         this.running = false;
     }
@@ -74,7 +73,7 @@ public class CompassUpdateTask
 
                     if (th == null)
                     {
-                        p.sendMessage("&a&lCOMPASS &8» &cYour selected theme doesn't exist. Switching to default.");
+                        p.sendMessage(Misc.formatColor("&a&lCOMPASS &8» &cYour selected theme doesn't exist. Switching to default."));
                         instance.configManager.getPlayerSettings().set(String.format(PlayerSettings.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId()), instance.themeManager.getDefaultID());
                         instance.compassTaskManager.refresh(p);
                         return;
@@ -84,20 +83,22 @@ public class CompassUpdateTask
                     {
                         if (th.getId().equalsIgnoreCase(instance.themeManager.getDefaultID()))
                         {
-                            p.sendMessage("&a&lCOMPASS &8» &cYou don't have permission for default theme. Toggling off compass.");
+                            p.sendMessage(Misc.formatColor("&a&lCOMPASS &8» &cYou don't have permission for default theme. Toggling off compass."));
                             instance.configManager.getPlayerSettings().set(String.format(PlayerSettings.SETTING_ENABLE, p.getPlayer().getUniqueId().toString()), false);
                             instance.compassTaskManager.refresh(p);
                             ActionBarUtil.sendActionBar(p, "");
                         }
                         else
                         {
-                            p.sendMessage("&a&lCOMPASS &8» &cYou don't have permission for this theme. Switching to default.");
+                            p.sendMessage(Misc.formatColor("&a&lCOMPASS &8» &cYou don't have permission for this theme. Switching to default."));
                             instance.configManager.getPlayerSettings().set(String.format(PlayerSettings.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId()), instance.themeManager.getDefaultID());
                             instance.compassTaskManager.refresh(p);
                         }
                     }
 
                     CompassStringGenerator gen;
+
+                    TrackedTarget target = instance.trackingManager.getTargetOf(p);
                     if (target != null && target.getLocation() != null)
                     {
                         gen = new CompassStringGenerator(p.getLocation(), target.getLocation(), th, p.getLocation().getYaw(), cursor);

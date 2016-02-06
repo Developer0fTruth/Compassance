@@ -15,3 +15,5 @@ commands:
   tcomp:
       description: hi
       usage: /<command>
+  test2:
+    usage: /<command>

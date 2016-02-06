@@ -72,8 +72,8 @@ public class CompassStringGenerator
 
             num--;
 
-            if (num >= length) num = num - length;
-            else if (num < 0) num = num + length;
+            if (num >= length) num -= length;
+            else if (num < 0) num += length;
 
             if (arr[num] != null || !arr[num].isEmpty())
             {
@@ -85,7 +85,11 @@ public class CompassStringGenerator
                     angle = (-(angle / Math.PI) * 360) / 2 + 180;
                     //angle += step*2;
 
-                    if (angle >= step * num && angle <= step * (num + 1))
+                    int num1 = num + 1;
+                    if (num1 >= length) num1 -= length;
+                    else if (num1 < 0) num1 += length;
+
+                    if (angle >= step * num && angle <= step * num1)
                     {
                         String target = theme.getTargetNode();
                         if (target != null)
@@ -94,6 +98,7 @@ public class CompassStringGenerator
                             appending = target;
                         }
                     }
+
                 }
 
                 if (cursor)

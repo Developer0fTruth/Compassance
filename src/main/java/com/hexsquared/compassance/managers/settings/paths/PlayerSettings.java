@@ -12,6 +12,7 @@ public class PlayerSettings
     public static final String SETTING_ENABLE = "players.%s.settings.enableCompass";
     public static final String SETTING_CURSOR = "players.%s.settings.enableCursor";
     public static final String SETTING_ALWAYSON = "players.%s.settings.alwaysOn";
+    public static final String SETTING_TRACKING = "players.%s.settings.tracking";
 
     /**
      * Update the player name in the player config.

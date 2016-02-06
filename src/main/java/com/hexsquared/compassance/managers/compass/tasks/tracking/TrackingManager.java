@@ -8,8 +8,7 @@ import java.util.HashMap;
 
 public class TrackingManager
 {
-
-    private HashMap<Player, TrackedTarget> targetsMap;
+    public HashMap<Player, TrackedTarget> targetsMap;
 
     public TrackingManager()
     {
@@ -44,6 +43,17 @@ public class TrackingManager
         if (targetsMap.containsKey(p))
         {
             targetsMap.remove(p);
+        }
+    }
+
+    public void removeTrackingOf(Entity e)
+    {
+        for (Player p : targetsMap.keySet())
+        {
+            if (targetsMap.get(p).getTarget() == e)
+            {
+                targetsMap.remove(p);
+            }
         }
     }
 

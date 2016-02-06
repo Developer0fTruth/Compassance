@@ -23,11 +23,16 @@ public class TrackedTarget
         type = TrackingType.STATIC;
     }
 
+    public Entity getTarget()
+    {
+        return target;
+    }
+
     public Location getLocation()
     {
         if (type == TrackingType.DYNAMIC)
         {
-            location = target.getLocation();
+            return target.getLocation();
         }
         return location;
     }

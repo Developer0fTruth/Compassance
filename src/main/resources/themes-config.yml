@@ -79,7 +79,7 @@ themes:
       main-pattern-map: "<S>;<s/sep>;<W>;<s/sep>;<N>;<s/sep>;<E>;<s/sep>"
       function:
         cursor: "&f[;<str>;&f]"
-        target: "&9\u2591"
+        target: "&9\u2588"
       direct:
         <S>: "&f&l&n S "
         <W>: "&f&l&n W "

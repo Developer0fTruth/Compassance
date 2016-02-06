@@ -18,6 +18,7 @@ players:
   a3109664-36ee-4620-8e39-d430816a1a16:
     name: "Averal"
     settings:
-      selectedTheme: "default"
+      selectedTheme: default
       enableCompass: false
       enableCursor: false
+      alwaysOn: false

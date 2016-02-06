@@ -63,6 +63,10 @@ public class ItemBuilder implements Serializable
         ArrayList<String> list = new ArrayList<>();
         for (String text : texts)
         {
+            if (text == null)
+            {
+                continue;
+            }
             String[] lines = Misc.formatColor(text).split("%nl%");
             Collections.addAll(list, lines);
         }

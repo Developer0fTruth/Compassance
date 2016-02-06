@@ -46,7 +46,7 @@ public class SettingsMenu implements Listener
 
 
         inv.setItem(12,
-                new ItemBuilder().material(Material.EYE_OF_ENDER).data((byte) 0).amt(1)
+                new ItemBuilder().material(Material.BEACON).data((byte) 0).amt(1)
                         .name("&b&lAlways Show")
                         .lore("&7If this setting is enabled, then the", "&7compass will always show. Disable it", "&7and it will only show when you turn.").toItemStack());
 
@@ -64,20 +64,16 @@ public class SettingsMenu implements Listener
 
             boolean b = Compassance.instance.configManager.getPlayerSettings().getBoolean(str);
 
-            if (b)
-            {
-                inv.setItem(19 + i,
-                        new ItemBuilder().material(Material.INK_SACK).data((byte) 10).amt(1)
-                                .name("&aToggle")
-                                .lore("", "&2✔ &aEnabled", "&7Click to disable.").toItemStack());
-            }
-            else
-            {
-                inv.setItem(19 + i,
-                        new ItemBuilder().material(Material.INK_SACK).data((byte) 8).amt(1)
-                                .name("&cToggle")
-                                .lore("", "&4✘ &cDisabled", "&7Click to disable.").toItemStack());
-            }
+            inv.setItem(19 + i,
+                    new ItemBuilder()
+                            .material(Material.INK_SACK)
+                            .data(b ? (byte) 10 : (byte) 8)
+                            .amt(1)
+                            .name(b ? "&aToggle" : "&cToggle")
+                            .lore(
+                                    "",
+                                    b ? "&2✔ &aEnabled" : "&4✘ &cDisabled",
+                                    b ? "&7Click to disable." : "&7Click to enable.").toItemStack());
             i += 2;
         }
 
@@ -116,17 +112,8 @@ public class SettingsMenu implements Listener
                         if (e.getSlot() == 19 + i)
                         {
                             p.playSound(p.getLocation(), Sound.CLICK, 0.5f, 1);
-                            if (b)
-                            {
-                                Compassance.instance.configManager.getPlayerSettings().set(str, false);
-                                Compassance.instance.compassTaskManager.refresh(p);
-                            }
-                            else
-                            {
-                                Compassance.
-                                        instance.configManager.getPlayerSettings().set(str, true);
-                                Compassance.instance.compassTaskManager.refresh(p);
-                            }
+                            Compassance.instance.configManager.getPlayerSettings().set(str, !b);
+                            Compassance.instance.compassTaskManager.refresh(p);
                             show(p);
                         }
                         i += 2;

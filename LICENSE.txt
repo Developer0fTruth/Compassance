@@ -5,7 +5,7 @@ and as a learning experience.
 
 ____________________________________________________________________________
 
-Copyright (c) 2014-2016 Anthony Tran
+Copyright (c) 2014-2016 Anthony T.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
