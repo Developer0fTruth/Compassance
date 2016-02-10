@@ -105,7 +105,7 @@ public class CompassUpdateTask
                     {
                         gen = new CompassStringGenerator(th, p.getLocation().getYaw(), cursor);
                     }
-                    ActionBarUtil.sendActionBar(p, gen.getString());
+                    if (gen.getString() != null) ActionBarUtil.sendActionBar(p, gen.getString());
 
                     yaw = p.getLocation().getYaw();
 

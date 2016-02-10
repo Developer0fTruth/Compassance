@@ -1,6 +1,6 @@
 name: Compassance
-author: hexSquared
-main: Compassance
+author: Hexragon
+main: com.hexragon.compassance.Compassance
 version: 1.0-BETA
 
 description: A cooler compass.

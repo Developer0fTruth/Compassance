@@ -37,12 +37,23 @@ version: 1.0
 #   post-process comes in.
 #
 # ====== Post Processing
-#   [str] represents the generated string, post process will
+#   <str> represents the generated string, post process will
 #   not affect the direction of the compass at all, rather
 #   only add on gimmicks such as brackets or the cursor
 #   function, which is exclusive to post processing.
 #
-#   [str] is required by default.
+#   Separate keys by using ';'.
+#
+# ===== References
+#   This is a work in progress. These values are generated
+#   dynamically and it is not recomended that you name a
+#   key after them.
+#
+#     <str>     Preprocessed string.
+#     <date>    Not implemented yet.
+#     <yaw>     Not implemented yet.
+#     <bal>     Not implemented yet.
+#     and many more... <3
 #
 # ==========================================================
 themes:

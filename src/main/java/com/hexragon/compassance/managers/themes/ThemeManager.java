@@ -53,23 +53,10 @@ public class ThemeManager
 
             Theme t = new Theme(s);
 
-            if (!t.haveErrors())
-            {
-                Misc.logHandle(Level.INFO, String.format("Loaded theme %s ID '%s'.", Misc.formatColor(t.getName()), t.getId()));
-                themes.put(s, new Theme(s));
-                i++;
-            }
-            else
-            {
-                if (s.equals(defaultID))
-                {
-                    Misc.logHandle(Level.SEVERE, String.format("Default theme '%s' is not properly formatted. Therefore other themes will not be loaded.", defaultID));
-                    defaultHasErrors = true;
-                    return;
-                }
-                Misc.logHandle(Level.SEVERE, String.format("Theme id '%s' had errors and will not be loaded.", t.getId()));
-                errors++;
-            }
+            Misc.logHandle(Level.INFO, String.format("Loaded theme %s ID '%s'.", Misc.formatColor(t.getName()), t.getId()));
+            themes.put(s, new Theme(s));
+            i++;
+
         }
 
         Misc.logHandle(Level.INFO, String.format("Successfully loaded %s theme(s) with %s theme-related errors.", themes.size(), errors));

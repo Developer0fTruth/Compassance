@@ -9,7 +9,6 @@ public class Theme
 {
 
     private final String id;
-    boolean hasError;
     private String meta_name;
     private String meta_desc;
     private String meta_perm;
@@ -36,7 +35,6 @@ public class Theme
         final_DirectReplacers = new HashMap<>();
 
         loadData();
-        hasError = testForErrors();
     }
 
     /**
@@ -89,7 +87,6 @@ public class Theme
             }
             else
             {
-                hasError = true;
                 return;
             }
 
@@ -110,10 +107,7 @@ public class Theme
             func_cursor = Compassance.instance.configManager.getThemeConfig().getString(String.format(ThemeSettings.THEME_DATA_FUNC_CURSOR, id));
             func_target = Compassance.instance.configManager.getThemeConfig().getString(String.format(ThemeSettings.THEME_DATA_FUNC_TARGET, id));
         }
-        catch (Exception e)
-        {
-            hasError = true;
-        }
+        catch (Exception ignored) {}
     }
 
     /**
@@ -122,16 +116,12 @@ public class Theme
      */
     public String getStringMapFull()
     {
-        if (!haveErrors())
+        String strMap = data_main_PatternMap;
+        for (String s : getData_subPatternMap().keySet())
         {
-            String strMap = data_main_PatternMap;
-            for (String s : getData_subPatternMap().keySet())
-            {
-                strMap = strMap.replaceAll(s, getData_subPatternMap().get(s));
-            }
-            return strMap;
+            strMap = strMap.replaceAll(s, getData_subPatternMap().get(s));
         }
-        return null;
+        return strMap;
     }
 
 
@@ -140,75 +130,10 @@ public class Theme
      */
     public String[] getStringMapArray()
     {
-        if (!haveErrors())
-        {
-            return getStringMapFull().split(";");
-        }
-        return null;
+        return getStringMapFull().split(";");
     }
 
-    /**
-     * Attempts to parse the whole string.
-     * If a NullPointerException is thrown, it will
-     * return a true, meaning there IS errors.
-     */
-    public boolean haveErrors()
-    {
-        return hasError;
-    }
 
-    /**
-     * Test for any exceptions that might happen during replacing phase.
-     *
-     * @return False = no bugs; True = buggy
-     */
-    private boolean testForErrors()
-    {
-
-        if (meta_name == null || hasError)
-        {
-            return true;
-        }
-
-        try
-        {
-            String strMap = data_main_PatternMap;
-
-            for (String s : getData_DirectReplacers().keySet())
-                strMap = strMap.replaceAll(s, getData_DirectReplacers().get(s));
-
-
-            for (String s : getData_subPatternMap().keySet())
-                strMap = strMap.replaceAll(s, getData_subPatternMap().get(s));
-
-
-            for (String s : getData_DirectReplacers().keySet())
-                strMap = strMap.replaceAll(s, getData_DirectReplacers().get(s));
-
-
-            for (String s : getData_subPatternMap().keySet())
-            {
-                for (String s2 : getData_subPatternReplacers().get(s).keySet())
-                {
-                    strMap = strMap.replaceAll(s2, getData_subPatternReplacers().get(s).get(s2));
-                }
-            }
-
-            String finalString = getFinal_PatternMap();
-            finalString = finalString.replaceAll(";", "");
-
-            finalString = finalString.replaceAll("<str>", strMap);
-
-            for (String s : getFinal_DirectReplacers().keySet())
-                finalString = finalString.replaceAll(s, getFinal_DirectReplacers().get(s));
-
-        }
-        catch (Exception e)
-        {
-            return true;
-        }
-        return false;
-    }
 
     public String getId()
     {
