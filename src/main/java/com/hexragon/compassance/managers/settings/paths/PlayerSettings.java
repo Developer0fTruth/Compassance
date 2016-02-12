@@ -27,7 +27,21 @@ public class PlayerSettings
         String selectedTheme = Compassance.instance.configManager.getPlayerSettings().getString(String.format(PlayerSettings.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId().toString()));
         if (selectedTheme == null || Compassance.instance.themeManager.getTheme(selectedTheme) == null)
         {
-            Compassance.instance.configManager.getPlayerSettings().set(String.format(PlayerSettings.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId().toString()), Compassance.instance.themeManager.getDefaultID());
+            Compassance.instance.configManager.getPlayerSettings()
+                    .set(String.format(PlayerSettings.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId().toString()), Compassance.instance.themeManager.getDefaultID());
+
+            Compassance.instance.configManager.getPlayerSettings()
+                    .set(String.format(PlayerSettings.SETTING_ENABLE, p.getPlayer().getUniqueId().toString()),
+                            Compassance.instance.configManager.getPlayerSettings().getBoolean(String.format(PlayerSettings.SETTING_ENABLE, "default")));
+            Compassance.instance.configManager.getPlayerSettings()
+                    .set(String.format(PlayerSettings.SETTING_CURSOR, p.getPlayer().getUniqueId().toString()),
+                            Compassance.instance.configManager.getPlayerSettings().getBoolean(String.format(PlayerSettings.SETTING_CURSOR, "default")));
+            Compassance.instance.configManager.getPlayerSettings()
+                    .set(String.format(PlayerSettings.SETTING_ALWAYSON, p.getPlayer().getUniqueId().toString()),
+                            Compassance.instance.configManager.getPlayerSettings().getBoolean(String.format(PlayerSettings.SETTING_ALWAYSON, "default")));
+            Compassance.instance.configManager.getPlayerSettings()
+                    .set(String.format(PlayerSettings.SETTING_TRACKING, p.getPlayer().getUniqueId().toString()),
+                            Compassance.instance.configManager.getPlayerSettings().getBoolean(String.format(PlayerSettings.SETTING_TRACKING, "default")));
         }
     }
 }

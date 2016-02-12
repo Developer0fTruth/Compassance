@@ -12,13 +12,13 @@
 #   and download a new one if the plugin mentions any
 #   errors regarding 'player settings outdated'.
 # ==========================================================
-version: 1.0
+version: 1.1
 
 players:
-  a3109664-36ee-4620-8e39-d430816a1a16:
-    name: "Averal"
+  default:
     settings:
       selectedTheme: default
-      enableCompass: false
-      enableCursor: false
-      alwaysOn: false
+      enableCompass: true
+      enableCursor: true
+      alwaysOn: true
+      tracking: false
