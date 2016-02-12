@@ -50,10 +50,6 @@ version: 1.0
 #   key after them.
 #
 #     <str>     Preprocessed string.
-#     <date>    Not implemented yet.
-#     <yaw>     Not implemented yet.
-#     <bal>     Not implemented yet.
-#     and many more... <3
 #
 # ==========================================================
 themes:

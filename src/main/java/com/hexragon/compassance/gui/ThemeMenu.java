@@ -1,10 +1,10 @@
 package com.hexragon.compassance.gui;
 
 import com.hexragon.compassance.Compassance;
-import com.hexragon.compassance.misc.Misc;
 import com.hexragon.compassance.managers.settings.paths.PlayerSettings;
 import com.hexragon.compassance.managers.themes.Theme;
 import com.hexragon.compassance.misc.ItemBuilder;
+import com.hexragon.compassance.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -13,6 +13,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+
+import java.util.Set;
+import java.util.TreeSet;
 
 public class ThemeMenu implements Listener
 {
@@ -32,7 +35,16 @@ public class ThemeMenu implements Listener
 
         String selectedTheme = Compassance.instance.configManager.getPlayerSettings().getString(String.format(PlayerSettings.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId()));
 
-        for (String id : Compassance.instance.themeManager.getThemes().keySet())
+        // Putting default id first.
+        Set<String> idList = Compassance.instance.themeManager.getThemes().keySet();
+        TreeSet<String> sortedIdList = new TreeSet<>();
+        sortedIdList.add(Compassance.instance.themeManager.getDefaultID());
+        for (String s : idList)
+        {
+            if (!s.equalsIgnoreCase(Compassance.instance.themeManager.getDefaultID())) sortedIdList.add(s);
+        }
+
+        for (String id : sortedIdList)
         {
             Theme t = Compassance.instance.themeManager.getTheme(id);
 
@@ -86,7 +98,15 @@ public class ThemeMenu implements Listener
                 {
                     p.playSound(p.getLocation(), Sound.CLICK, 0.5f, 1);
 
-                    String clickedId = Compassance.instance.themeManager.getThemes().keySet().toArray()[i - 1].toString();
+                    Set<String> idList = Compassance.instance.themeManager.getThemes().keySet();
+                    TreeSet<String> sortedIdList = new TreeSet<>();
+                    sortedIdList.add(Compassance.instance.themeManager.getDefaultID());
+                    for (String s : idList)
+                    {
+                        if (!s.equalsIgnoreCase(Compassance.instance.themeManager.getDefaultID())) sortedIdList.add(s);
+                    }
+
+                    String clickedId = sortedIdList.toArray()[i - 1].toString();
 
                     Compassance.instance.configManager.getPlayerSettings().set(String.format(PlayerSettings.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId()), clickedId);
                     Compassance.instance.compassTaskManager.refresh(p);

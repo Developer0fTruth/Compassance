@@ -133,8 +133,6 @@ public class Theme
         return getStringMapFull().split(";");
     }
 
-
-
     public String getId()
     {
         return id;

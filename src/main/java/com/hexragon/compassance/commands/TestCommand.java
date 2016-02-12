@@ -208,7 +208,6 @@ public class TestCommand implements CommandExecutor
                     }
                 }
             }
-
             list = new TreeMap<>(list);
 
             Inventory inv = Bukkit.createInventory(null, 6 * 9, "Debug");

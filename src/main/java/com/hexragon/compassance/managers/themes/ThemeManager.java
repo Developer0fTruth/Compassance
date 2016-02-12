@@ -32,11 +32,7 @@ public class ThemeManager
 
         int errors = 0;
 
-        Set<String> allThemes;
-        allThemes = Compassance.instance.configManager.getThemeConfig().getConfigurationSection("themes").getKeys(false);
-
-        int i = 0;
-
+        Set<String> allThemes = Compassance.instance.configManager.getThemeConfig().getConfigurationSection("themes").getKeys(false);
         if (!allThemes.contains(defaultID))
         {
             Misc.logHandle(Level.SEVERE, String.format("Default theme '%s' is not found. Therefore other themes will not be loaded.", defaultID));
@@ -44,6 +40,7 @@ public class ThemeManager
             return;
         }
 
+        int i = 0;
         for (String s : allThemes)
         {
             if (i >= 35)
@@ -55,10 +52,9 @@ public class ThemeManager
 
             Misc.logHandle(Level.INFO, String.format("Loaded theme %s ID '%s'.", Misc.formatColor(t.getName()), t.getId()));
             themes.put(s, new Theme(s));
+
             i++;
-
         }
-
         Misc.logHandle(Level.INFO, String.format("Successfully loaded %s theme(s) with %s theme-related errors.", themes.size(), errors));
     }
 
