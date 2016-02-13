@@ -2,11 +2,11 @@ package com.hexragon.compassance.commands;
 
 import com.hexragon.compassance.Compassance;
 import com.hexragon.compassance.managers.compass.generator.CompassStringGenerator;
-import com.hexragon.compassance.managers.settings.paths.PlayerSettings;
-import com.hexragon.compassance.misc.Misc;
+import com.hexragon.compassance.managers.settings.PlayerConfig;
 import com.hexragon.compassance.managers.themes.Theme;
 import com.hexragon.compassance.misc.ActionBarUtil;
 import com.hexragon.compassance.misc.ItemBuilder;
+import com.hexragon.compassance.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -165,14 +165,14 @@ public class TestCommand implements CommandExecutor
         {
             Player p = (Player) sender;
             //String uuid = p.getUniqueId().toString();
-            boolean b = Compassance.instance.configManager.getPlayerSettings().getBoolean(String.format(PlayerSettings.SETTING_ENABLE, p.getPlayer().getUniqueId().toString()));
+            boolean b = Compassance.instance.playerConfig.config.getBoolean(String.format(PlayerConfig.SETTING_ENABLE, p.getPlayer().getUniqueId().toString()));
             if (b)
             {
-                Compassance.instance.configManager.getPlayerSettings().set(String.format(PlayerSettings.SETTING_ENABLE, p.getPlayer().getUniqueId().toString()), false);
+                Compassance.instance.playerConfig.config.set(String.format(PlayerConfig.SETTING_ENABLE, p.getPlayer().getUniqueId().toString()), false);
             }
             else
             {
-                Compassance.instance.configManager.getPlayerSettings().set(String.format(PlayerSettings.SETTING_ENABLE, p.getPlayer().getUniqueId().toString()), true);
+                Compassance.instance.playerConfig.config.set(String.format(PlayerConfig.SETTING_ENABLE, p.getPlayer().getUniqueId().toString()), true);
             }
             Compassance.instance.compassTaskManager.refresh(p);
             ActionBarUtil.sendActionBar(p, "");
@@ -181,9 +181,14 @@ public class TestCommand implements CommandExecutor
 
         if (args.length == 1 && args[0].equalsIgnoreCase("menu"))
         {
-            //sender.sendMessage(instance.configManager.getThemeConfig().getDefaults().getString("version") + " default vs have " + instance.configManager.getThemeConfig().getString("version"));
-            //sender.sendMessage(Bukkit.getVersion()+" getVersion and getBukkitVersion "+Bukkit.getBukkitVersion());
             Compassance.instance.mainMenu.show((Player) sender);
+            return true;
+        }
+
+        if (args.length == 1 && args[0].equalsIgnoreCase("version"))
+        {
+            sender.sendMessage("Theme: " + Compassance.instance.themeConfig.config.getDefaults().getString("version") + " default vs have " + Compassance.instance.themeConfig.config.getString("version"));
+            sender.sendMessage("Player: " + Compassance.instance.playerConfig.config.getDefaults().getString("version") + " default vs have " + Compassance.instance.playerConfig.config.getString("version"));
             return true;
         }
 

@@ -32,7 +32,7 @@ public class ThemeManager
 
         int errors = 0;
 
-        Set<String> allThemes = Compassance.instance.configManager.getThemeConfig().getConfigurationSection("themes").getKeys(false);
+        Set<String> allThemes = Compassance.instance.themeConfig.config.getConfigurationSection("themes").getKeys(false);
         if (!allThemes.contains(defaultID))
         {
             Misc.logHandle(Level.SEVERE, String.format("Default theme '%s' is not found. Therefore other themes will not be loaded.", defaultID));

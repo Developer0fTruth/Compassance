@@ -1,7 +1,7 @@
 package com.hexragon.compassance.gui;
 
 import com.hexragon.compassance.Compassance;
-import com.hexragon.compassance.managers.settings.paths.PlayerSettings;
+import com.hexragon.compassance.managers.settings.PlayerConfig;
 import com.hexragon.compassance.misc.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -26,9 +26,9 @@ public class SettingsMenu implements Listener
 
     public String[] getBL(Player p)
     {
-        bl[0] = String.format(PlayerSettings.SETTING_ENABLE, p.getPlayer().getUniqueId().toString());
-        bl[1] = String.format(PlayerSettings.SETTING_ALWAYSON, p.getPlayer().getUniqueId().toString());
-        bl[2] = String.format(PlayerSettings.SETTING_CURSOR, p.getPlayer().getUniqueId().toString());
+        bl[0] = String.format(PlayerConfig.SETTING_ENABLE, p.getPlayer().getUniqueId().toString());
+        bl[1] = String.format(PlayerConfig.SETTING_ALWAYSON, p.getPlayer().getUniqueId().toString());
+        bl[2] = String.format(PlayerConfig.SETTING_CURSOR, p.getPlayer().getUniqueId().toString());
         return bl;
     }
 
@@ -60,7 +60,7 @@ public class SettingsMenu implements Listener
         for (String str : bl)
         {
 
-            boolean b = Compassance.instance.configManager.getPlayerSettings().getBoolean(str);
+            boolean b = Compassance.instance.playerConfig.config.getBoolean(str);
 
             inv.setItem(19 + i,
                     new ItemBuilder()
@@ -105,12 +105,12 @@ public class SettingsMenu implements Listener
                     int i = 0;
                     for (String str : bl)
                     {
-                        boolean b = Compassance.instance.configManager.getPlayerSettings().getBoolean(str);
+                        boolean b = Compassance.instance.playerConfig.config.getBoolean(str);
 
                         if (e.getSlot() == 19 + i)
                         {
                             p.playSound(p.getLocation(), Sound.CLICK, 0.5f, 1);
-                            Compassance.instance.configManager.getPlayerSettings().set(str, !b);
+                            Compassance.instance.playerConfig.config.set(str, !b);
                             Compassance.instance.compassTaskManager.refresh(p);
                             show(p);
                             return;

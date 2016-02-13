@@ -16,7 +16,7 @@ public class Misc
     public static void logHandle(Level l, String msg)
     {
         String note = "|+| ";
-        if (l == Level.SEVERE)
+        if (l == Level.SEVERE || l == Level.WARNING)
         {
             note = "!#! ";
         }

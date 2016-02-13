@@ -1,7 +1,7 @@
 package com.hexragon.compassance.commands;
 
 import com.hexragon.compassance.Compassance;
-import com.hexragon.compassance.managers.settings.paths.PlayerSettings;
+import com.hexragon.compassance.managers.settings.PlayerConfig;
 import com.hexragon.compassance.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -37,7 +37,7 @@ public class CompassCommand implements CommandExecutor
         {
             Player p = (Player) sender;
 
-            boolean b = Compassance.instance.configManager.getPlayerSettings().getBoolean(String.format(PlayerSettings.SETTING_TRACKING, p.getPlayer().getUniqueId().toString()));
+            boolean b = Compassance.instance.playerConfig.config.getBoolean(String.format(PlayerConfig.SETTING_TRACKING, p.getPlayer().getUniqueId().toString()));
             if (!b)
             {
                 p.sendMessage(Misc.formatColor("&a&lCOMPASS &8» &cYou must enable tracking in the Compassance menu."));

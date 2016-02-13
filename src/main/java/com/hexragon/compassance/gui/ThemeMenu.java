@@ -1,7 +1,7 @@
 package com.hexragon.compassance.gui;
 
 import com.hexragon.compassance.Compassance;
-import com.hexragon.compassance.managers.settings.paths.PlayerSettings;
+import com.hexragon.compassance.managers.settings.PlayerConfig;
 import com.hexragon.compassance.managers.themes.Theme;
 import com.hexragon.compassance.misc.ItemBuilder;
 import com.hexragon.compassance.misc.Misc;
@@ -33,9 +33,9 @@ public class ThemeMenu implements Listener
         int itemSlot = 10;
         int wrapCounter = 1;
 
-        String selectedTheme = Compassance.instance.configManager.getPlayerSettings().getString(String.format(PlayerSettings.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId()));
+        String selectedTheme = Compassance.instance.playerConfig.config.getString(String.format(PlayerConfig.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId()));
 
-        // Putting default id first.
+        // Putting default-id first.
         Set<String> idList = Compassance.instance.themeManager.getThemes().keySet();
         TreeSet<String> sortedIdList = new TreeSet<>();
         sortedIdList.add(Compassance.instance.themeManager.getDefaultID());
@@ -108,7 +108,7 @@ public class ThemeMenu implements Listener
 
                     String clickedId = sortedIdList.toArray()[i - 1].toString();
 
-                    Compassance.instance.configManager.getPlayerSettings().set(String.format(PlayerSettings.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId()), clickedId);
+                    Compassance.instance.playerConfig.config.set(String.format(PlayerConfig.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId()), clickedId);
                     Compassance.instance.compassTaskManager.refresh(p);
 
                     e.getWhoClicked().sendMessage(Misc.formatColor(String.format("&a&lCOMPASS &8» &7Switching your selected theme to &r%s&7.", Compassance.instance.themeManager.getTheme(clickedId).getName())));

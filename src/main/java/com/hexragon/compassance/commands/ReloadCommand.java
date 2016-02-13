@@ -15,8 +15,8 @@ public class ReloadCommand implements CommandExecutor
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
     {
-        Compassance.instance.configManager.loadThemeConfig();
-        Compassance.instance.configManager.loadPlayerConfig();
+        Compassance.instance.themeConfig.load();
+        Compassance.instance.playerConfig.load();
         Compassance.instance.themeManager.loadThemes();
 
         Compassance.instance.compassTaskManager.refreshAll();

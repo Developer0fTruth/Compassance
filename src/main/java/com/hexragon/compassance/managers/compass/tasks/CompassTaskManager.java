@@ -1,7 +1,7 @@
 package com.hexragon.compassance.managers.compass.tasks;
 
 import com.hexragon.compassance.Compassance;
-import com.hexragon.compassance.managers.settings.paths.PlayerSettings;
+import com.hexragon.compassance.managers.settings.PlayerConfig;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -26,9 +26,9 @@ public class CompassTaskManager
         {
             CompassUpdateTask updateTask = new CompassUpdateTask(p);
             tasks.put(p, updateTask);
-            PlayerSettings.updateProfile(p);
+            PlayerConfig.updateProfile(p);
 
-            if (Compassance.instance.configManager.getPlayerSettings().getBoolean(String.format(PlayerSettings.SETTING_ENABLE, p.getUniqueId().toString())))
+            if (Compassance.instance.playerConfig.config.getBoolean(String.format(PlayerConfig.SETTING_ENABLE, p.getUniqueId().toString())))
             {
                 startTask(p);
             }

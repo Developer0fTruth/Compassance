@@ -1,7 +1,7 @@
 package com.hexragon.compassance.gui;
 
 import com.hexragon.compassance.Compassance;
-import com.hexragon.compassance.managers.settings.paths.PlayerSettings;
+import com.hexragon.compassance.managers.settings.PlayerConfig;
 import com.hexragon.compassance.misc.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -30,7 +30,7 @@ public class MainMenu implements Listener
                         .name("&a&lTheming")
                         .lore("", "&7Select and customize your compass to", "&7your favorite style.").toItemStack());
 
-        boolean b = Compassance.instance.configManager.getPlayerSettings().getBoolean(String.format(PlayerSettings.SETTING_TRACKING, p.getPlayer().getUniqueId().toString()));
+        boolean b = Compassance.instance.playerConfig.config.getBoolean(String.format(PlayerConfig.SETTING_TRACKING, p.getPlayer().getUniqueId().toString()));
         inv.setItem(12,
                 new ItemBuilder()
                         .material(b ? Material.EYE_OF_ENDER : Material.ENDER_PEARL)
@@ -79,9 +79,9 @@ public class MainMenu implements Listener
                     p.playSound(p.getLocation(), Sound.CLICK, 0.5f, 1);
                     break;
                 case 12:
-                    String str = String.format(PlayerSettings.SETTING_TRACKING, p.getPlayer().getUniqueId().toString());
-                    boolean b = Compassance.instance.configManager.getPlayerSettings().getBoolean(str);
-                    Compassance.instance.configManager.getPlayerSettings().set(str, !b);
+                    String str = String.format(PlayerConfig.SETTING_TRACKING, p.getPlayer().getUniqueId().toString());
+                    boolean b = Compassance.instance.playerConfig.config.getBoolean(str);
+                    Compassance.instance.playerConfig.config.set(str, !b);
                     p.playSound(p.getLocation(), Sound.CLICK, 0.5f, 1);
                     show(p);
 

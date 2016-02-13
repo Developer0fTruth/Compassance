@@ -1,6 +1,8 @@
 package com.hexragon.compassance;
 
 import com.hexragon.compassance.commands.CompassCommand;
+import com.hexragon.compassance.commands.ReloadCommand;
+import com.hexragon.compassance.commands.TestCommand;
 import com.hexragon.compassance.gui.MainMenu;
 import com.hexragon.compassance.gui.SettingsMenu;
 import com.hexragon.compassance.gui.ThemeMenu;
@@ -8,7 +10,8 @@ import com.hexragon.compassance.listeners.PlayerJoinListener;
 import com.hexragon.compassance.listeners.PlayerQuitListener;
 import com.hexragon.compassance.managers.compass.tasks.CompassTaskManager;
 import com.hexragon.compassance.managers.compass.tasks.tracking.TrackingManager;
-import com.hexragon.compassance.managers.settings.ConfigFileManager;
+import com.hexragon.compassance.managers.settings.PlayerConfig;
+import com.hexragon.compassance.managers.settings.ThemeConfig;
 import com.hexragon.compassance.managers.themes.ThemeManager;
 import com.hexragon.compassance.misc.Misc;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -21,7 +24,9 @@ public class Compassance extends JavaPlugin
 {
     public static Compassance instance;
 
-    public ConfigFileManager configManager;
+    public ThemeConfig themeConfig;
+    public PlayerConfig playerConfig;
+
     public CompassTaskManager compassTaskManager;
     public ThemeManager themeManager;
     public TrackingManager trackingManager;
@@ -41,9 +46,11 @@ public class Compassance extends JavaPlugin
             Misc.logHandle(Level.WARNING, "Unable to submit stats to Metrics.");
         }
 
-        configManager = new ConfigFileManager();
-        configManager.loadThemeConfig();
-        configManager.loadPlayerConfig();
+        themeConfig = new ThemeConfig();
+        themeConfig.load();
+
+        playerConfig = new PlayerConfig();
+        playerConfig.load();
 
         themeManager = new ThemeManager();
         compassTaskManager = new CompassTaskManager();
@@ -57,18 +64,17 @@ public class Compassance extends JavaPlugin
         compassTaskManager.newTaskAll();
 
         new CompassCommand();
-        //new ReloadCommand();
-        //new TestCommand();
+        new ReloadCommand();
+        new TestCommand();
 
         new PlayerJoinListener();
         new PlayerQuitListener();
-
 
     }
 
     public void onDisable()
     {
-        configManager.savePlayerSettings();
+        playerConfig.save();
         compassTaskManager.endTaskAll();
         instance = null;
     }

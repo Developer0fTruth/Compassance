@@ -1,7 +1,7 @@
 package com.hexragon.compassance.managers.themes;
 
 import com.hexragon.compassance.Compassance;
-import com.hexragon.compassance.managers.settings.paths.ThemeSettings;
+import com.hexragon.compassance.managers.settings.ThemeConfig;
 
 import java.util.HashMap;
 
@@ -46,11 +46,11 @@ public class Theme
     {
         try
         {
-            this.meta_name = Compassance.instance.configManager.getThemeConfig().getString(String.format(ThemeSettings.THEME_META_NAME, id));
-            this.meta_desc = Compassance.instance.configManager.getThemeConfig().getString(String.format(ThemeSettings.THEME_META_DESC, id));
-            this.meta_perm = Compassance.instance.configManager.getThemeConfig().getString(String.format(ThemeSettings.THEME_META_PERM, id));
+            this.meta_name = Compassance.instance.themeConfig.config.getString(String.format(ThemeConfig.THEME_META_NAME, id));
+            this.meta_desc = Compassance.instance.themeConfig.config.getString(String.format(ThemeConfig.THEME_META_DESC, id));
+            this.meta_perm = Compassance.instance.themeConfig.config.getString(String.format(ThemeConfig.THEME_META_PERM, id));
 
-            this.data_main_PatternMap = Compassance.instance.configManager.getThemeConfig().getString(String.format(ThemeSettings.THEME_DATA_MAIN_PATTERN_MAP, id));
+            this.data_main_PatternMap = Compassance.instance.themeConfig.config.getString(String.format(ThemeConfig.THEME_DATA_MAIN_PATTERN_MAP, id));
             if (data_main_PatternMap != null)
             {
                 String[] mainPatternReplacers = data_main_PatternMap.split(";");
@@ -61,14 +61,14 @@ public class Theme
                      */
                     if (s.startsWith("<s/"))
                     {
-                        String subPatternMap = Compassance.instance.configManager.getThemeConfig().getString(String.format(ThemeSettings.THEME_DATA_SUBPATTERN_MAP, id, s));
+                        String subPatternMap = Compassance.instance.themeConfig.config.getString(String.format(ThemeConfig.THEME_DATA_SUBPATTERN_MAP, id, s));
 
                         String[] subPatternReplacers = subPatternMap.split(";");
                         HashMap<String, String> map = new HashMap<>();
 
                         for (String s2 : subPatternReplacers)
                         {
-                            map.put(s2, Compassance.instance.configManager.getThemeConfig().getString(String.format(ThemeSettings.THEME_DATA_SUBPATTERN_MAP_REPLACER, id, s, s2)));
+                            map.put(s2, Compassance.instance.themeConfig.config.getString(String.format(ThemeConfig.THEME_DATA_SUBPATTERN_MAP_REPLACER, id, s, s2)));
                         }
 
                         data_subPatternMap.put(s, subPatternMap);
@@ -80,7 +80,7 @@ public class Theme
                      */
                     else
                     {
-                        String d_replacer = Compassance.instance.configManager.getThemeConfig().getString(String.format(ThemeSettings.THEME_DATA_DIRECT_REPLACER, id, s));
+                        String d_replacer = Compassance.instance.themeConfig.config.getString(String.format(ThemeConfig.THEME_DATA_DIRECT_REPLACER, id, s));
                         data_DirectReplacers.put(s, d_replacer);
                     }
                 }
@@ -93,19 +93,19 @@ public class Theme
         /*
          * Search in final node.
          */
-            final_PatternMap = Compassance.instance.configManager.getThemeConfig().getString(String.format(ThemeSettings.THEME_FINAL_MAIN_PATTERN_MAP, id));
+            final_PatternMap = Compassance.instance.themeConfig.config.getString(String.format(ThemeConfig.THEME_FINAL_MAIN_PATTERN_MAP, id));
             String[] finalPatternReplacers = final_PatternMap.split(";");
 
             for (String s : finalPatternReplacers)
             {
-                String d_replacer = Compassance.instance.configManager.getThemeConfig().getString(String.format(ThemeSettings.THEME_FINAL_DIRECT_REPLACER, id, s));
+                String d_replacer = Compassance.instance.themeConfig.config.getString(String.format(ThemeConfig.THEME_FINAL_DIRECT_REPLACER, id, s));
                 final_DirectReplacers.put(s, d_replacer);
             }
 
             final_DirectReplacers.remove("<str>");
 
-            func_cursor = Compassance.instance.configManager.getThemeConfig().getString(String.format(ThemeSettings.THEME_DATA_FUNC_CURSOR, id));
-            func_target = Compassance.instance.configManager.getThemeConfig().getString(String.format(ThemeSettings.THEME_DATA_FUNC_TARGET, id));
+            func_cursor = Compassance.instance.themeConfig.config.getString(String.format(ThemeConfig.THEME_DATA_FUNC_CURSOR, id));
+            func_target = Compassance.instance.themeConfig.config.getString(String.format(ThemeConfig.THEME_DATA_FUNC_TARGET, id));
         }
         catch (Exception ignored) {}
     }
