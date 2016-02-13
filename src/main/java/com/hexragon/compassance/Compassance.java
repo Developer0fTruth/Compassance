@@ -1,8 +1,6 @@
 package com.hexragon.compassance;
 
 import com.hexragon.compassance.commands.CompassCommand;
-import com.hexragon.compassance.commands.ReloadCommand;
-import com.hexragon.compassance.commands.TestCommand;
 import com.hexragon.compassance.gui.MainMenu;
 import com.hexragon.compassance.gui.SettingsMenu;
 import com.hexragon.compassance.gui.ThemeMenu;
@@ -64,8 +62,8 @@ public class Compassance extends JavaPlugin
         compassTaskManager.newTaskAll();
 
         new CompassCommand();
-        new ReloadCommand();
-        new TestCommand();
+        //new ReloadCommand();
+        //new TestCommand();
 
         new PlayerJoinListener();
         new PlayerQuitListener();
