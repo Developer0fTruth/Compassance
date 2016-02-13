@@ -3,6 +3,7 @@ package com.hexragon.compassance.managers.compass.tasks;
 import com.hexragon.compassance.Compassance;
 import com.hexragon.compassance.managers.compass.generator.CompassStringGenerator;
 import com.hexragon.compassance.managers.compass.tasks.tracking.TrackedTarget;
+import com.hexragon.compassance.managers.settings.MainConfig;
 import com.hexragon.compassance.managers.settings.PlayerConfig;
 import com.hexragon.compassance.managers.themes.Theme;
 import com.hexragon.compassance.misc.ActionBarUtil;
@@ -77,14 +78,15 @@ public class CompassUpdateTask
                         return;
                     }
 
-                    if (!Misc.permHandle(p, th.getPerm(), true))
+                    if ((!Misc.permHandle(p, th.getPerm(), true)) &&
+                            Compassance.instance.mainConfig.config.getBoolean(MainConfig.USE_PERMISSIONS))
                     {
                         if (th.getId().equalsIgnoreCase(Compassance.instance.themeManager.getDefaultID()))
                         {
                             p.sendMessage(Misc.formatColor("&a&lCOMPASS &8» &cYou don't have permission for default theme. Toggling off compass."));
                             Compassance.instance.playerConfig.config.set(String.format(PlayerConfig.SETTING_ENABLE, p.getPlayer().getUniqueId().toString()), false);
                             Compassance.instance.compassTaskManager.refresh(p);
-                            ActionBarUtil.sendActionBar(p, "");
+                            ActionBarUtil.send(p, "");
                         }
                         else
                         {
@@ -103,9 +105,9 @@ public class CompassUpdateTask
                     }
                     else
                     {
-                        gen = new CompassStringGenerator(th, p.getLocation().getYaw(), cursor);
+                        gen = new CompassStringGenerator(null, null, th, p.getLocation().getYaw(), cursor);
                     }
-                    if (gen.getString() != null) ActionBarUtil.sendActionBar(p, gen.getString());
+                    if (gen.getString() != null) ActionBarUtil.send(p, gen.getString());
 
                     yaw = p.getLocation().getYaw();
 

@@ -1,7 +1,7 @@
 package com.hexragon.compassance.managers.compass.generator;
 
-import com.hexragon.compassance.misc.Misc;
 import com.hexragon.compassance.managers.themes.Theme;
+import com.hexragon.compassance.misc.Misc;
 import org.bukkit.Location;
 
 import java.util.HashMap;
@@ -14,18 +14,6 @@ public class CompassStringGenerator
 
     private Location l1;
     private Location l2;
-
-    /**
-     * @param t Theme string, referenced from ThemeManager.
-     * @param y Yaw rotational value.
-     * @param c Use a cursor.
-     */
-    public CompassStringGenerator(Theme t, double y, boolean c)
-    {
-        this.theme = t;
-        this.yaw = y;
-        this.cursor = c;
-    }
 
     /**
      * @param l1 Original location.
@@ -97,7 +85,6 @@ public class CompassStringGenerator
                             {
                                 double angle = (Math.atan2(l1.getX() - l2.getX(), l1.getZ() - l2.getZ()));
                                 angle = (-(angle / Math.PI) * 360) / 2 + 180;
-                                //angle += step*2;
 
                                 int num1 = num + 1;
                                 if (num1 >= length) num1 -= length;
@@ -147,11 +134,7 @@ public class CompassStringGenerator
             {
                 for (String s : directReplacers.keySet())
                 {
-                    try
-                    {
                     processsedString = processsedString.replaceAll(s, directReplacers.get(s));
-                    }
-                    catch (Exception ignore) {}
                 }
             }
 
@@ -162,11 +145,7 @@ public class CompassStringGenerator
                 {
                     for (String s2 : subPatternReplacers.get(s).keySet())
                     {
-                        try
-                        {
                         processsedString = processsedString.replaceAll(s2, subPatternReplacers.get(s).get(s2));
-                        }
-                        catch (Exception ignore) {}
                     }
                 }
             }
@@ -180,16 +159,11 @@ public class CompassStringGenerator
             if (finalPatternMap != null && finalPatternMap.size() != 0)
             {
                 finalString = finalString.replaceAll(";", "");
-
                 finalString = finalString.replaceAll("<str>", processsedString);
 
                 for (String s : theme.getFinal_DirectReplacers().keySet())
                 {
-                    try
-                    {
-                        finalString = finalString.replaceAll(s, theme.getFinal_DirectReplacers().get(s));
-                    }
-                    catch (Exception ignore) {}
+                    finalString = finalString.replaceAll(s, theme.getFinal_DirectReplacers().get(s));
                 }
             }
 

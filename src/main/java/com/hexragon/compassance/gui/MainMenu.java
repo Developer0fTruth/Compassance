@@ -1,8 +1,10 @@
 package com.hexragon.compassance.gui;
 
 import com.hexragon.compassance.Compassance;
+import com.hexragon.compassance.managers.settings.MainConfig;
 import com.hexragon.compassance.managers.settings.PlayerConfig;
 import com.hexragon.compassance.misc.ItemBuilder;
+import com.hexragon.compassance.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -14,7 +16,7 @@ import org.bukkit.inventory.Inventory;
 
 public class MainMenu implements Listener
 {
-    public final String name = "Compassance";
+    public final String name = Misc.formatColor("&lCompassance");
 
     public MainMenu()
     {
@@ -28,25 +30,38 @@ public class MainMenu implements Listener
         inv.setItem(10,
                 new ItemBuilder().material(Material.PAINTING).data((byte) 0).amt(1)
                         .name("&a&lTheming")
-                        .lore("", "&7Select and customize your compass to", "&7your favorite style.").toItemStack());
-
-        boolean b = Compassance.instance.playerConfig.config.getBoolean(String.format(PlayerConfig.SETTING_TRACKING, p.getPlayer().getUniqueId().toString()));
-        inv.setItem(12,
-                new ItemBuilder()
-                        .material(b ? Material.EYE_OF_ENDER : Material.ENDER_PEARL)
-                        .data((byte) 0)
-                        .amt(1)
-                        .name("&b&lTracking")
                         .lore(
                                 "",
-                                b ? "&7Tracking a player:"                                                          : null,
-                                b ? "    &f/compass trk pl &b-player"                                               : "&fIf you enable tracking of locations",
-                                b ? ""                                                                              : "&fand other players, &cother players",
-                                b ? "&7Tracking a location:"                                                        : "&ccan attempt to track you.",
-                                b ? "    &f/compass trk loc &b-x -y -z"                                             : null,
-                                b ? "%nl%&fYou are susceptible to being%nl%&ftracked for other people.%nl% "        : "",
-                                b ? "&7Click to disable."                                                           : "&7Click to enable."
+                                "&7Select and customize your compass to", "&7your favorite style.",
+                                "",
+                                "&7Alternatively, you can change your",
+                                "&7theme using &f/compass theme -id"
                         ).toItemStack());
+
+        boolean b = Compassance.instance.playerConfig.config.getBoolean(String.format(PlayerConfig.SETTING_TRACKING, p.getPlayer().getUniqueId().toString()));
+
+        ItemBuilder trkItem = new ItemBuilder()
+                .material(b ? Material.EYE_OF_ENDER : Material.ENDER_PEARL)
+                .data((byte) 0)
+                .amt(1)
+                .name("&b&lTracking")
+                .lore(
+                        "",
+                        b ? "&7Tracking a player:" : null,
+                        b ? "    &f/compass trk pl &b-player" : "&fIf you enable tracking of locations",
+                        b ? "" : "&fand other players, &cother players",
+                        b ? "&7Tracking a location:" : "&ccan attempt to track you.",
+                        b ? "    &f/compass trk loc &b-x -y -z" : null,
+                        b ? "%nl%&fYou are susceptible to being%nl%&ftracked for other people.%nl% " : "",
+                        b ? "&7Click to disable." : "&7Click to enable."
+                );
+
+        if (!Compassance.instance.mainConfig.config.getBoolean(MainConfig.USE_TRACKING))
+        {
+            trkItem.lore("", "&cTracking is globally disabled.", "");
+        }
+
+        inv.setItem(12, trkItem.toItemStack());
 
         inv.setItem(14,
                 new ItemBuilder().material(Material.NAME_TAG).data((byte) 0).amt(1)
@@ -83,13 +98,19 @@ public class MainMenu implements Listener
                     boolean b = Compassance.instance.playerConfig.config.getBoolean(str);
                     Compassance.instance.playerConfig.config.set(str, !b);
                     p.playSound(p.getLocation(), Sound.CLICK, 0.5f, 1);
-                    show(p);
 
+                    if (!Compassance.instance.mainConfig.config.getBoolean(MainConfig.USE_TRACKING))
+                    {
+                        Compassance.instance.playerConfig.config.set(str, false);
+                        p.sendMessage(Misc.formatColor("&a&lCOMPASS &8» &cTracking is globally disabled."));
+                    }
                     if (b)
                     {
                         Compassance.instance.trackingManager.removeTrackingFrom(p);
                         Compassance.instance.trackingManager.removeTrackingOf(p);
                     }
+
+                    show(p);
 
                     break;
                 case 14:

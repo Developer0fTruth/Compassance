@@ -1,7 +1,6 @@
 package com.hexragon.compassance.commands;
 
 import com.hexragon.compassance.Compassance;
-import com.hexragon.compassance.managers.compass.generator.CompassStringGenerator;
 import com.hexragon.compassance.managers.settings.PlayerConfig;
 import com.hexragon.compassance.managers.themes.Theme;
 import com.hexragon.compassance.misc.ActionBarUtil;
@@ -74,16 +73,6 @@ public class TestCommand implements CommandExecutor
             for (String s : theme.getFinal_DirectReplacers().keySet())
             {
                 sender.sendMessage(Misc.formatColor("  &8" + s + " : &r" + theme.getFinal_DirectReplacers().get(s)));
-            }
-
-//            sender.sendMessage("");
-//            sender.sendMessage(theme.getStringMapFull());
-//            sender.sendMessage(String.valueOf(theme.getStringMapArray().length));
-
-            if (sender instanceof Player)
-            {
-                CompassStringGenerator gen = new CompassStringGenerator(theme, ((Player) sender).getLocation().getYaw(), false);
-                ActionBarUtil.sendActionBar((Player) sender, gen.getString());
             }
 
             return true;
@@ -175,7 +164,7 @@ public class TestCommand implements CommandExecutor
                 Compassance.instance.playerConfig.config.set(String.format(PlayerConfig.SETTING_ENABLE, p.getPlayer().getUniqueId().toString()), true);
             }
             Compassance.instance.compassTaskManager.refresh(p);
-            ActionBarUtil.sendActionBar(p, "");
+            ActionBarUtil.send(p, "");
             return true;
         }
 

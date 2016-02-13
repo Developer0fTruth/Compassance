@@ -128,3 +128,36 @@ themes:
       pattern-map: "<<>;<str>;<>>"
       <<>: "&f&l["
       <>>: "&f&l]"
+  midnight-color:
+    meta:
+      name: "&lRespendent"
+      desc: "&7What does it mean!?"
+    data:
+      main-pattern-map: "<S>;<s/sep>;<W>;<s/sep>;<N>;<s/sep>;<E>;<s/sep>"
+      function:
+        cursor: "&f[;<str>;&f]"
+        target: "&f&l\u2588"
+      direct:
+        <S>: "&f&l&n S "
+        <W>: "&f&l&n W "
+        <N>: "&f&l&n N "
+        <E>: "&f&l&n E "
+      sub-pattern:
+        <s/sep>:
+          pattern-map: "<1>;<2>;<3>;<4>;<5>;<6>;<7>;<8>;<9>;<a>;<b>;<c>"
+          <1>: "&4\u2588"
+          <2>: "&c\u2593"
+          <3>: "&e\u2593"
+          <4>: "&6\u2592"
+          <5>: "&2\u2592"
+          <6>: "&a\u2591"
+          <7>: "&b\u2591"
+          <8>: "&3\u2592"
+          <9>: "&9\u2592"
+          <a>: "&1\u2593"
+          <b>: "&5\u2593"
+          <c>: "&d\u2588"
+    final:
+      pattern-map: "<<>;<str>;<>>"
+      <<>: "&f&l["
+      <>>: "&f&l]"

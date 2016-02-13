@@ -32,6 +32,27 @@ public class CompassCommand implements CommandExecutor
             return true;
         }
 
+        if (args[0].equalsIgnoreCase("theme"))
+        {
+            Player p = (Player) sender;
+
+            if (args.length < 2)
+            {
+                p.sendMessage(Misc.formatColor("&a&lCOMPASS &8» &cInsufficient amount of arguments."));
+                p.sendMessage(Misc.formatColor("&a&lUSAGE &8» &7/compass theme &ftheme-id"));
+                return true;
+            }
+
+            if (Compassance.instance.themeManager.getTheme(args[1]) == null)
+            {
+                p.sendMessage(Misc.formatColor("&a&lCOMPASS &8» &cTheme ID doesn't exist."));
+                return true;
+            }
+
+            p.sendMessage(Misc.formatColor(String.format("&a&lCOMPASS &8» &7Switching your selected theme to &r%s&7.", Compassance.instance.themeManager.getTheme(args[1]).getName())));
+            Compassance.instance.playerConfig.config.set(String.format(PlayerConfig.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId().toString()), args[1]);
+            return true;
+        }
 
         if (args[0].equalsIgnoreCase("track") || args[0].equalsIgnoreCase("trk"))
         {
@@ -60,7 +81,7 @@ public class CompassCommand implements CommandExecutor
                     return true;
                 }
 
-                String targetName = args[1];
+                String targetName = args[2];
                 for (Player pl : Bukkit.getOnlinePlayers())
                 {
                     if (pl.getName().equalsIgnoreCase(targetName))

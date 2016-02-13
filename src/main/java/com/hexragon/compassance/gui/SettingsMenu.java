@@ -3,6 +3,7 @@ package com.hexragon.compassance.gui;
 import com.hexragon.compassance.Compassance;
 import com.hexragon.compassance.managers.settings.PlayerConfig;
 import com.hexragon.compassance.misc.ItemBuilder;
+import com.hexragon.compassance.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -14,7 +15,7 @@ import org.bukkit.inventory.Inventory;
 
 public class SettingsMenu implements Listener
 {
-    public final String name = "Settings";
+    public final String name = Misc.formatColor("&lSettings");
     String[] bl;
 
     public SettingsMenu()

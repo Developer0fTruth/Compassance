@@ -1,0 +1,16 @@
+# === MAIN CONFIG ==========================================
+#   Self explanatory descriptions below.
+# ==========================================================
+
+# ==========================================================
+#   If this is enabled, all themes will not require
+#   permission, but you can set certain themes to require
+#   them by adding the 'permission' node in the 'meta'
+#   section.
+# ==========================================================
+use-permissions: true
+
+# ==========================================================
+#   If this is enabled, players can enable tracking.
+# ==========================================================
+use-tracking: true

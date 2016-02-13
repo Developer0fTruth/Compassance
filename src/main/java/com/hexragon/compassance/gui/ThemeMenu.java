@@ -19,7 +19,7 @@ import java.util.TreeSet;
 
 public class ThemeMenu implements Listener
 {
-    public final String name = "Themes";
+    public final String name = Misc.formatColor("&lThemes");
 
     public ThemeMenu()
     {
@@ -28,7 +28,7 @@ public class ThemeMenu implements Listener
 
     public void show(Player p)
     {
-        Inventory inv = Bukkit.createInventory(p, 6 * 9, name);
+        Inventory inv = Bukkit.createInventory(p, 6 * 9, Misc.formatColor(name));
 
         int itemSlot = 10;
         int wrapCounter = 1;
@@ -53,7 +53,7 @@ public class ThemeMenu implements Listener
             ItemBuilder itmBuild1 =
                     new ItemBuilder().material(Material.STAINED_GLASS_PANE).data(data).amt(1)
                             .name(Misc.formatColor("&r" + t.getName()))
-                            .lore("", Misc.formatColor(t.getDesc()));
+                            .lore("&7ID: &f" + t.getId(), "", Misc.formatColor(t.getDesc()));
             inv.setItem(itemSlot, itmBuild1.toItemStack());
 
             wrapCounter++;

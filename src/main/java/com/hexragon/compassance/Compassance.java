@@ -1,6 +1,8 @@
 package com.hexragon.compassance;
 
 import com.hexragon.compassance.commands.CompassCommand;
+import com.hexragon.compassance.commands.ReloadCommand;
+import com.hexragon.compassance.commands.TestCommand;
 import com.hexragon.compassance.gui.MainMenu;
 import com.hexragon.compassance.gui.SettingsMenu;
 import com.hexragon.compassance.gui.ThemeMenu;
@@ -8,6 +10,7 @@ import com.hexragon.compassance.listeners.PlayerJoinListener;
 import com.hexragon.compassance.listeners.PlayerQuitListener;
 import com.hexragon.compassance.managers.compass.tasks.CompassTaskManager;
 import com.hexragon.compassance.managers.compass.tasks.tracking.TrackingManager;
+import com.hexragon.compassance.managers.settings.MainConfig;
 import com.hexragon.compassance.managers.settings.PlayerConfig;
 import com.hexragon.compassance.managers.settings.ThemeConfig;
 import com.hexragon.compassance.managers.themes.ThemeManager;
@@ -24,6 +27,7 @@ public class Compassance extends JavaPlugin
 
     public ThemeConfig themeConfig;
     public PlayerConfig playerConfig;
+    public MainConfig mainConfig;
 
     public CompassTaskManager compassTaskManager;
     public ThemeManager themeManager;
@@ -40,9 +44,14 @@ public class Compassance extends JavaPlugin
         try {
             MetricsLite metrics = new MetricsLite(this);
             metrics.start();
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             Misc.logHandle(Level.WARNING, "Unable to submit stats to Metrics.");
         }
+
+        mainConfig = new MainConfig();
+        mainConfig.load();
 
         themeConfig = new ThemeConfig();
         themeConfig.load();
@@ -62,8 +71,8 @@ public class Compassance extends JavaPlugin
         compassTaskManager.newTaskAll();
 
         new CompassCommand();
-        //new ReloadCommand();
-        //new TestCommand();
+        new ReloadCommand();
+        new TestCommand();
 
         new PlayerJoinListener();
         new PlayerQuitListener();

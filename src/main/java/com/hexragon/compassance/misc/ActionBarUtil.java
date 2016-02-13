@@ -8,39 +8,68 @@ import java.lang.reflect.Method;
 
 public class ActionBarUtil
 {
-    public static String bukkitPackage = Bukkit.getServer().getClass().getPackage().getName();
-    public static String nmsver = bukkitPackage.substring(bukkitPackage.lastIndexOf(".") + 1);
+    private static String nmsver;
 
-    public static void sendActionBar(Player p, String str)
+    private static Class<?> craftPlayer;
+    private static Class<?> chatSer;
+    private static Class<?> chatBase;
+    private static Class<?> pktPOChat;
+    private static Class<?> packet;
+    private static Method getHandle;
+
+    static //Caching the classes looked up.
     {
+        String bukkitPackage = Bukkit.getServer().getClass().getPackage().getName();
+        nmsver = bukkitPackage.substring(bukkitPackage.lastIndexOf(".") + 1);
+
         try
         {
-            Class<?> c1 = Class.forName("org.bukkit.craftbukkit." + nmsver + ".entity.CraftPlayer");
-            Object p1 = c1.cast(p);
-            Object ppoc;
-            Class<?> c4 = Class.forName("net.minecraft.server." + nmsver + ".PacketPlayOutChat");
-            Class<?> c5 = Class.forName("net.minecraft.server." + nmsver + ".Packet");
+            craftPlayer = Class.forName("org.bukkit.craftbukkit." + nmsver + ".entity.CraftPlayer");
+            pktPOChat = Class.forName("net.minecraft.server." + nmsver + ".PacketPlayOutChat");
+
+            packet = Class.forName("net.minecraft.server." + nmsver + ".Packet");
             if (nmsver.equalsIgnoreCase("v1_8_R1") || !nmsver.startsWith("v1_8_"))
             {
-                Class<?> c2 = Class.forName("net.minecraft.server." + nmsver + ".ChatSerializer");
-                Class<?> c3 = Class.forName("net.minecraft.server." + nmsver + ".IChatBaseComponent");
-                Method m3 = c2.getDeclaredMethod("a", String.class);
-                Object cbc = c3.cast(m3.invoke(c2, "{\"text\": \"" + str + "\"}"));
-                ppoc = c4.getConstructor(new Class<?>[]{c3, byte.class}).newInstance(cbc, (byte) 2);
+                chatSer = Class.forName("net.minecraft.server." + nmsver + ".ChatSerializer");
+                chatBase = Class.forName("net.minecraft.server." + nmsver + ".IChatBaseComponent");
             }
             else
             {
-                Class<?> c2 = Class.forName("net.minecraft.server." + nmsver + ".ChatComponentText");
-                Class<?> c3 = Class.forName("net.minecraft.server." + nmsver + ".IChatBaseComponent");
-                Object o = c2.getConstructor(new Class<?>[]{String.class}).newInstance(str);
-                ppoc = c4.getConstructor(new Class<?>[]{c3, byte.class}).newInstance(o, (byte) 2);
+                chatSer = Class.forName("net.minecraft.server." + nmsver + ".ChatComponentText");
+                chatBase = Class.forName("net.minecraft.server." + nmsver + ".IChatBaseComponent");
             }
-            Method m1 = c1.getDeclaredMethod("getHandle");
-            Object h = m1.invoke(p1);
-            Field f1 = h.getClass().getDeclaredField("playerConnection");
-            Object pc = f1.get(h);
-            Method m5 = pc.getClass().getDeclaredMethod("sendPacket", c5);
-            m5.invoke(pc, ppoc);
+            getHandle = craftPlayer.getDeclaredMethod("getHandle");
+        }
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void send(Player p, String str)
+    {
+        try
+        {
+            Object castPlayer = craftPlayer.cast(p);
+            Object pkt;
+            Object o;
+
+            if (nmsver.equalsIgnoreCase("v1_8_R1") || !nmsver.startsWith("v1_8_"))
+            {
+                Method a = chatSer.getDeclaredMethod("a", String.class);
+                o = chatBase.cast(a.invoke(chatSer, "{\"text\": \"" + str + "\"}"));
+            }
+            else
+            {
+                o = chatSer.getConstructor(new Class<?>[]{String.class}).newInstance(str);
+            }
+            pkt = pktPOChat.getConstructor(new Class<?>[]{chatBase, byte.class}).newInstance(o, (byte) 2);
+
+            Object handle = getHandle.invoke(castPlayer);
+            Field pCon = handle.getClass().getDeclaredField("playerConnection");
+            Object pc = pCon.get(handle);
+            Method sendPkt = pc.getClass().getDeclaredMethod("sendPacket", packet);
+            sendPkt.invoke(pc, pkt);
         }
         catch (Exception ex)
         {
