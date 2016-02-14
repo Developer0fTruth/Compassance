@@ -1,7 +1,7 @@
 package com.hexragon.compassance.gui;
 
 import com.hexragon.compassance.Compassance;
-import com.hexragon.compassance.managers.settings.PlayerConfig;
+import com.hexragon.compassance.managers.files.configs.PlayerConfig;
 import com.hexragon.compassance.managers.themes.Theme;
 import com.hexragon.compassance.misc.ItemBuilder;
 import com.hexragon.compassance.misc.Misc;
@@ -14,12 +14,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.LinkedHashSet;
 
 public class ThemeMenu implements Listener
 {
-    public final String name = Misc.formatColor("&lThemes");
+    public final String name = Misc.fmtClr("&lThemes");
 
     public ThemeMenu()
     {
@@ -28,32 +27,23 @@ public class ThemeMenu implements Listener
 
     public void show(Player p)
     {
-        Inventory inv = Bukkit.createInventory(p, 6 * 9, Misc.formatColor(name));
+        Inventory inv = Bukkit.createInventory(p, 6 * 9, Misc.fmtClr(name));
 
         int itemSlot = 10;
         int wrapCounter = 1;
 
-        String selectedTheme = Compassance.instance.playerConfig.config.getString(String.format(PlayerConfig.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId()));
+        String selectedTheme = Compassance.playerConfig.config.getString(String.format(PlayerConfig.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId()));
 
-        // Putting default-id first.
-        Set<String> idList = Compassance.instance.themeManager.getThemes().keySet();
-        TreeSet<String> sortedIdList = new TreeSet<>();
-        sortedIdList.add(Compassance.instance.themeManager.getDefaultID());
-        for (String s : idList)
+        for (String id : Compassance.themeManager.getThemes().keySet())
         {
-            if (!s.equalsIgnoreCase(Compassance.instance.themeManager.getDefaultID())) sortedIdList.add(s);
-        }
-
-        for (String id : sortedIdList)
-        {
-            Theme t = Compassance.instance.themeManager.getTheme(id);
+            Theme t = Compassance.themeManager.getTheme(id);
 
             byte data = (byte) (selectedTheme.equalsIgnoreCase(id) ? 11 : 7);
 
             ItemBuilder itmBuild1 =
                     new ItemBuilder().material(Material.STAINED_GLASS_PANE).data(data).amt(1)
-                            .name(Misc.formatColor("&r" + t.getName()))
-                            .lore("&7ID: &f" + t.getId(), "", Misc.formatColor(t.getDesc()));
+                            .name(Misc.fmtClr("&r" + t.getName()))
+                            .lore("&7ID: &f" + t.getId(), "", Misc.fmtClr(t.getDesc()));
             inv.setItem(itemSlot, itmBuild1.toItemStack());
 
             wrapCounter++;
@@ -87,31 +77,28 @@ public class ThemeMenu implements Listener
             if (e.getSlot() == 49)
             {
                 p.playSound(p.getLocation(), Sound.CLICK, 0.5f, 1);
-                Compassance.instance.mainMenu.show(p);
+                Compassance.mainMenu.show(p);
                 return;
             }
 
-            for (int i = 1; i <= Compassance.instance.themeManager.getThemes().keySet().size(); i++)
+            for (int i = 1; i <= Compassance.themeManager.getThemes().keySet().size(); i++)
             {
+                LinkedHashSet<String> idList = new LinkedHashSet<>(Compassance.themeManager.getThemes().keySet());
 
                 if (slot == itemSlot && inv.getContents()[slot].getType() != Material.AIR)
                 {
                     p.playSound(p.getLocation(), Sound.CLICK, 0.5f, 1);
 
-                    Set<String> idList = Compassance.instance.themeManager.getThemes().keySet();
-                    TreeSet<String> sortedIdList = new TreeSet<>();
-                    sortedIdList.add(Compassance.instance.themeManager.getDefaultID());
-                    for (String s : idList)
-                    {
-                        if (!s.equalsIgnoreCase(Compassance.instance.themeManager.getDefaultID())) sortedIdList.add(s);
-                    }
+                    String clickedId = idList.toArray()[i - 1].toString();
 
-                    String clickedId = sortedIdList.toArray()[i - 1].toString();
+                    Compassance.playerConfig.config.set(String.format(PlayerConfig.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId()), clickedId);
+                    Compassance.compassTaskManager.refresh(p);
 
-                    Compassance.instance.playerConfig.config.set(String.format(PlayerConfig.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId()), clickedId);
-                    Compassance.instance.compassTaskManager.refresh(p);
-
-                    e.getWhoClicked().sendMessage(Misc.formatColor(String.format("&a&lCOMPASS &8» &7Switching your selected theme to &r%s&7.", Compassance.instance.themeManager.getTheme(clickedId).getName())));
+                    e.getWhoClicked().sendMessage(
+                            Misc.fmtClr(
+                                    String.format(
+                                            "&a&lCOMPASS &8» &7Switching your selected theme to &r%s&7.",
+                                            Compassance.themeManager.getTheme(clickedId).getName())));
 
                     show(p);
                     return;

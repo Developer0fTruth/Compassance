@@ -10,11 +10,14 @@ import com.hexragon.compassance.listeners.PlayerJoinListener;
 import com.hexragon.compassance.listeners.PlayerQuitListener;
 import com.hexragon.compassance.managers.compass.tasks.CompassTaskManager;
 import com.hexragon.compassance.managers.compass.tasks.tracking.TrackingManager;
-import com.hexragon.compassance.managers.settings.MainConfig;
-import com.hexragon.compassance.managers.settings.PlayerConfig;
-import com.hexragon.compassance.managers.settings.ThemeConfig;
+import com.hexragon.compassance.managers.files.configs.MainConfig;
+import com.hexragon.compassance.managers.files.configs.PlayerConfig;
+import com.hexragon.compassance.managers.files.configs.ThemeConfig;
+import com.hexragon.compassance.managers.files.files.ReferenceText;
 import com.hexragon.compassance.managers.themes.ThemeManager;
 import com.hexragon.compassance.misc.Misc;
+import net.milkbowl.vault.economy.Economy;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.MetricsLite;
 
@@ -25,23 +28,27 @@ public class Compassance extends JavaPlugin
 {
     public static Compassance instance;
 
-    public ThemeConfig themeConfig;
-    public PlayerConfig playerConfig;
-    public MainConfig mainConfig;
+    public static ThemeConfig themeConfig;
+    public static PlayerConfig playerConfig;
+    public static MainConfig mainConfig;
 
-    public CompassTaskManager compassTaskManager;
-    public ThemeManager themeManager;
-    public TrackingManager trackingManager;
+    public static CompassTaskManager compassTaskManager;
+    public static ThemeManager themeManager;
+    public static TrackingManager trackingManager;
 
-    public MainMenu mainMenu;
-    public SettingsMenu settingsMenu;
-    public ThemeMenu themeMenu;
+    public static MainMenu mainMenu;
+    public static SettingsMenu settingsMenu;
+    public static ThemeMenu themeMenu;
+
+    public static Economy economy;
 
     public void onEnable()
     {
         instance = this;
 
-        try {
+        // METRICS
+        try
+        {
             MetricsLite metrics = new MetricsLite(this);
             metrics.start();
         }
@@ -50,6 +57,7 @@ public class Compassance extends JavaPlugin
             Misc.logHandle(Level.WARNING, "Unable to submit stats to Metrics.");
         }
 
+        // LOAD CONFIGURATIONS
         mainConfig = new MainConfig();
         mainConfig.load();
 
@@ -59,6 +67,24 @@ public class Compassance extends JavaPlugin
         playerConfig = new PlayerConfig();
         playerConfig.load();
 
+        // CHECK FOR VAULT
+        if (getServer().getPluginManager().getPlugin("Vault") != null)
+        {
+            if (setupEconomy())
+            {
+                Misc.logHandle(Level.INFO, "Successfully hooked into Vault economy found.");
+            }
+            else
+            {
+                Misc.logHandle(Level.WARNING, "Vault economy was not found.");
+            }
+        }
+        else
+        {
+            Misc.logHandle(Level.INFO, "Vault dependency was not found.");
+        }
+
+        // MANAGERS INSTANTIATION
         themeManager = new ThemeManager();
         compassTaskManager = new CompassTaskManager();
         trackingManager = new TrackingManager();
@@ -70,6 +96,8 @@ public class Compassance extends JavaPlugin
         themeManager.loadThemes();
         compassTaskManager.newTaskAll();
 
+        // SECONDARY INSTANTIATION
+        new ReferenceText().forceCopy();
         new CompassCommand();
         new ReloadCommand();
         new TestCommand();
@@ -77,6 +105,16 @@ public class Compassance extends JavaPlugin
         new PlayerJoinListener();
         new PlayerQuitListener();
 
+    }
+
+    private boolean setupEconomy()
+    {
+        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+        if (economyProvider != null)
+        {
+            economy = economyProvider.getProvider();
+        }
+        return (economy != null);
     }
 
     public void onDisable()

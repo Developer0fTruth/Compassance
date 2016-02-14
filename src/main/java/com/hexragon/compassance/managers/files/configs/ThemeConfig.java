@@ -1,4 +1,4 @@
-package com.hexragon.compassance.managers.settings;
+package com.hexragon.compassance.managers.files.configs;
 
 import com.hexragon.compassance.Compassance;
 import com.hexragon.compassance.misc.FileUtil;
@@ -15,6 +15,8 @@ import java.util.logging.Level;
 
 public class ThemeConfig
 {
+    public static final String ENABLED_THEMES = "enabled-themes";
+
     public static final String THEME_META_NAME = "themes.%s.meta.name";
     public static final String THEME_META_DESC = "themes.%s.meta.desc";
     public static final String THEME_META_PERM = "themes.%s.meta.permission";
@@ -63,20 +65,19 @@ public class ThemeConfig
         YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
         config.setDefaults(defConfig);
 
-
         if (config.getDefaults().getDouble("version") >
                 config.getDouble("version"))
         {
-            Misc.logHandle(Level.WARNING, "Theme config is outdated, compatibility problems may occur.");
+            Misc.logHandle(Level.WARNING, "Theme configs is outdated, compatibility problems may occur.");
         }
         else if (config.getDefaults().getDouble("version") <
                 config.getDouble("version"))
         {
-            Misc.logHandle(Level.WARNING, "Theme config version is more updated than plugin version, compatibility problems may occur.");
+            Misc.logHandle(Level.WARNING, "Theme configs version is more updated than plugin version, compatibility problems may occur.");
         }
         else
         {
-            Misc.logHandle(Level.INFO, "Theme config is up to date.");
+            Misc.logHandle(Level.INFO, "Theme configs is up to date.");
         }
 
     }
@@ -94,7 +95,7 @@ public class ThemeConfig
         }
         catch (IOException e)
         {
-            Misc.logHandle(Level.SEVERE, "Can not save plugin settings.");
+            Misc.logHandle(Level.SEVERE, "Can not save plugin files.");
             e.printStackTrace();
         }
     }

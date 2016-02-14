@@ -19,8 +19,8 @@ public class PlayerQuitListener implements Listener
     public void onPlayerQuit(PlayerQuitEvent e)
     {
         Player p = e.getPlayer();
-        Compassance.instance.compassTaskManager.endTask(p);
-        Compassance.instance.trackingManager.removeTrackingFrom(p);
-        Compassance.instance.trackingManager.removeTrackingOf(p);
+        Compassance.compassTaskManager.endTask(p);
+        Compassance.trackingManager.removeTrackingFrom(p);
+        Compassance.trackingManager.removeTrackingOf(p);
     }
 }

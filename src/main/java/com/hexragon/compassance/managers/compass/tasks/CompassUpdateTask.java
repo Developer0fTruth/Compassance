@@ -2,9 +2,10 @@ package com.hexragon.compassance.managers.compass.tasks;
 
 import com.hexragon.compassance.Compassance;
 import com.hexragon.compassance.managers.compass.generator.CompassStringGenerator;
+import com.hexragon.compassance.managers.compass.generator.GeneratorInfo;
 import com.hexragon.compassance.managers.compass.tasks.tracking.TrackedTarget;
-import com.hexragon.compassance.managers.settings.MainConfig;
-import com.hexragon.compassance.managers.settings.PlayerConfig;
+import com.hexragon.compassance.managers.files.configs.MainConfig;
+import com.hexragon.compassance.managers.files.configs.PlayerConfig;
 import com.hexragon.compassance.managers.themes.Theme;
 import com.hexragon.compassance.misc.ActionBarUtil;
 import com.hexragon.compassance.misc.Misc;
@@ -33,9 +34,9 @@ public class CompassUpdateTask
     public CompassUpdateTask(Player p)
     {
         this.p = p;
-        this.theme = Compassance.instance.playerConfig.config.getString(String.format(PlayerConfig.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId().toString()));
-        this.cursor = Compassance.instance.playerConfig.config.getBoolean(String.format(PlayerConfig.SETTING_CURSOR, p.getPlayer().getUniqueId().toString()));
-        this.alwaysOn = Compassance.instance.playerConfig.config.getBoolean(String.format(PlayerConfig.SETTING_ALWAYSON, p.getPlayer().getUniqueId().toString()));
+        this.theme = Compassance.playerConfig.config.getString(String.format(PlayerConfig.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId().toString()));
+        this.cursor = Compassance.playerConfig.config.getBoolean(String.format(PlayerConfig.SETTING_CURSOR, p.getPlayer().getUniqueId().toString()));
+        this.alwaysOn = Compassance.playerConfig.config.getBoolean(String.format(PlayerConfig.SETTING_ALWAYSON, p.getPlayer().getUniqueId().toString()));
 
 
         this.running = false;
@@ -68,44 +69,46 @@ public class CompassUpdateTask
                         return;
                     }
 
-                    final Theme th = Compassance.instance.themeManager.getTheme(theme);
+                    final Theme th = Compassance.themeManager.getTheme(theme);
 
                     if (th == null)
                     {
-                        p.sendMessage(Misc.formatColor("&a&lCOMPASS &8» &cYour selected theme doesn't exist. Switching to default."));
-                        Compassance.instance.playerConfig.config.set(String.format(PlayerConfig.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId()), Compassance.instance.themeManager.getDefaultID());
-                        Compassance.instance.compassTaskManager.refresh(p);
+                        p.sendMessage(Misc.fmtClr("&a&lCOMPASS &8» &cYour selected theme doesn't exist. Switching to default."));
+                        Compassance.playerConfig.config.set(String.format(PlayerConfig.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId()), Compassance.themeManager.getDefaultID());
+                        Compassance.compassTaskManager.refresh(p);
                         return;
                     }
 
                     if ((!Misc.permHandle(p, th.getPerm(), true)) &&
-                            Compassance.instance.mainConfig.config.getBoolean(MainConfig.USE_PERMISSIONS))
+                            Compassance.mainConfig.config.getBoolean(MainConfig.USE_PERMISSIONS))
                     {
-                        if (th.getId().equalsIgnoreCase(Compassance.instance.themeManager.getDefaultID()))
+                        if (th.getId().equalsIgnoreCase(Compassance.themeManager.getDefaultID()))
                         {
-                            p.sendMessage(Misc.formatColor("&a&lCOMPASS &8» &cYou don't have permission for default theme. Toggling off compass."));
-                            Compassance.instance.playerConfig.config.set(String.format(PlayerConfig.SETTING_ENABLE, p.getPlayer().getUniqueId().toString()), false);
-                            Compassance.instance.compassTaskManager.refresh(p);
+                            p.sendMessage(Misc.fmtClr("&a&lCOMPASS &8» &cYou don't have permission for default theme. Toggling off compass."));
+                            Compassance.playerConfig.config.set(String.format(PlayerConfig.SETTING_ENABLE, p.getPlayer().getUniqueId().toString()), false);
+                            Compassance.compassTaskManager.refresh(p);
                             ActionBarUtil.send(p, "");
                         }
                         else
                         {
-                            p.sendMessage(Misc.formatColor("&a&lCOMPASS &8» &cYou don't have permission for this theme. Switching to default."));
-                            Compassance.instance.playerConfig.config.set(String.format(PlayerConfig.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId()), Compassance.instance.themeManager.getDefaultID());
-                            Compassance.instance.compassTaskManager.refresh(p);
+                            p.sendMessage(Misc.fmtClr("&a&lCOMPASS &8» &cYou don't have permission for this theme. Switching to default."));
+                            Compassance.playerConfig.config.set(String.format(PlayerConfig.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId()), Compassance.themeManager.getDefaultID());
+                            Compassance.compassTaskManager.refresh(p);
                         }
                     }
 
                     CompassStringGenerator gen;
 
-                    TrackedTarget target = Compassance.instance.trackingManager.getTargetOf(p);
+                    TrackedTarget target = Compassance.trackingManager.getTargetOf(p);
                     if (target != null && target.getLocation() != null)
                     {
-                        gen = new CompassStringGenerator(p.getLocation(), target.getLocation(), th, p.getLocation().getYaw(), cursor);
+                        GeneratorInfo gi = new GeneratorInfo(p, p.getLocation(), target.getLocation(), th, p.getLocation().getYaw(), cursor);
+                        gen = new CompassStringGenerator(gi);
                     }
                     else
                     {
-                        gen = new CompassStringGenerator(null, null, th, p.getLocation().getYaw(), cursor);
+                        GeneratorInfo gi = new GeneratorInfo(p, null, null, th, p.getLocation().getYaw(), cursor);
+                        gen = new CompassStringGenerator(gi);
                     }
                     if (gen.getString() != null) ActionBarUtil.send(p, gen.getString());
 

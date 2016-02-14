@@ -1,4 +1,4 @@
-package com.hexragon.compassance.managers.settings;
+package com.hexragon.compassance.managers.files.configs;
 
 import com.hexragon.compassance.Compassance;
 import com.hexragon.compassance.misc.FileUtil;
@@ -18,11 +18,11 @@ public class PlayerConfig
 {
     public static final String PLAYER_NAME = "players.%s.name";
 
-    public static final String SETTING_SELECTEDTHEME = "players.%s.settings.selectedTheme";
-    public static final String SETTING_ENABLE = "players.%s.settings.enableCompass";
-    public static final String SETTING_CURSOR = "players.%s.settings.enableCursor";
-    public static final String SETTING_ALWAYSON = "players.%s.settings.alwaysOn";
-    public static final String SETTING_TRACKING = "players.%s.settings.tracking";
+    public static final String SETTING_SELECTEDTHEME = "players.%s.files.selectedTheme";
+    public static final String SETTING_ENABLE = "players.%s.files.enableCompass";
+    public static final String SETTING_CURSOR = "players.%s.files.enableCursor";
+    public static final String SETTING_ALWAYSON = "players.%s.files.alwaysOn";
+    public static final String SETTING_TRACKING = "players.%s.files.tracking";
 
     private final String fileName;
     public FileConfiguration config;
@@ -34,7 +34,7 @@ public class PlayerConfig
     }
 
     /**
-     * Update the player name in the player config.
+     * Update the player name in the player configs.
      * Create a new profile for the player-uuid if
      * selected theme is not found.
      *
@@ -42,26 +42,26 @@ public class PlayerConfig
      */
     public static void updateProfile(Player p)
     {
-        Compassance.instance.playerConfig.config.set(String.format(PlayerConfig.PLAYER_NAME, p.getPlayer().getUniqueId().toString()), p.getName());
+        Compassance.playerConfig.config.set(String.format(PlayerConfig.PLAYER_NAME, p.getPlayer().getUniqueId().toString()), p.getName());
 
-        String selectedTheme = Compassance.instance.playerConfig.config.getString(String.format(PlayerConfig.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId().toString()));
-        if (selectedTheme == null || Compassance.instance.themeManager.getTheme(selectedTheme) == null)
+        String selectedTheme = Compassance.playerConfig.config.getString(String.format(PlayerConfig.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId().toString()));
+        if (selectedTheme == null || Compassance.themeManager.getTheme(selectedTheme) == null)
         {
-            Compassance.instance.playerConfig.config
-                    .set(String.format(PlayerConfig.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId().toString()), Compassance.instance.themeManager.getDefaultID());
+            Compassance.playerConfig.config
+                    .set(String.format(PlayerConfig.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId().toString()), Compassance.themeManager.getDefaultID());
 
-            Compassance.instance.playerConfig.config
+            Compassance.playerConfig.config
                     .set(String.format(PlayerConfig.SETTING_ENABLE, p.getPlayer().getUniqueId().toString()),
-                            Compassance.instance.playerConfig.config.getBoolean(String.format(PlayerConfig.SETTING_ENABLE, "default")));
-            Compassance.instance.playerConfig.config
+                            Compassance.playerConfig.config.getBoolean(String.format(PlayerConfig.SETTING_ENABLE, "default")));
+            Compassance.playerConfig.config
                     .set(String.format(PlayerConfig.SETTING_CURSOR, p.getPlayer().getUniqueId().toString()),
-                            Compassance.instance.playerConfig.config.getBoolean(String.format(PlayerConfig.SETTING_CURSOR, "default")));
-            Compassance.instance.playerConfig.config
+                            Compassance.playerConfig.config.getBoolean(String.format(PlayerConfig.SETTING_CURSOR, "default")));
+            Compassance.playerConfig.config
                     .set(String.format(PlayerConfig.SETTING_ALWAYSON, p.getPlayer().getUniqueId().toString()),
-                            Compassance.instance.playerConfig.config.getBoolean(String.format(PlayerConfig.SETTING_ALWAYSON, "default")));
-            Compassance.instance.playerConfig.config
+                            Compassance.playerConfig.config.getBoolean(String.format(PlayerConfig.SETTING_ALWAYSON, "default")));
+            Compassance.playerConfig.config
                     .set(String.format(PlayerConfig.SETTING_TRACKING, p.getPlayer().getUniqueId().toString()),
-                            Compassance.instance.playerConfig.config.getBoolean(String.format(PlayerConfig.SETTING_TRACKING, "default")));
+                            Compassance.playerConfig.config.getBoolean(String.format(PlayerConfig.SETTING_TRACKING, "default")));
         }
     }
 
@@ -92,16 +92,16 @@ public class PlayerConfig
         if (config.getDefaults().getDouble("version") >
                 config.getDouble("version"))
         {
-            Misc.logHandle(Level.WARNING, "PLayer config is outdated, compatibility problems may occur.");
+            Misc.logHandle(Level.WARNING, "PLayer configs is outdated, compatibility problems may occur.");
         }
         else if (config.getDefaults().getDouble("version") <
                 config.getDouble("version"))
         {
-            Misc.logHandle(Level.WARNING, "PLayer config version is more updated than plugin version, compatibility problems may occur.");
+            Misc.logHandle(Level.WARNING, "PLayer configs version is more updated than plugin version, compatibility problems may occur.");
         }
         else
         {
-            Misc.logHandle(Level.INFO, "Player config is up to date.");
+            Misc.logHandle(Level.INFO, "Player configs is up to date.");
         }
     }
 
@@ -118,7 +118,7 @@ public class PlayerConfig
         }
         catch (IOException e)
         {
-            Misc.logHandle(Level.SEVERE, "Can not save player settings.");
+            Misc.logHandle(Level.SEVERE, "Can not save player files.");
             e.printStackTrace();
         }
     }

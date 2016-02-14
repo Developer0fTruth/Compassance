@@ -1,7 +1,7 @@
 package com.hexragon.compassance.gui;
 
 import com.hexragon.compassance.Compassance;
-import com.hexragon.compassance.managers.settings.PlayerConfig;
+import com.hexragon.compassance.managers.files.configs.PlayerConfig;
 import com.hexragon.compassance.misc.ItemBuilder;
 import com.hexragon.compassance.misc.Misc;
 import org.bukkit.Bukkit;
@@ -15,7 +15,7 @@ import org.bukkit.inventory.Inventory;
 
 public class SettingsMenu implements Listener
 {
-    public final String name = Misc.formatColor("&lSettings");
+    public final String name = Misc.fmtClr("&lSettings");
     String[] bl;
 
     public SettingsMenu()
@@ -61,7 +61,7 @@ public class SettingsMenu implements Listener
         for (String str : bl)
         {
 
-            boolean b = Compassance.instance.playerConfig.config.getBoolean(str);
+            boolean b = Compassance.playerConfig.config.getBoolean(str);
 
             inv.setItem(19 + i,
                     new ItemBuilder()
@@ -100,19 +100,19 @@ public class SettingsMenu implements Listener
             {
                 case 25:
                     p.playSound(p.getLocation(), Sound.CLICK, 0.5f, 1);
-                    Compassance.instance.mainMenu.show(p);
+                    Compassance.mainMenu.show(p);
                 default:
 
                     int i = 0;
                     for (String str : bl)
                     {
-                        boolean b = Compassance.instance.playerConfig.config.getBoolean(str);
+                        boolean b = Compassance.playerConfig.config.getBoolean(str);
 
                         if (e.getSlot() == 19 + i)
                         {
                             p.playSound(p.getLocation(), Sound.CLICK, 0.5f, 1);
-                            Compassance.instance.playerConfig.config.set(str, !b);
-                            Compassance.instance.compassTaskManager.refresh(p);
+                            Compassance.playerConfig.config.set(str, !b);
+                            Compassance.compassTaskManager.refresh(p);
                             show(p);
                             return;
                         }

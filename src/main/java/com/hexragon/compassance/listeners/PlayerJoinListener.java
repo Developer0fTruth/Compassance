@@ -1,8 +1,8 @@
 package com.hexragon.compassance.listeners;
 
 import com.hexragon.compassance.Compassance;
-import com.hexragon.compassance.managers.settings.MainConfig;
-import com.hexragon.compassance.managers.settings.PlayerConfig;
+import com.hexragon.compassance.managers.files.configs.MainConfig;
+import com.hexragon.compassance.managers.files.configs.PlayerConfig;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,10 +22,10 @@ public class PlayerJoinListener implements Listener
     {
         Player p = e.getPlayer();
 
-        if (!Compassance.instance.mainConfig.config.getBoolean(MainConfig.USE_TRACKING))
+        if (!Compassance.mainConfig.config.getBoolean(MainConfig.USE_TRACKING))
         {
-            Compassance.instance.playerConfig.config.set(String.format(PlayerConfig.SETTING_TRACKING, p.getUniqueId().toString()), false);
+            Compassance.playerConfig.config.set(String.format(PlayerConfig.SETTING_TRACKING, p.getUniqueId().toString()), false);
         }
-        Compassance.instance.compassTaskManager.newTask(p);
+        Compassance.compassTaskManager.newTask(p);
     }
 }

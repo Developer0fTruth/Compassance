@@ -1,7 +1,7 @@
 package com.hexragon.compassance.commands;
 
 import com.hexragon.compassance.Compassance;
-import com.hexragon.compassance.managers.settings.PlayerConfig;
+import com.hexragon.compassance.managers.files.configs.PlayerConfig;
 import com.hexragon.compassance.managers.themes.Theme;
 import com.hexragon.compassance.misc.ActionBarUtil;
 import com.hexragon.compassance.misc.ItemBuilder;
@@ -18,6 +18,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.SpawnEgg;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
@@ -32,6 +34,12 @@ public class TestCommand implements CommandExecutor
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
     {
+        if (!sender.isOp())
+        {
+            sender.sendMessage("Must be OP to use this command.");
+            return true;
+        }
+
         if (args.length == 0)
         {
             return false;
@@ -39,7 +47,7 @@ public class TestCommand implements CommandExecutor
 
         if (args.length == 2 && args[0].equalsIgnoreCase("data"))
         {
-            Theme theme = Compassance.instance.themeManager.getTheme(args[1]);
+            Theme theme = Compassance.themeManager.getTheme(args[1]);
 
             if (theme == null)
             {
@@ -48,31 +56,31 @@ public class TestCommand implements CommandExecutor
 
             sender.sendMessage("Displaying parsed data for theme " + theme.getId());
 
-            sender.sendMessage(Misc.formatColor("&9&lMeta :"));
-            sender.sendMessage(Misc.formatColor("  &8Name : &r" + theme.getName()));
-            sender.sendMessage(Misc.formatColor("  &8Desc : &r" + theme.getDesc()));
-            sender.sendMessage(Misc.formatColor("  &8Main Pattern Map : &r") + theme.getData_main_PatternMap());
+            sender.sendMessage(Misc.fmtClr("&9&lMeta :"));
+            sender.sendMessage(Misc.fmtClr("  &8Name : &r" + theme.getName()));
+            sender.sendMessage(Misc.fmtClr("  &8Desc : &r" + theme.getDesc()));
+            sender.sendMessage(Misc.fmtClr("  &8Main Pattern Map : &r") + theme.getData_main_PatternMap());
 
-            sender.sendMessage(Misc.formatColor("&9&lDirect Replacers :"));
+            sender.sendMessage(Misc.fmtClr("&9&lDirect Replacers :"));
             for (String s : theme.getData_DirectReplacers().keySet())
             {
-                sender.sendMessage(Misc.formatColor("  &8" + s + " : &r" + theme.getData_DirectReplacers().get(s)));
+                sender.sendMessage(Misc.fmtClr("  &8" + s + " : &r" + theme.getData_DirectReplacers().get(s)));
             }
-            sender.sendMessage(Misc.formatColor("&9&lSub-Patterns :"));
+            sender.sendMessage(Misc.fmtClr("&9&lSub-Patterns :"));
             for (String s : theme.getData_subPatternMap().keySet())
             {
-                sender.sendMessage(Misc.formatColor("  &8" + s + " : &r") + theme.getData_subPatternMap().get(s));
+                sender.sendMessage(Misc.fmtClr("  &8" + s + " : &r") + theme.getData_subPatternMap().get(s));
                 for (String s2 : theme.getData_subPatternReplacers().get(s).keySet())
                 {
-                    sender.sendMessage(Misc.formatColor("    &8" + s2 + " : &r" + theme.getData_subPatternReplacers().get(s).get(s2)));
+                    sender.sendMessage(Misc.fmtClr("    &8" + s2 + " : &r" + theme.getData_subPatternReplacers().get(s).get(s2)));
                 }
             }
 
-            sender.sendMessage(Misc.formatColor("&9&lPost Processing : "));
+            sender.sendMessage(Misc.fmtClr("&9&lPost Processing : "));
             sender.sendMessage("  " + theme.getFinal_PatternMap());
             for (String s : theme.getFinal_DirectReplacers().keySet())
             {
-                sender.sendMessage(Misc.formatColor("  &8" + s + " : &r" + theme.getFinal_DirectReplacers().get(s)));
+                sender.sendMessage(Misc.fmtClr("  &8" + s + " : &r" + theme.getFinal_DirectReplacers().get(s)));
             }
 
             return true;
@@ -82,7 +90,7 @@ public class TestCommand implements CommandExecutor
         {
             Player p = (Player) sender;
 
-            Theme theme = Compassance.instance.themeManager.getTheme(args[1]);
+            Theme theme = Compassance.themeManager.getTheme(args[1]);
             if (theme == null)
             {
                 return true;
@@ -122,9 +130,9 @@ public class TestCommand implements CommandExecutor
                 Double x = Double.parseDouble(args[1]);
                 Double y = Double.parseDouble(args[2]);
                 Double z = Double.parseDouble(args[3]);
-                Compassance.instance.trackingManager.newTracking(p, new Location(p.getWorld(), x, y, z));
+                Compassance.trackingManager.newTracking(p, new Location(p.getWorld(), x, y, z));
 
-                Compassance.instance.compassTaskManager.refresh(p);
+                Compassance.compassTaskManager.refresh(p);
             }
             catch (Exception e)
             {
@@ -142,11 +150,11 @@ public class TestCommand implements CommandExecutor
             {
                 if (pl.getName().equalsIgnoreCase(targetName))
                 {
-                    Compassance.instance.trackingManager.newTracking(p, pl);
+                    Compassance.trackingManager.newTracking(p, pl);
                     break;
                 }
             }
-            Compassance.instance.compassTaskManager.refresh(p);
+            Compassance.compassTaskManager.refresh(p);
             return true;
         }
 
@@ -154,34 +162,69 @@ public class TestCommand implements CommandExecutor
         {
             Player p = (Player) sender;
             //String uuid = p.getUniqueId().toString();
-            boolean b = Compassance.instance.playerConfig.config.getBoolean(String.format(PlayerConfig.SETTING_ENABLE, p.getPlayer().getUniqueId().toString()));
+            boolean b = Compassance.playerConfig.config.getBoolean(String.format(PlayerConfig.SETTING_ENABLE, p.getPlayer().getUniqueId().toString()));
             if (b)
             {
-                Compassance.instance.playerConfig.config.set(String.format(PlayerConfig.SETTING_ENABLE, p.getPlayer().getUniqueId().toString()), false);
+                Compassance.playerConfig.config.set(String.format(PlayerConfig.SETTING_ENABLE, p.getPlayer().getUniqueId().toString()), false);
             }
             else
             {
-                Compassance.instance.playerConfig.config.set(String.format(PlayerConfig.SETTING_ENABLE, p.getPlayer().getUniqueId().toString()), true);
+                Compassance.playerConfig.config.set(String.format(PlayerConfig.SETTING_ENABLE, p.getPlayer().getUniqueId().toString()), true);
             }
-            Compassance.instance.compassTaskManager.refresh(p);
+            Compassance.compassTaskManager.refresh(p);
             ActionBarUtil.send(p, "");
             return true;
         }
 
         if (args.length == 1 && args[0].equalsIgnoreCase("menu"))
         {
-            Compassance.instance.mainMenu.show((Player) sender);
+            Compassance.mainMenu.show((Player) sender);
             return true;
         }
 
         if (args.length == 1 && args[0].equalsIgnoreCase("version"))
         {
-            sender.sendMessage("Theme: " + Compassance.instance.themeConfig.config.getDefaults().getString("version") + " default vs have " + Compassance.instance.themeConfig.config.getString("version"));
-            sender.sendMessage("Player: " + Compassance.instance.playerConfig.config.getDefaults().getString("version") + " default vs have " + Compassance.instance.playerConfig.config.getString("version"));
+            sender.sendMessage("Theme: " + Compassance.themeConfig.config.getDefaults().getString("version") + " default vs have " + Compassance.themeConfig.config.getString("version"));
+            sender.sendMessage("Player: " + Compassance.playerConfig.config.getDefaults().getString("version") + " default vs have " + Compassance.playerConfig.config.getString("version"));
             return true;
         }
 
-        if (args.length == 2 && args[0].equalsIgnoreCase("tracklist"))
+        if (args.length == 1 && args[0].equalsIgnoreCase("bal"))
+        {
+            Player p = (Player) sender;
+            if (Compassance.economy != null)
+            {
+                p.sendMessage("Vault balance:" + Compassance.economy.getBalance(p));
+            }
+            else
+            {
+                p.sendMessage("Economy not found.");
+            }
+            return true;
+        }
+
+        if (args.length == 1 && args[0].equalsIgnoreCase("time"))
+        {
+            Player p = (Player) sender;
+            Date d = new Date();
+
+            p.sendMessage(new SimpleDateFormat("EEEE").format(d)); //<dow>
+            p.sendMessage(new SimpleDateFormat("E").format(d)); //<a/dow>
+
+            p.sendMessage(new SimpleDateFormat("MMMM").format(d)); //<month>
+            p.sendMessage(new SimpleDateFormat("MMM").format(d)); //<a/month>
+            p.sendMessage(new SimpleDateFormat("M").format(d)); //<m/month>
+
+            p.sendMessage(new SimpleDateFormat("d").format(d)); //<day>
+
+            p.sendMessage(new SimpleDateFormat("a").format(d)); //<marker>
+            p.sendMessage(new SimpleDateFormat("s").format(d)); //<second>
+            p.sendMessage(new SimpleDateFormat("m").format(d)); //<minute>
+            p.sendMessage(new SimpleDateFormat("h").format(d)); //<hour>
+
+        }
+
+        if (args.length == 1 && args[0].equalsIgnoreCase("tracklist"))
         {
             Player p = (Player) sender;
 
@@ -191,7 +234,7 @@ public class TestCommand implements CommandExecutor
 
             for (Entity e : p.getWorld().getEntities())
             {
-                if(list.size() >= 28) break;
+                if (list.size() >= 28) break;
                 if (e == p) continue;
                 if (e instanceof LivingEntity)
                 {
@@ -227,8 +270,8 @@ public class TestCommand implements CommandExecutor
                                 .amt(1)
                                 .material(spawnEgg.getType())
                                 .data(spawnEgg.getDurability())
-                                .name("&7&l"+e.getName())
-                                .lore("&fD: &b"+d1,"&fUUID: &b"+e.getUniqueId().toString())
+                                .name("&7&l" + e.getName())
+                                .lore("&fD: &b" + d1, "&fUUID: &b" + e.getUniqueId().toString())
                                 .toItemStack());
 
                 i++;

@@ -8,27 +8,24 @@ import java.util.HashMap;
 
 public class CompassStringGenerator
 {
-    private Theme theme;
+    private final GeneratorInfo gi;
+    private final Theme theme;
+    private final boolean cursor;
+
+    private final Location l1;
+    private final Location l2;
+
     private double yaw;
-    private boolean cursor;
 
-    private Location l1;
-    private Location l2;
-
-    /**
-     * @param l1 Original location.
-     * @param l2 Targetted location.
-     * @param t  Theme string, referenced from ThemeManager.
-     * @param y  Yaw rotational value.
-     * @param c  Use a cursor.
-     */
-    public CompassStringGenerator(Location l1, Location l2, Theme t, double y, boolean c)
+    public CompassStringGenerator(GeneratorInfo gi)
     {
-        this.theme = t;
-        this.yaw = y;
-        this.l1 = l1;
-        this.l2 = l2;
-        this.cursor = c;
+        this.gi = gi;
+
+        this.theme = gi.theme;
+        this.yaw = gi.yaw;
+        this.l1 = gi.l1;
+        this.l2 = gi.l2;
+        this.cursor = gi.cursor;
     }
 
     /**
@@ -134,7 +131,13 @@ public class CompassStringGenerator
             {
                 for (String s : directReplacers.keySet())
                 {
-                    processsedString = processsedString.replaceAll(s, directReplacers.get(s));
+                    try
+                    {
+                        processsedString = processsedString.replaceAll(s, directReplacers.get(s));
+                    }
+                    catch (Exception ignore)
+                    {
+                    }
                 }
             }
 
@@ -145,7 +148,13 @@ public class CompassStringGenerator
                 {
                     for (String s2 : subPatternReplacers.get(s).keySet())
                     {
-                        processsedString = processsedString.replaceAll(s2, subPatternReplacers.get(s).get(s2));
+                        try
+                        {
+                            processsedString = processsedString.replaceAll(s2, subPatternReplacers.get(s).get(s2));
+                        }
+                        catch (Exception ignore)
+                        {
+                        }
                     }
                 }
             }
@@ -163,11 +172,19 @@ public class CompassStringGenerator
 
                 for (String s : theme.getFinal_DirectReplacers().keySet())
                 {
-                    finalString = finalString.replaceAll(s, theme.getFinal_DirectReplacers().get(s));
+                    try
+                    {
+                        finalString = finalString.replaceAll(s, theme.getFinal_DirectReplacers().get(s));
+                    }
+                    catch (Exception ignore)
+                    {
+                    }
                 }
             }
 
-            return Misc.formatColor(finalString);
+            finalString = Misc.fmtRefs(gi, finalString);
+
+            return Misc.fmtClr(finalString);
 
         }
         catch (Exception e)

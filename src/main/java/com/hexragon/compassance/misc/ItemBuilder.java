@@ -54,6 +54,10 @@ public class ItemBuilder implements Serializable
 
     public ItemBuilder lore(ArrayList<String> list)
     {
+        if (list == null)
+        {
+            return this;
+        }
         loreList = list;
         return this;
     }
@@ -67,7 +71,7 @@ public class ItemBuilder implements Serializable
             {
                 continue;
             }
-            String[] lines = Misc.formatColor(text).split("%nl%");
+            String[] lines = Misc.fmtClr(text).split("%nl%");
             Collections.addAll(list, lines);
         }
         loreList = list;
@@ -86,7 +90,7 @@ public class ItemBuilder implements Serializable
         ItemMeta itmMeta = item.getItemMeta();
         if (name != null && !name.isEmpty())
         {
-            itmMeta.setDisplayName(Misc.formatColor(name));
+            itmMeta.setDisplayName(Misc.fmtClr(name));
         }
         if (loreList != null)
         {

@@ -10,9 +10,18 @@
 #   for the plugin to detect if the templates do not match
 #   a possible new version or updates. Back up this file
 #   and download a new one if the plugin mentions any
-#   errors regarding 'theme config outdated'.
+#   errors regarding 'theme configs outdated'.
 # ==========================================================
-version: 1.0
+version: 1.1
+
+# === ENABLED THEMES =======================================
+#   Themes from here will be registered upon loading.
+#   'default' is always registered.
+# ==========================================================
+enabled-themes:
+  - midnight-light
+  - midnight-mini
+  - midnight-color
 
 # === THEMING GUIDE ========================================
 #
@@ -44,12 +53,10 @@ version: 1.0
 #
 #   Separate keys by using ';'.
 #
-# ===== References
+# ===== Static References
 #   This is a work in progress. These values are generated
 #   dynamically and it is not recomended that you name a
-#   key after them.
-#
-#     <str>     Preprocessed string.
+#   key after them. They can be viewd on references.txt
 #
 # ==========================================================
 themes:

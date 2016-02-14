@@ -1,7 +1,7 @@
 package com.hexragon.compassance.commands;
 
 import com.hexragon.compassance.Compassance;
-import com.hexragon.compassance.managers.settings.PlayerConfig;
+import com.hexragon.compassance.managers.files.configs.PlayerConfig;
 import com.hexragon.compassance.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -28,7 +28,7 @@ public class CompassCommand implements CommandExecutor
 
         if (args.length == 0 || args[0].equalsIgnoreCase("open"))
         {
-            Compassance.instance.mainMenu.show((Player) sender);
+            Compassance.mainMenu.show((Player) sender);
             return true;
         }
 
@@ -38,19 +38,19 @@ public class CompassCommand implements CommandExecutor
 
             if (args.length < 2)
             {
-                p.sendMessage(Misc.formatColor("&a&lCOMPASS &8» &cInsufficient amount of arguments."));
-                p.sendMessage(Misc.formatColor("&a&lUSAGE &8» &7/compass theme &ftheme-id"));
+                p.sendMessage(Misc.fmtClr("&a&lCOMPASS &8» &cInsufficient amount of arguments."));
+                p.sendMessage(Misc.fmtClr("&a&lUSAGE &8» &7/compass theme &ftheme-id"));
                 return true;
             }
 
-            if (Compassance.instance.themeManager.getTheme(args[1]) == null)
+            if (Compassance.themeManager.getTheme(args[1]) == null)
             {
-                p.sendMessage(Misc.formatColor("&a&lCOMPASS &8» &cTheme ID doesn't exist."));
+                p.sendMessage(Misc.fmtClr("&a&lCOMPASS &8» &cTheme ID doesn't exist."));
                 return true;
             }
 
-            p.sendMessage(Misc.formatColor(String.format("&a&lCOMPASS &8» &7Switching your selected theme to &r%s&7.", Compassance.instance.themeManager.getTheme(args[1]).getName())));
-            Compassance.instance.playerConfig.config.set(String.format(PlayerConfig.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId().toString()), args[1]);
+            p.sendMessage(Misc.fmtClr(String.format("&a&lCOMPASS &8» &7Switching your selected theme to &r%s&7.", Compassance.themeManager.getTheme(args[1]).getName())));
+            Compassance.playerConfig.config.set(String.format(PlayerConfig.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId().toString()), args[1]);
             return true;
         }
 
@@ -58,17 +58,17 @@ public class CompassCommand implements CommandExecutor
         {
             Player p = (Player) sender;
 
-            boolean b = Compassance.instance.playerConfig.config.getBoolean(String.format(PlayerConfig.SETTING_TRACKING, p.getPlayer().getUniqueId().toString()));
+            boolean b = Compassance.playerConfig.config.getBoolean(String.format(PlayerConfig.SETTING_TRACKING, p.getPlayer().getUniqueId().toString()));
             if (!b)
             {
-                p.sendMessage(Misc.formatColor("&a&lCOMPASS &8» &cYou must enable tracking in the Compassance menu."));
+                p.sendMessage(Misc.fmtClr("&a&lCOMPASS &8» &cYou must enable tracking in the Compassance menu."));
                 return true;
             }
 
             if (args.length < 2)
             {
-                p.sendMessage(Misc.formatColor("&a&lCOMPASS &8» &cInsufficient amount of arguments."));
-                p.sendMessage(Misc.formatColor("&a&lUSAGE &8» &7/compass trk &fpl &7or &7/compass trk &floc"));
+                p.sendMessage(Misc.fmtClr("&a&lCOMPASS &8» &cInsufficient amount of arguments."));
+                p.sendMessage(Misc.fmtClr("&a&lUSAGE &8» &7/compass trk &fpl &7or &7/compass trk &floc"));
                 return true;
             }
 
@@ -76,8 +76,8 @@ public class CompassCommand implements CommandExecutor
             {
                 if (args.length != 3)
                 {
-                    p.sendMessage(Misc.formatColor("&a&lCOMPASS &8» &cInsufficient amount of arguments."));
-                    p.sendMessage(Misc.formatColor("&a&lUSAGE &8» &7/compass trk pl &f-player"));
+                    p.sendMessage(Misc.fmtClr("&a&lCOMPASS &8» &cInsufficient amount of arguments."));
+                    p.sendMessage(Misc.fmtClr("&a&lUSAGE &8» &7/compass trk pl &f-player"));
                     return true;
                 }
 
@@ -86,14 +86,14 @@ public class CompassCommand implements CommandExecutor
                 {
                     if (pl.getName().equalsIgnoreCase(targetName))
                     {
-                        Compassance.instance.trackingManager.newTracking(p, pl);
-                        Compassance.instance.compassTaskManager.refresh(p);
-                        p.sendMessage(Misc.formatColor(String.format("&a&lCOMPASS &8» &7You are now tracking player &f%s&7.", pl.getName())));
-                        pl.sendMessage(Misc.formatColor(String.format("&a&lCOMPASS &8» &7You are being tracked by &f%s&7.", p.getName())));
+                        Compassance.trackingManager.newTracking(p, pl);
+                        Compassance.compassTaskManager.refresh(p);
+                        p.sendMessage(Misc.fmtClr(String.format("&a&lCOMPASS &8» &7You are now tracking player &f%s&7.", pl.getName())));
+                        pl.sendMessage(Misc.fmtClr(String.format("&a&lCOMPASS &8» &7You are being tracked by &f%s&7.", p.getName())));
                         return true;
                     }
                 }
-                p.sendMessage(Misc.formatColor("&a&lCOMPASS &8» &cThe player you are attempting to track is not found."));
+                p.sendMessage(Misc.fmtClr("&a&lCOMPASS &8» &cThe player you are attempting to track is not found."));
 
                 return true;
             }
@@ -101,8 +101,8 @@ public class CompassCommand implements CommandExecutor
             {
                 if (args.length != 5)
                 {
-                    p.sendMessage(Misc.formatColor("&a&lCOMPASS &8» &cInsufficient amount of arguments."));
-                    p.sendMessage(Misc.formatColor("&a&lUSAGE &8» &7/compass trk loc &f-x -y -z&7."));
+                    p.sendMessage(Misc.fmtClr("&a&lCOMPASS &8» &cInsufficient amount of arguments."));
+                    p.sendMessage(Misc.fmtClr("&a&lUSAGE &8» &7/compass trk loc &f-x -y -z&7."));
                     return true;
                 }
 
@@ -111,21 +111,21 @@ public class CompassCommand implements CommandExecutor
                     Double x = Double.parseDouble(args[2]);
                     Double y = Double.parseDouble(args[3]);
                     Double z = Double.parseDouble(args[4]);
-                    Compassance.instance.trackingManager.newTracking(p, new Location(p.getWorld(), x, y, z));
+                    Compassance.trackingManager.newTracking(p, new Location(p.getWorld(), x, y, z));
 
-                    Compassance.instance.compassTaskManager.refresh(p);
-                    p.sendMessage(Misc.formatColor(String.format("&a&lCOMPASS &8» &7You are now tracking coordinates &f%s&7, &f%s&7, &f%s&7.", x, y, z)));
+                    Compassance.compassTaskManager.refresh(p);
+                    p.sendMessage(Misc.fmtClr(String.format("&a&lCOMPASS &8» &7You are now tracking coordinates &f%s&7, &f%s&7, &f%s&7.", x, y, z)));
                     return true;
                 }
                 catch (Exception e)
                 {
-                    p.sendMessage(Misc.formatColor("&a&lCOMPASS &8» &cThe coordinates you entered failed to parse, make sure you are using numbers."));
+                    p.sendMessage(Misc.fmtClr("&a&lCOMPASS &8» &cThe coordinates you entered failed to parse, make sure you are using numbers."));
                 }
             }
             else
             {
-                p.sendMessage(Misc.formatColor("&a&lCOMPASS &8» &cInvalid tracking type."));
-                p.sendMessage(Misc.formatColor("&a&lUSAGE &8» &7/compass trk &fpl &7or &7/compass trk &floc"));
+                p.sendMessage(Misc.fmtClr("&a&lCOMPASS &8» &cInvalid tracking type."));
+                p.sendMessage(Misc.fmtClr("&a&lUSAGE &8» &7/compass trk &fpl &7or &7/compass trk &floc"));
                 return true;
             }
 

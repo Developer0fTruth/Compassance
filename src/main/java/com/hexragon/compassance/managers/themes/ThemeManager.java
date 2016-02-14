@@ -1,16 +1,17 @@
 package com.hexragon.compassance.managers.themes;
 
 import com.hexragon.compassance.Compassance;
+import com.hexragon.compassance.managers.files.configs.ThemeConfig;
 import com.hexragon.compassance.misc.Misc;
 
-import java.util.HashMap;
-import java.util.Set;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.logging.Level;
 
 public class ThemeManager
 {
 
-    private HashMap<String, Theme> themes;
+    private LinkedHashMap<String, Theme> themes;
 
     private String defaultID;
 
@@ -28,17 +29,21 @@ public class ThemeManager
      */
     public void loadThemes()
     {
-        themes = new HashMap<>();
+        themes = new LinkedHashMap<>();
 
         int errors = 0;
 
-        Set<String> allThemes = Compassance.instance.themeConfig.config.getConfigurationSection("themes").getKeys(false);
-        if (!allThemes.contains(defaultID))
-        {
-            Misc.logHandle(Level.SEVERE, String.format("Default theme '%s' is not found. Therefore other themes will not be loaded.", defaultID));
-            defaultHasErrors = true;
-            return;
-        }
+//        LinkedHashSet<String> allThemes = new LinkedHashSet<>(Compassance.themeConfig.configs.getConfigurationSection("themes").getKeys(false));
+//        if (!allThemes.contains(defaultID))
+//        {
+//            Misc.logHandle(Level.SEVERE, String.format("Default theme '%s' is not found. Therefore other themes will not be loaded.", defaultID));
+//            defaultHasErrors = true;
+//            return;
+//        }
+
+        LinkedHashSet<String> allThemes = new LinkedHashSet<>();
+        allThemes.add("default");
+        allThemes.addAll(Compassance.themeConfig.config.getStringList(ThemeConfig.ENABLED_THEMES));
 
         int i = 0;
         for (String s : allThemes)
@@ -50,12 +55,17 @@ public class ThemeManager
 
             Theme t = new Theme(s);
 
-            Misc.logHandle(Level.INFO, String.format("Loaded theme %s ID '%s'.", Misc.formatColor(t.getName()), t.getId()));
-            themes.put(s, new Theme(s));
+            if (t.getName() == null || t.getDesc() == null)
+            {
+                errors++;
+                continue;
+            }
+
+            themes.put(s, t);
 
             i++;
         }
-        Misc.logHandle(Level.INFO, String.format("Successfully loaded %s theme(s) with %s theme-related errors.", themes.size(), errors));
+        Misc.logHandle(errors >= 1 ? Level.WARNING : Level.INFO, String.format("Successfully loaded %s theme(s) with %s theme-related errors.", themes.size(), errors));
     }
 
     /**
@@ -85,7 +95,7 @@ public class ThemeManager
         return defaultID;
     }
 
-    public HashMap<String, Theme> getThemes()
+    public LinkedHashMap<String, Theme> getThemes()
     {
         return themes;
     }

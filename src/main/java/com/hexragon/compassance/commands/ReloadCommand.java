@@ -21,16 +21,16 @@ public class ReloadCommand implements CommandExecutor
             return true;
         }
 
-        Compassance.instance.mainConfig.load();
+        Compassance.mainConfig.load();
 
-        Compassance.instance.themeConfig.load();
-        Compassance.instance.playerConfig.load();
-        Compassance.instance.themeManager.loadThemes();
+        Compassance.themeConfig.load();
 
-        Compassance.instance.playerConfig.save();
-        Compassance.instance.playerConfig.load();
+        Compassance.playerConfig.save();
+        Compassance.playerConfig.load();
 
-        Compassance.instance.compassTaskManager.refreshAll();
+        Compassance.themeManager.loadThemes();
+
+        Compassance.compassTaskManager.refreshAll();
 
         sender.sendMessage("Compassance configs reloaded.");
 
