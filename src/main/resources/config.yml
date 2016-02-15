@@ -12,9 +12,9 @@
 version: 1.1
 
 # ==========================================================
-#   This option will send basic data such as player
-#   count to mcstats.org. Compassance uses MetricsLite
-#   which will only send basic information.
+#   This option will send data such as player count and
+#   java version to mcstats.org. Compassance uses
+#   MetricsLite which will only send basic information.
 #   You can check out what it collects at:
 #      http://mcstats.org/plugin/Compassance
 # ==========================================================
@@ -32,3 +32,11 @@ use-permissions: true
 #   If this is enabled, players can enable tracking.
 # ==========================================================
 use-tracking: true
+
+# ==========================================================
+#   This feature enables you to (MAYBE) get some features
+#   that I have left over or haven't fully implemented
+#   yet. I won't even tell you what I added to the bleeding
+#   edge option until I finally finish developing it.
+# ==========================================================
+bleeding-edge: false

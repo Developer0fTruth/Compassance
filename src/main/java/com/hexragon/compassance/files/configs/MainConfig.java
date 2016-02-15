@@ -18,6 +18,7 @@ public class MainConfig
     public static final String USE_PERMISSIONS = "use-permissions";
     public static final String USE_TRACKING = "use-tracking";
     public static final String METRICS = "metrics";
+    public static final String DEBUG_MODE = "bleeding-edge";
 
     private final String fileName;
     public FileConfiguration config;
@@ -50,20 +51,13 @@ public class MainConfig
         YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
         config.setDefaults(defConfig);
 
-
-        if (config.getDefaults().getDouble("version") >
-                config.getDouble("version"))
+        if (!config.getDefaults().getString("version").equals(config.getString("version")) || config.getString("version") == null)
         {
-            Misc.logHandle(Level.WARNING, "Main configs is outdated, compatibility problems may occur.");
-        }
-        else if (config.getDefaults().getDouble("version") <
-                config.getDouble("version"))
-        {
-            Misc.logHandle(Level.WARNING, "Main configs version is more updated than plugin version, compatibility problems may occur.");
+            Misc.logHandle(Level.WARNING, "Main config is outdated, compatibility problems may occur.");
         }
         else
         {
-            Misc.logHandle(Level.INFO, "Main configs is up to date.");
+            Misc.logHandle(Level.INFO, "Main config is up to date.");
         }
     }
 

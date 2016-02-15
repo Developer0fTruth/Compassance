@@ -16,8 +16,7 @@ import com.hexragon.compassance.managers.compass.tasks.CompassTaskManager;
 import com.hexragon.compassance.managers.compass.tasks.tracking.TrackingManager;
 import com.hexragon.compassance.managers.themes.ThemeManager;
 import com.hexragon.compassance.misc.Misc;
-import net.milkbowl.vault.economy.Economy;
-import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.MetricsLite;
 
@@ -40,7 +39,7 @@ public class Compassance extends JavaPlugin
     public static SettingsMenu settingsMenu;
     public static ThemeMenu themeMenu;
 
-    public static Economy economy;
+    public static boolean placeholderAPI;
 
     public void onEnable()
     {
@@ -55,23 +54,6 @@ public class Compassance extends JavaPlugin
 
         playerConfig = new PlayerConfig();
         playerConfig.load();
-
-        // CHECK FOR VAULT
-        if (getServer().getPluginManager().getPlugin("Vault") != null)
-        {
-            if (setupEconomy())
-            {
-                Misc.logHandle(Level.INFO, "Successfully hooked into Vault economy found.");
-            }
-            else
-            {
-                Misc.logHandle(Level.WARNING, "Vault economy was not found.");
-            }
-        }
-        else
-        {
-            Misc.logHandle(Level.INFO, "Vault dependency was not found.");
-        }
 
         // MANAGERS INSTANTIATION
         themeManager = new ThemeManager();
@@ -89,10 +71,24 @@ public class Compassance extends JavaPlugin
         new ReferenceText().forceCopy();
         new CompassCommand();
         new ReloadCommand();
-        new TestCommand();
 
-        new PlayerJoinListener();
-        new PlayerQuitListener();
+
+        if (mainConfig.config.getBoolean(MainConfig.DEBUG_MODE))
+        {
+            new TestCommand();
+
+            if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null && Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI"))
+            {
+                placeholderAPI = true;
+                Misc.logHandle(Level.INFO, "Detected PlaceholderAPI.");
+                new CompassancePlaceholderHook(this);
+            }
+            else
+            {
+                placeholderAPI = false;
+                Misc.logHandle(Level.INFO, "Did not find PlaceholderAPI.");
+            }
+        }
 
         // METRICS
         if (mainConfig.config.getBoolean(MainConfig.METRICS))
@@ -101,23 +97,22 @@ public class Compassance extends JavaPlugin
             {
                 MetricsLite metrics = new MetricsLite(this);
                 metrics.start();
+                Misc.logHandle(Level.INFO, "Metrics initialized. You can disable this by going into the main config.");
             }
             catch (IOException e)
             {
                 Misc.logHandle(Level.WARNING, "Unable to submit stats to Metrics.");
             }
         }
+        else
+        {
+            Misc.logHandle(Level.INFO, "Metrics is disabled.");
+        }
+
+        new PlayerJoinListener();
+        new PlayerQuitListener();
     }
 
-    private boolean setupEconomy()
-    {
-        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
-        if (economyProvider != null)
-        {
-            economy = economyProvider.getProvider();
-        }
-        return (economy != null);
-    }
 
     public void onDisable()
     {

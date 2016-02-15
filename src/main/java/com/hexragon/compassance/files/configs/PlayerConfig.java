@@ -89,19 +89,13 @@ public class PlayerConfig
         config.setDefaults(defConfig);
 
 
-        if (config.getDefaults().getDouble("version") >
-                config.getDouble("version"))
+        if (!config.getDefaults().getString("version").equals(config.getString("version")) || config.getString("version") == null)
         {
-            Misc.logHandle(Level.WARNING, "PLayer configs is outdated, compatibility problems may occur.");
-        }
-        else if (config.getDefaults().getDouble("version") <
-                config.getDouble("version"))
-        {
-            Misc.logHandle(Level.WARNING, "PLayer configs version is more updated than plugin version, compatibility problems may occur.");
+            Misc.logHandle(Level.WARNING, "Player config is outdated, compatibility problems may occur.");
         }
         else
         {
-            Misc.logHandle(Level.INFO, "Player configs is up to date.");
+            Misc.logHandle(Level.INFO, "Player config is up to date.");
         }
     }
 

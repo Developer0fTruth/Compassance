@@ -37,10 +37,9 @@ public class TrackedTarget
         return location;
     }
 
-    enum TrackingType
+    public TrackingType getType()
     {
-        DYNAMIC,
-        STATIC
+        return this.type;
     }
 
 }

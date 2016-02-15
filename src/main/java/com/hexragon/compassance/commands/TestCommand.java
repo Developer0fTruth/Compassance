@@ -6,6 +6,7 @@ import com.hexragon.compassance.managers.themes.Theme;
 import com.hexragon.compassance.misc.ActionBarUtil;
 import com.hexragon.compassance.misc.ItemBuilder;
 import com.hexragon.compassance.misc.Misc;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -186,20 +187,10 @@ public class TestCommand implements CommandExecutor
         {
             sender.sendMessage("Theme: " + Compassance.themeConfig.config.getDefaults().getString("version") + " default vs have " + Compassance.themeConfig.config.getString("version"));
             sender.sendMessage("Player: " + Compassance.playerConfig.config.getDefaults().getString("version") + " default vs have " + Compassance.playerConfig.config.getString("version"));
-            return true;
-        }
 
-        if (args.length == 1 && args[0].equalsIgnoreCase("bal"))
-        {
-            Player p = (Player) sender;
-            if (Compassance.economy != null)
-            {
-                p.sendMessage("Vault balance:" + Compassance.economy.getBalance(p));
-            }
-            else
-            {
-                p.sendMessage("Economy not found.");
-            }
+            sender.sendMessage(PlaceholderAPI.setPlaceholders((Player) sender, "%compassance_p_string%"));
+            sender.sendMessage(PlaceholderAPI.setPlaceholders((Player) sender, "%compassance_p_string_theme_default%"));
+            sender.sendMessage(PlaceholderAPI.setPlaceholders((Player) sender, "%compassance_p_selectedtheme% %compassance_p_target% %compassance_p_target_location%"));
             return true;
         }
 

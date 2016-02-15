@@ -2,6 +2,7 @@ package com.hexragon.compassance.misc;
 
 import com.hexragon.compassance.Compassance;
 import com.hexragon.compassance.managers.compass.generator.GeneratorInfo;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -56,11 +57,7 @@ public class Misc
         if (yaw > 360) yaw -= 360;
         s = s.replaceAll("%yaw%", String.format("%.2f", yaw));
 
-        // BALANCE
-        if (Compassance.economy != null)
-        {
-            s = s.replaceAll("%bal%", String.format("%.2f", Compassance.economy.getBalance(gi.p)));
-        }
+        if (Compassance.placeholderAPI) s = PlaceholderAPI.setPlaceholders(gi.p, s);
 
         return s;
     }

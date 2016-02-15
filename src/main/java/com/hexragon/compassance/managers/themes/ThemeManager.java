@@ -11,10 +11,8 @@ import java.util.logging.Level;
 public class ThemeManager
 {
 
+    public final String defaultID;
     private LinkedHashMap<String, Theme> themes;
-
-    private String defaultID;
-
     private boolean defaultHasErrors;
 
     public ThemeManager()
