@@ -46,17 +46,6 @@ public class Compassance extends JavaPlugin
     {
         instance = this;
 
-        // METRICS
-        try
-        {
-            MetricsLite metrics = new MetricsLite(this);
-            metrics.start();
-        }
-        catch (IOException e)
-        {
-            Misc.logHandle(Level.WARNING, "Unable to submit stats to Metrics.");
-        }
-
         // LOAD CONFIGURATIONS
         mainConfig = new MainConfig();
         mainConfig.load();
@@ -105,6 +94,19 @@ public class Compassance extends JavaPlugin
         new PlayerJoinListener();
         new PlayerQuitListener();
 
+        // METRICS
+        if (mainConfig.config.getBoolean(MainConfig.METRICS))
+        {
+            try
+            {
+                MetricsLite metrics = new MetricsLite(this);
+                metrics.start();
+            }
+            catch (IOException e)
+            {
+                Misc.logHandle(Level.WARNING, "Unable to submit stats to Metrics.");
+            }
+        }
     }
 
     private boolean setupEconomy()

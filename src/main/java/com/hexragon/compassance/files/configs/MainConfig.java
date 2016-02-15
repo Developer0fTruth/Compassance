@@ -17,6 +17,7 @@ public class MainConfig
 {
     public static final String USE_PERMISSIONS = "use-permissions";
     public static final String USE_TRACKING = "use-tracking";
+    public static final String METRICS = "metrics";
 
     private final String fileName;
     public FileConfiguration config;

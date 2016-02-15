@@ -2,6 +2,24 @@
 #   Self explanatory descriptions below.
 # ==========================================================
 
+# ===== NOTE ===============================================
+#   You should not mess with the version node, it is a way
+#   for the plugin to detect if the templates do not match
+#   a possible new version or updates. Back up this file
+#   and download a new one if the plugin mentions any
+#   errors regarding 'player text outdated'.
+# ==========================================================
+version: 1.1
+
+# ==========================================================
+#   This option will send basic data such as player
+#   count to mcstats.org. Compassance uses MetricsLite
+#   which will only send basic information.
+#   You can check out what it collects at:
+#      http://mcstats.org/plugin/Compassance
+# ==========================================================
+metrics: true
+
 # ==========================================================
 #   If this is enabled, all themes will not require
 #   permission, but you can set certain themes to require
