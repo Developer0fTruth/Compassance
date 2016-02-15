@@ -1,8 +1,8 @@
 package com.hexragon.compassance.listeners;
 
 import com.hexragon.compassance.Compassance;
-import com.hexragon.compassance.managers.files.configs.MainConfig;
-import com.hexragon.compassance.managers.files.configs.PlayerConfig;
+import com.hexragon.compassance.files.configs.MainConfig;
+import com.hexragon.compassance.files.configs.PlayerConfig;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

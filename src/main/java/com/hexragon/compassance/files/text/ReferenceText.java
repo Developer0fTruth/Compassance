@@ -1,4 +1,4 @@
-package com.hexragon.compassance.managers.files.files;
+package com.hexragon.compassance.files.text;
 
 import com.hexragon.compassance.Compassance;
 import com.hexragon.compassance.misc.FileUtil;
@@ -14,7 +14,7 @@ public class ReferenceText
 
     public ReferenceText()
     {
-        this.fileName = "test/references.txt";
+        this.fileName = "references.txt";
     }
 
     public void forceCopy()

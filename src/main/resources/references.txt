@@ -1,32 +1,32 @@
 ==================================================================
 
 --- Function:
-    <str>           Generated compass string.
-    <theme-id>      Theme-id of the player.
-    <theme>         Theme name of the player.
+    %str%           Generated compass string.
+    %theme-id%      Theme-id of the player.
+    %theme%         Theme name of the player.
 
 --- Time:
-    <dow>           Day of the week. ex. Tuesday
-    <a/dow>         Day of the week, abbreviated. ex. Tues
+    %dow%           Day of the week. ex. Tuesday
+    %a/dow%         Day of the week, abbreviated. ex. Tues
 
-    <month>         Month of the year. ex. January
-    <a/month>       Month of the year, abbreviated. ex. Jan
-    <n/month>       Month of the year in number form. ex. 1
-    <day>           Day of the month. ex. 12
+    %month%         Month of the year. ex. January
+    %a/month%       Month of the year, abbreviated. ex. Jan
+    %n/month%       Month of the year in number form. ex. 1
+    %day%           Day of the month. ex. 12
 
-    <hour>          Hour of the day. ex: 1-12
-    <minute>        Minute of the hour. ex: 0-60
-    <second>        Second of the minute. ex: 0-60
-    <marker>        AM/PM marker.
-    <time-zone>     Server time zone.
+    %hour%          Hour of the day. ex: 1-12
+    %minute%        Minute of the hour. ex: 0-60
+    %second%        Second of the minute. ex: 0-60
+    %marker%        AM/PM marker.
+    %time-zone%     Server time zone.
 
 --- Location:
-    <x>             X coord of the player.
-    <y>             Y coord of the player.
-    <z>             Z coord of the player.
-    <yaw>           Yaw of the player.
+    %p-x%             X coord of the player.
+    %p-y%             Y coord of the player.
+    %p-z%             Z coord of the player.
+    %p-yaw%           Yaw of the player.
 
 --- Vault:
-    <bal>           Balance of the player.
+    %bal%           Balance of the player.
 
 ==================================================================

@@ -1,7 +1,7 @@
 package com.hexragon.compassance.managers.themes;
 
 import com.hexragon.compassance.Compassance;
-import com.hexragon.compassance.managers.files.configs.ThemeConfig;
+import com.hexragon.compassance.files.configs.ThemeConfig;
 
 import java.util.HashMap;
 
@@ -59,7 +59,7 @@ public class Theme
                     /*
                      & Search in sub-pattern node.
                      */
-                    if (s.startsWith("<s/"))
+                    if (s.startsWith("<s/") && s.endsWith(">"))
                     {
                         String subPatternMap = Compassance.themeConfig.config.getString(String.format(ThemeConfig.THEME_DATA_SUBPATTERN_MAP, id, s));
 
@@ -78,7 +78,7 @@ public class Theme
                     /*
                      * Search in direct node.
                      */
-                    else if (s.startsWith("<"))
+                    else if (s.startsWith("<") && s.endsWith(">"))
                     {
                         String d_replacer = Compassance.themeConfig.config.getString(String.format(ThemeConfig.THEME_DATA_DIRECT_REPLACER, id, s));
                         data_DirectReplacers.put(s, d_replacer);
@@ -98,14 +98,12 @@ public class Theme
 
             for (String s : finalPatternReplacers)
             {
-                if (s.startsWith("<"))
+                if (s.startsWith("<") && s.endsWith(">"))
                 {
                     String d_replacer = Compassance.themeConfig.config.getString(String.format(ThemeConfig.THEME_FINAL_DIRECT_REPLACER, id, s));
                     final_DirectReplacers.put(s, d_replacer);
                 }
             }
-
-            final_DirectReplacers.remove("<str>");
 
             func_cursor = Compassance.themeConfig.config.getString(String.format(ThemeConfig.THEME_DATA_FUNC_CURSOR, id));
             func_target = Compassance.themeConfig.config.getString(String.format(ThemeConfig.THEME_DATA_FUNC_TARGET, id));

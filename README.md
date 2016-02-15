@@ -13,7 +13,7 @@ This will dictate what characters will go where, what sub patterns will go where
 
 **Sub-Pattern** `<s/?>` are sub patterns. They function like the main pattern map, except you can put patterns inside them to make the main pattern map cleaner. These keys will point to the 'sub-pattern' section and replace them in the main pattern map. During generation of the compass string, the plugin will look for the corresponding character and process them after the direct replacers.
 
-**Post Processing** `final` are the final replacers. They take place after all the processing is done, they do not care much for the generated string, which you can reference as `<str>`.
+**Post Processing** `final` are the final replacers. They take place after all the processing is done, they do not care much for the generated string, which you can reference as `%str%`.
 
 ```yml
 default:
@@ -23,7 +23,7 @@ default:
   data:
     main-pattern-map: "<S>;<s/sep>;<W>;<s/sep>;<N>;<s/sep>;<E>;<s/sep>"
     function:
-      cursor: "&f[;<str>;&f]"
+      cursor: "&f[;%str%;&f]"
       target: "&9\u2588"
     direct:
       <S>: "&f&l&n S "
@@ -38,7 +38,7 @@ default:
         <3>: "&0\u2592"
         <4>: "&0\u2591"
   final:
-    pattern-map: "<<>;<str>;<>>"
+    pattern-map: "<<>;%str%;<>>"
     <<>: "&f&l["
     <>>: "&f&l]"
 ```

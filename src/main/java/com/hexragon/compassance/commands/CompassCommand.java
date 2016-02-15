@@ -1,7 +1,7 @@
 package com.hexragon.compassance.commands;
 
 import com.hexragon.compassance.Compassance;
-import com.hexragon.compassance.managers.files.configs.PlayerConfig;
+import com.hexragon.compassance.files.configs.PlayerConfig;
 import com.hexragon.compassance.misc.Misc;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

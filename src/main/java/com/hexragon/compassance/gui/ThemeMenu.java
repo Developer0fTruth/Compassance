@@ -1,7 +1,7 @@
 package com.hexragon.compassance.gui;
 
 import com.hexragon.compassance.Compassance;
-import com.hexragon.compassance.managers.files.configs.PlayerConfig;
+import com.hexragon.compassance.files.configs.PlayerConfig;
 import com.hexragon.compassance.managers.themes.Theme;
 import com.hexragon.compassance.misc.ItemBuilder;
 import com.hexragon.compassance.misc.Misc;

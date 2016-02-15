@@ -1,7 +1,7 @@
 package com.hexragon.compassance.managers.themes;
 
 import com.hexragon.compassance.Compassance;
-import com.hexragon.compassance.managers.files.configs.ThemeConfig;
+import com.hexragon.compassance.files.configs.ThemeConfig;
 import com.hexragon.compassance.misc.Misc;
 
 import java.util.LinkedHashMap;

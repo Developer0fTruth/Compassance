@@ -1,5 +1,5 @@
 # === PLAYER CONFIG ========================================
-#   Here you will find all the player data files read
+#   Here you will find all the player data text read
 #   by the plugin. I do not recomend editing this while
 #   the plugin is still running, as reloading will instantly
 #   overwrite your changes with the server changes.
@@ -10,7 +10,7 @@
 #   for the plugin to detect if the templates do not match
 #   a possible new version or updates. Back up this file
 #   and download a new one if the plugin mentions any
-#   errors regarding 'player files outdated'.
+#   errors regarding 'player text outdated'.
 # ==========================================================
 version: 1.1
 

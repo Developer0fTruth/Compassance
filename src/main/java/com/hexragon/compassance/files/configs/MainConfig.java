@@ -1,4 +1,4 @@
-package com.hexragon.compassance.managers.files.configs;
+package com.hexragon.compassance.files.configs;
 
 import com.hexragon.compassance.Compassance;
 import com.hexragon.compassance.misc.FileUtil;
@@ -79,7 +79,7 @@ public class MainConfig
         }
         catch (IOException e)
         {
-            Misc.logHandle(Level.SEVERE, "Can not save plugin files.");
+            Misc.logHandle(Level.SEVERE, "Can not save plugin text.");
             e.printStackTrace();
         }
     }

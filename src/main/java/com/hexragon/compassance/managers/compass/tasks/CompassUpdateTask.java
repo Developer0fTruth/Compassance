@@ -1,11 +1,11 @@
 package com.hexragon.compassance.managers.compass.tasks;
 
 import com.hexragon.compassance.Compassance;
+import com.hexragon.compassance.files.configs.MainConfig;
+import com.hexragon.compassance.files.configs.PlayerConfig;
 import com.hexragon.compassance.managers.compass.generator.CompassStringGenerator;
 import com.hexragon.compassance.managers.compass.generator.GeneratorInfo;
 import com.hexragon.compassance.managers.compass.tasks.tracking.TrackedTarget;
-import com.hexragon.compassance.managers.files.configs.MainConfig;
-import com.hexragon.compassance.managers.files.configs.PlayerConfig;
 import com.hexragon.compassance.managers.themes.Theme;
 import com.hexragon.compassance.misc.ActionBarUtil;
 import com.hexragon.compassance.misc.Misc;

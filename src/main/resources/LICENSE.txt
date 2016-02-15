@@ -1,4 +1,4 @@
-hexCompass is licensed under MIT. All of the files in this project is covered
+Compassance is licensed under MIT. All of the files in this project is covered
 by this license. You can redistribute, or modify but no warranty whatsoever
 will be provided for you. mcMastery is created in the hope of being useful
 and as a learning experience.

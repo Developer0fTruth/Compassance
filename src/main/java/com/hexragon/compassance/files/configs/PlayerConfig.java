@@ -1,4 +1,4 @@
-package com.hexragon.compassance.managers.files.configs;
+package com.hexragon.compassance.files.configs;
 
 import com.hexragon.compassance.Compassance;
 import com.hexragon.compassance.misc.FileUtil;
@@ -18,11 +18,11 @@ public class PlayerConfig
 {
     public static final String PLAYER_NAME = "players.%s.name";
 
-    public static final String SETTING_SELECTEDTHEME = "players.%s.files.selectedTheme";
-    public static final String SETTING_ENABLE = "players.%s.files.enableCompass";
-    public static final String SETTING_CURSOR = "players.%s.files.enableCursor";
-    public static final String SETTING_ALWAYSON = "players.%s.files.alwaysOn";
-    public static final String SETTING_TRACKING = "players.%s.files.tracking";
+    public static final String SETTING_SELECTEDTHEME = "players.%s.text.selectedTheme";
+    public static final String SETTING_ENABLE = "players.%s.text.enableCompass";
+    public static final String SETTING_CURSOR = "players.%s.text.enableCursor";
+    public static final String SETTING_ALWAYSON = "players.%s.text.alwaysOn";
+    public static final String SETTING_TRACKING = "players.%s.text.tracking";
 
     private final String fileName;
     public FileConfiguration config;
@@ -118,7 +118,7 @@ public class PlayerConfig
         }
         catch (IOException e)
         {
-            Misc.logHandle(Level.SEVERE, "Can not save player files.");
+            Misc.logHandle(Level.SEVERE, "Can not save player text.");
             e.printStackTrace();
         }
     }

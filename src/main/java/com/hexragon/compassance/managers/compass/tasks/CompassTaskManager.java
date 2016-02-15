@@ -1,7 +1,7 @@
 package com.hexragon.compassance.managers.compass.tasks;
 
 import com.hexragon.compassance.Compassance;
-import com.hexragon.compassance.managers.files.configs.PlayerConfig;
+import com.hexragon.compassance.files.configs.PlayerConfig;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;

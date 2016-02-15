@@ -1,8 +1,8 @@
 package com.hexragon.compassance.gui;
 
 import com.hexragon.compassance.Compassance;
-import com.hexragon.compassance.managers.files.configs.MainConfig;
-import com.hexragon.compassance.managers.files.configs.PlayerConfig;
+import com.hexragon.compassance.files.configs.MainConfig;
+import com.hexragon.compassance.files.configs.PlayerConfig;
 import com.hexragon.compassance.misc.ItemBuilder;
 import com.hexragon.compassance.misc.Misc;
 import org.bukkit.Bukkit;
@@ -66,7 +66,7 @@ public class MainMenu implements Listener
         inv.setItem(14,
                 new ItemBuilder().material(Material.NAME_TAG).data((byte) 0).amt(1)
                         .name("&9&lSettings")
-                        .lore("", "&7Click to enter the preferences", "&7menu to adjust personal files.").toItemStack());
+                        .lore("", "&7Click to enter the preferences", "&7menu to adjust personal text.").toItemStack());
 
         inv.setItem(16,
                 new ItemBuilder().material(Material.BARRIER).data((byte) 0).amt(1)

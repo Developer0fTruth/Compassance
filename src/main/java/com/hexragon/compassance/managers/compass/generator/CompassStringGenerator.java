@@ -92,7 +92,7 @@ public class CompassStringGenerator
                                     String target = theme.getTargetNode();
                                     if (target != null)
                                     {
-                                        target = target.replaceAll("<str>", appending).replaceAll(";", "");
+                                        target = target.replaceAll("%str%", appending).replaceAll(";", "");
                                         appending = target;
                                     }
                                 }
@@ -106,7 +106,7 @@ public class CompassStringGenerator
                                     String cursor = theme.getCursorNode();
                                     if (cursor != null)
                                     {
-                                        cursor = cursor.replaceAll("<str>", appending).replaceAll(";", "");
+                                        cursor = cursor.replaceAll("%str%", appending).replaceAll(";", "");
                                         appending = cursor;
                                     }
                                 }
@@ -168,7 +168,7 @@ public class CompassStringGenerator
             if (finalPatternMap != null && finalPatternMap.size() != 0)
             {
                 finalString = finalString.replaceAll(";", "");
-                finalString = finalString.replaceAll("<str>", processsedString);
+                finalString = finalString.replaceAll("%str%", processsedString);
 
                 for (String s : theme.getFinal_DirectReplacers().keySet())
                 {
