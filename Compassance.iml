@@ -33,15 +33,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
-      <library name="Maven: me.clip:placeholderapi:1.9.0.1">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/PlaceholderAPI.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="library" scope="PROVIDED" name="Maven: net.milkbowl.vault:VaultAPI:1.5" level="project" />
+    <orderEntry type="library" name="Maven: me.clip:placeholderapi:1.9.0.1" level="project" />
   </component>
 </module>

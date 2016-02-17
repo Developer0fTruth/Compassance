@@ -25,6 +25,6 @@ public class ReferenceText
         {
             Misc.logHandle(Level.INFO, String.format("Making directory for file '%s'.", fileName));
         }
-        FileUtil.copyFile(Compassance.instance.getResource(fileName), file);
+        FileUtil.write(Compassance.instance.getResource(fileName), file);
     }
 }

@@ -24,9 +24,9 @@ public class CompassTaskManager
     {
         if (!tasks.containsKey(p))
         {
+            PlayerConfig.updateProfile(p);
             CompassUpdateTask updateTask = new CompassUpdateTask(p);
             tasks.put(p, updateTask);
-            PlayerConfig.updateProfile(p);
 
             if (Compassance.playerConfig.config.getBoolean(String.format(PlayerConfig.SETTING_ENABLE, p.getUniqueId().toString())))
             {

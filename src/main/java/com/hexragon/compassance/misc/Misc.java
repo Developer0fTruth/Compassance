@@ -3,6 +3,7 @@ package com.hexragon.compassance.misc;
 import com.hexragon.compassance.Compassance;
 import com.hexragon.compassance.managers.compass.generator.GeneratorInfo;
 import me.clip.placeholderapi.PlaceholderAPI;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -15,7 +16,7 @@ public class Misc
 
     public static String fmtClr(String s)
     {
-        return s.replace('&', '\u00A7');
+        return ChatColor.translateAlternateColorCodes('&', s);
     }
 
     public static String fmtRefs(GeneratorInfo gi, String s)

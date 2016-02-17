@@ -12,13 +12,13 @@ import java.util.HashMap;
 
 public class ItemBuilder implements Serializable
 {
-    Material mat;
-    int amount;
-    short data;
+    private Material mat;
+    private int amount;
+    private short data;
 
-    String name;
-    ArrayList<String> loreList;
-    HashMap<Enchantment, Integer> enchantList;
+    private String name;
+    private ArrayList<String> loreList;
+    private HashMap<Enchantment, Integer> enchantList;
 
     public ItemBuilder()
     {

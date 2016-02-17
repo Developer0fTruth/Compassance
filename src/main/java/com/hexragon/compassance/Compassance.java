@@ -3,9 +3,8 @@ package com.hexragon.compassance;
 import com.hexragon.compassance.commands.CompassCommand;
 import com.hexragon.compassance.commands.ReloadCommand;
 import com.hexragon.compassance.commands.TestCommand;
+import com.hexragon.compassance.files.Gearbox;
 import com.hexragon.compassance.files.configs.MainConfig;
-import com.hexragon.compassance.files.configs.PlayerConfig;
-import com.hexragon.compassance.files.configs.ThemeConfig;
 import com.hexragon.compassance.files.text.ReferenceText;
 import com.hexragon.compassance.gui.MainMenu;
 import com.hexragon.compassance.gui.SettingsMenu;
@@ -27,9 +26,9 @@ public class Compassance extends JavaPlugin
 {
     public static Compassance instance;
 
-    public static ThemeConfig themeConfig;
-    public static PlayerConfig playerConfig;
-    public static MainConfig mainConfig;
+    public static Gearbox themeConfig;
+    public static Gearbox playerConfig;
+    public static Gearbox mainConfig;
 
     public static CompassTaskManager compassTaskManager;
     public static ThemeManager themeManager;
@@ -46,13 +45,13 @@ public class Compassance extends JavaPlugin
         instance = this;
 
         // LOAD CONFIGURATIONS
-        mainConfig = new MainConfig();
+        mainConfig = new Gearbox(this, "config.yml");
         mainConfig.load();
 
-        themeConfig = new ThemeConfig();
+        themeConfig = new Gearbox(this, "themes-config.yml");
         themeConfig.load();
 
-        playerConfig = new PlayerConfig();
+        playerConfig = new Gearbox(this, "players-config.yml");
         playerConfig.load();
 
         // MANAGERS INSTANTIATION

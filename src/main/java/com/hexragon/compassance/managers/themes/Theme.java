@@ -33,8 +33,6 @@ public class Theme
         data_subPatternMap = new HashMap<>();
         data_subPatternReplacers = new HashMap<>();
         final_DirectReplacers = new HashMap<>();
-
-        loadData();
     }
 
     /**

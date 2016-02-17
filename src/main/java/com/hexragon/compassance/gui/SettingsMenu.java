@@ -15,8 +15,8 @@ import org.bukkit.inventory.Inventory;
 
 public class SettingsMenu implements Listener
 {
-    public final String name = Misc.fmtClr("&lSettings");
-    String[] bl;
+    private final String name = Misc.fmtClr("&lSettings");
+    private String[] bl;
 
     public SettingsMenu()
     {
@@ -25,7 +25,7 @@ public class SettingsMenu implements Listener
         bl = new String[3];
     }
 
-    public String[] getBL(Player p)
+    private String[] getBL(Player p)
     {
         bl[0] = String.format(PlayerConfig.SETTING_ENABLE, p.getPlayer().getUniqueId().toString());
         bl[1] = String.format(PlayerConfig.SETTING_ALWAYSON, p.getPlayer().getUniqueId().toString());

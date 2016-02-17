@@ -52,9 +52,16 @@ public class ThemeManager
             }
 
             Theme t = new Theme(s);
+            t.loadData();
 
             if (t.getName() == null || t.getDesc() == null)
             {
+                if (s.equalsIgnoreCase(defaultID))
+                {
+                    defaultHasErrors = true;
+                    Misc.logHandle(Level.SEVERE, "Default theme has errors!");
+                    return;
+                }
                 errors++;
                 continue;
             }

@@ -16,7 +16,7 @@ import org.bukkit.inventory.Inventory;
 
 public class MainMenu implements Listener
 {
-    public final String name = Misc.fmtClr("&lCompassance");
+    private final String name = Misc.fmtClr("&lCompassance");
 
     public MainMenu()
     {
