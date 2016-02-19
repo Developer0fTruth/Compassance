@@ -6,21 +6,20 @@ import com.hexragon.compassance.managers.compass.generator.GeneratorInfo;
 import com.hexragon.compassance.managers.compass.tasks.tracking.TrackedTarget;
 import com.hexragon.compassance.managers.compass.tasks.tracking.TrackingType;
 import com.hexragon.compassance.managers.themes.Theme;
-import com.hexragon.compassance.misc.Misc;
+import com.hexragon.compassance.misc.Utils;
 import me.clip.placeholderapi.PlaceholderAPI;
-import me.clip.placeholderapi.PlaceholderHook;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.logging.Level;
 
-public class CompassancePlaceholderHook extends PlaceholderHook
+public class CompassancePlaceholderHook extends me.clip.placeholderapi.PlaceholderHook
 {
     public CompassancePlaceholderHook(Compassance instance)
     {
         if (PlaceholderAPI.registerPlaceholderHook(instance, this))
         {
-            Misc.logHandle(Level.INFO, "Registered placeholders to PlaceholderAPI.");
+            Utils.logHandle(Level.INFO, "Registered placeholders to PlaceholderAPI.");
         }
     }
 
@@ -35,7 +34,7 @@ public class CompassancePlaceholderHook extends PlaceholderHook
         if (identifier.equals("p_selectedtheme"))
         {
 
-            return Compassance.playerConfig.config.getString(String.format(PlayerConfig.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId().toString()));
+            return Compassance.playerConfig.config.getString(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId()));
         }
 
         if (identifier.equals("p_target"))
@@ -72,8 +71,8 @@ public class CompassancePlaceholderHook extends PlaceholderHook
 
         if (identifier.equals("p_string"))
         {
-            String theme = Compassance.playerConfig.config.getString(String.format(PlayerConfig.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId().toString()));
-            boolean cursor = Compassance.playerConfig.config.getBoolean(String.format(PlayerConfig.SETTING_CURSOR, p.getPlayer().getUniqueId().toString()));
+            String theme = Compassance.playerConfig.config.getString(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId()));
+            boolean cursor = Compassance.playerConfig.config.getBoolean(PlayerConfig.SETTING_CURSOR.format(p.getPlayer().getUniqueId().toString()));
             Theme th = Compassance.themeManager.getTheme(theme);
 
             if (th == null)
@@ -99,7 +98,7 @@ public class CompassancePlaceholderHook extends PlaceholderHook
         if (identifier.startsWith("p_string_theme_"))
         {
             String theme = identifier.replace("p_string_theme_", "");
-            boolean cursor = Compassance.playerConfig.config.getBoolean(String.format(PlayerConfig.SETTING_CURSOR, p.getPlayer().getUniqueId().toString()));
+            boolean cursor = Compassance.playerConfig.config.getBoolean(PlayerConfig.SETTING_CURSOR.format(p.getPlayer().getUniqueId().toString()));
             Theme th = Compassance.themeManager.getTheme(theme);
 
             if (th == null)

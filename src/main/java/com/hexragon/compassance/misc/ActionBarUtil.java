@@ -17,7 +17,7 @@ public class ActionBarUtil
     private static Class<?> packet;
     private static Method getHandle;
 
-    static //Caching the classes looked up.
+    static //Caching the found NMS classes.
     {
         String bukkitPackage = Bukkit.getServer().getClass().getPackage().getName();
         nmsver = bukkitPackage.substring(bukkitPackage.lastIndexOf(".") + 1);

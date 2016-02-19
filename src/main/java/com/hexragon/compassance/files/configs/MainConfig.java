@@ -1,9 +1,16 @@
 package com.hexragon.compassance.files.configs;
 
-public class MainConfig
+public enum MainConfig
 {
-    public static final String USE_PERMISSIONS = "use-permissions";
-    public static final String USE_TRACKING = "use-tracking";
-    public static final String METRICS = "metrics";
-    public static final String DEBUG_MODE = "bleeding-edge";
+    USE_PERMISSIONS("use-permissions"),
+    USE_TRACKING("use-tracking"),
+    METRICS("metrics"),
+    DEBUG_MODE("bleeding-edge");
+
+    public final String path;
+
+    MainConfig(String s)
+    {
+        path = s;
+    }
 }

@@ -1,7 +1,7 @@
 package com.hexragon.compassance.managers.compass.generator;
 
 import com.hexragon.compassance.managers.themes.Theme;
-import com.hexragon.compassance.misc.Misc;
+import com.hexragon.compassance.misc.Utils;
 import org.bukkit.Location;
 
 import java.util.HashMap;
@@ -30,12 +30,12 @@ public class CompassStringGenerator
 
     /**
      * @return Returns generated string from the created instance.
-     *
+     * <p/>
      * NOTE: If any exceptions is caught and affects the function
-     *       dramatically, this will automatically return an
-     *       error message.
-     *       If any exceptions is caught during replacement,
-     *       it will just skip that value.
+     * dramatically, this will automatically return an
+     * error message.
+     * If any exceptions is caught during replacement,
+     * it will just skip that value.
      */
     public String getString()
     {
@@ -89,7 +89,7 @@ public class CompassStringGenerator
 
                                 if (angle >= step * num && angle <= step * num1)
                                 {
-                                    String target = theme.getTargetNode();
+                                    String target = theme.func.target;
                                     if (target != null)
                                     {
                                         target = target.replaceAll("%str%", appending).replaceAll(";", "");
@@ -103,7 +103,7 @@ public class CompassStringGenerator
                             {
                                 if (i == (((length / 2) + 2) / 2))
                                 {
-                                    String cursor = theme.getCursorNode();
+                                    String cursor = theme.func.cursor;
                                     if (cursor != null)
                                     {
                                         cursor = cursor.replaceAll("%str%", appending).replaceAll(";", "");
@@ -117,7 +117,9 @@ public class CompassStringGenerator
 
                         appendRead++;
                     }
-                    catch (Exception ignore) {}
+                    catch (Exception ignore)
+                    {
+                    }
                 }
             }
 
@@ -126,7 +128,7 @@ public class CompassStringGenerator
              */
             String processsedString = strBuild.toString();
 
-            HashMap<String,String> directReplacers = theme.getData_DirectReplacers();
+            HashMap<String, String> directReplacers = theme.data.replacers;
             if (directReplacers != null && directReplacers.size() != 0)
             {
                 for (String s : directReplacers.keySet())
@@ -141,7 +143,7 @@ public class CompassStringGenerator
                 }
             }
 
-            HashMap<String,HashMap<String,String>> subPatternReplacers = theme.getData_subPatternReplacers();
+            HashMap<String, HashMap<String, String>> subPatternReplacers = theme.data.sub.replacers;
             if (subPatternReplacers != null && subPatternReplacers.size() != 0)
             {
                 for (String s : subPatternReplacers.keySet())
@@ -162,29 +164,34 @@ public class CompassStringGenerator
             /*
              * POST PROCESSING
              */
-            String finalString = theme.getFinal_PatternMap();
+            String finalString = theme.post.pattern;
 
-            HashMap<String,String> finalPatternMap = theme.getFinal_DirectReplacers();
-            if (finalPatternMap != null && finalPatternMap.size() != 0)
+            HashMap<String, String> finalPatternReplacers = theme.post.replacers;
+
+            if (finalPatternReplacers != null && finalPatternReplacers.size() != 0)
             {
-                finalString = finalString.replaceAll(";", "");
                 finalString = finalString.replaceAll("%str%", processsedString);
+                finalString = finalString.replaceAll(";", "");
 
-                for (String s : theme.getFinal_DirectReplacers().keySet())
+                for (String s : theme.post.replacers.keySet())
                 {
                     try
                     {
-                        finalString = finalString.replaceAll(s, theme.getFinal_DirectReplacers().get(s));
+                        finalString = finalString.replaceAll(s, theme.post.replacers.get(s));
                     }
                     catch (Exception ignore)
                     {
                     }
                 }
             }
+            else
+            {
+                finalString = processsedString;
+            }
 
-            finalString = Misc.fmtRefs(gi, finalString);
+            finalString = Utils.fmtRefs(gi, finalString);
 
-            return Misc.fmtClr(finalString);
+            return Utils.fmtClr(finalString);
 
         }
         catch (Exception e)

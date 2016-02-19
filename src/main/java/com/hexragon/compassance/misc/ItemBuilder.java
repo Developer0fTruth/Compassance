@@ -71,7 +71,7 @@ public class ItemBuilder implements Serializable
             {
                 continue;
             }
-            String[] lines = Misc.fmtClr(text).split("%nl%");
+            String[] lines = Utils.fmtClr(text).split("%nl%");
             Collections.addAll(list, lines);
         }
         loreList = list;
@@ -90,7 +90,7 @@ public class ItemBuilder implements Serializable
         ItemMeta itmMeta = item.getItemMeta();
         if (name != null && !name.isEmpty())
         {
-            itmMeta.setDisplayName(Misc.fmtClr(name));
+            itmMeta.setDisplayName(Utils.fmtClr(name));
         }
         if (loreList != null)
         {

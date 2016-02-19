@@ -4,7 +4,7 @@ import com.hexragon.compassance.Compassance;
 import com.hexragon.compassance.files.configs.PlayerConfig;
 import com.hexragon.compassance.managers.themes.Theme;
 import com.hexragon.compassance.misc.ItemBuilder;
-import com.hexragon.compassance.misc.Misc;
+import com.hexragon.compassance.misc.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -18,7 +18,7 @@ import java.util.LinkedHashSet;
 
 public class ThemeMenu implements Listener
 {
-    public final String name = Misc.fmtClr("&lThemes");
+    public final String name = Utils.fmtClr("&lThemes");
 
     public ThemeMenu()
     {
@@ -27,12 +27,12 @@ public class ThemeMenu implements Listener
 
     public void show(Player p)
     {
-        Inventory inv = Bukkit.createInventory(p, 6 * 9, Misc.fmtClr(name));
+        Inventory inv = Bukkit.createInventory(p, 6 * 9, Utils.fmtClr(name));
 
         int itemSlot = 10;
         int wrapCounter = 1;
 
-        String selectedTheme = Compassance.playerConfig.config.getString(String.format(PlayerConfig.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId()));
+        String selectedTheme = Compassance.playerConfig.config.getString(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId()));
 
         for (String id : Compassance.themeManager.getThemes().keySet())
         {
@@ -42,8 +42,8 @@ public class ThemeMenu implements Listener
 
             ItemBuilder itmBuild1 =
                     new ItemBuilder().material(Material.STAINED_GLASS_PANE).data(data).amt(1)
-                            .name(Misc.fmtClr("&r" + t.getName()))
-                            .lore("&7ID: &f" + t.getId(), "", Misc.fmtClr(t.getDesc()));
+                            .name(Utils.fmtClr("&r" + t.meta.name))
+                            .lore("&7ID: &f" + t.id, "", Utils.fmtClr(t.meta.desc));
             inv.setItem(itemSlot, itmBuild1.toItemStack());
 
             wrapCounter++;
@@ -54,7 +54,7 @@ public class ThemeMenu implements Listener
         ItemBuilder itmBuild1 =
                 new ItemBuilder().material(Material.BARRIER).data((byte) 0).amt(1)
                         .name("&c&lExit")
-                        .lore("", "&7Return to main menu.");
+                        .lore("", "&7Return to meta menu.");
         inv.setItem(49, itmBuild1.toItemStack());
 
         p.openInventory(inv);
@@ -91,14 +91,14 @@ public class ThemeMenu implements Listener
 
                     String clickedId = idList.toArray()[i - 1].toString();
 
-                    Compassance.playerConfig.config.set(String.format(PlayerConfig.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId()), clickedId);
+                    Compassance.playerConfig.config.set(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId()), clickedId);
                     Compassance.compassTaskManager.refresh(p);
 
                     e.getWhoClicked().sendMessage(
-                            Misc.fmtClr(
+                            Utils.fmtClr(
                                     String.format(
                                             "&a&lCOMPASS &8» &7Switching your selected theme to &r%s&7.",
-                                            Compassance.themeManager.getTheme(clickedId).getName())));
+                                            Compassance.themeManager.getTheme(clickedId).meta.name)));
 
                     show(p);
                     return;

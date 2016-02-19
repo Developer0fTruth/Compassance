@@ -1,6 +1,7 @@
 package com.hexragon.compassance.misc;
 
 import com.hexragon.compassance.Compassance;
+import com.hexragon.compassance.files.configs.PlayerConfig;
 import com.hexragon.compassance.managers.compass.generator.GeneratorInfo;
 import me.clip.placeholderapi.PlaceholderAPI;
 import net.md_5.bungee.api.ChatColor;
@@ -11,7 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 
-public class Misc
+public class Utils
 {
 
     public static String fmtClr(String s)
@@ -23,8 +24,8 @@ public class Misc
     {
         Date d = new Date();
 
-        s = s.replaceAll("%theme-id%", gi.theme.getId())
-                .replaceAll("%theme%", gi.theme.getName())
+        s = s.replaceAll("%theme-id%", gi.theme.id)
+                .replaceAll("%theme%", gi.theme.meta.name)
         ;
 
         // TIME
@@ -76,5 +77,30 @@ public class Misc
     public static boolean permHandle(Player p, String perm, boolean ifPermIsNull)
     {
         return perm != null && p.hasPermission(perm) || perm == null && ifPermIsNull;
+    }
+
+    public static void updateProfile(Player p)
+    {
+        Compassance.playerConfig.config.set(PlayerConfig.PLAYER_NAME.format(p.getPlayer().getUniqueId().toString()), p.getName());
+
+        String selectedTheme = Compassance.playerConfig.config.getString(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId().toString()));
+        if (selectedTheme == null || Compassance.themeManager.getTheme(selectedTheme) == null)
+        {
+            Compassance.playerConfig.config
+                    .set(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId().toString()), Compassance.themeManager.getDefaultID());
+
+            Compassance.playerConfig.config
+                    .set(PlayerConfig.SETTING_ENABLE.format(p.getPlayer().getUniqueId().toString()),
+                            Compassance.playerConfig.config.getBoolean(PlayerConfig.SETTING_ENABLE.format("default")));
+            Compassance.playerConfig.config
+                    .set(PlayerConfig.SETTING_CURSOR.format(p.getPlayer().getUniqueId().toString()),
+                            Compassance.playerConfig.config.getBoolean(PlayerConfig.SETTING_CURSOR.format("default")));
+            Compassance.playerConfig.config
+                    .set(PlayerConfig.SETTING_ALWAYSON.format(p.getPlayer().getUniqueId().toString()),
+                            Compassance.playerConfig.config.getBoolean(PlayerConfig.SETTING_ALWAYSON.format("default")));
+            Compassance.playerConfig.config
+                    .set(PlayerConfig.SETTING_TRACKING.format(p.getPlayer().getUniqueId().toString()),
+                            Compassance.playerConfig.config.getBoolean(PlayerConfig.SETTING_TRACKING.format("default")));
+        }
     }
 }

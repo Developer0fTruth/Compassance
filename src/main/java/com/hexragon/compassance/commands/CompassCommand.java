@@ -2,13 +2,15 @@ package com.hexragon.compassance.commands;
 
 import com.hexragon.compassance.Compassance;
 import com.hexragon.compassance.files.configs.PlayerConfig;
-import com.hexragon.compassance.misc.Misc;
+import com.hexragon.compassance.misc.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
 
 public class CompassCommand implements CommandExecutor
 {
@@ -26,49 +28,69 @@ public class CompassCommand implements CommandExecutor
             return true;
         }
 
-        if (args.length == 0 || args[0].equalsIgnoreCase("open"))
+        if (args.length == 0)
+        {
+            ArrayList<String> arr = new ArrayList<>();
+            arr.add("&8&m--------------------------------------------------");
+            arr.add("");
+            arr.add("        &2&lCompassance");
+            arr.add("");
+            arr.add("    &f/compass open &7- &f&aOpen compass settings menu.");
+            arr.add("    &f/compass theme -id &7- &f&aChange theme based on id.");
+            arr.add("    &f/compass track -args... &7- &f&aTrack a target.");
+            arr.add("");
+            arr.add("&8&m--------------------------------------------------");
+
+            for (String s : arr)
+            {
+                sender.sendMessage(Utils.fmtClr(s));
+            }
+            return true;
+        }
+
+        else if (args[0].equalsIgnoreCase("open"))
         {
             Compassance.mainMenu.show((Player) sender);
             return true;
         }
 
-        if (args[0].equalsIgnoreCase("theme"))
+        else if (args[0].equalsIgnoreCase("theme"))
         {
             Player p = (Player) sender;
 
             if (args.length < 2)
             {
-                p.sendMessage(Misc.fmtClr("&a&lCOMPASS &8» &cInsufficient amount of arguments."));
-                p.sendMessage(Misc.fmtClr("&a&lUSAGE &8» &7/compass theme &ftheme-id"));
+                p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cInsufficient amount of arguments."));
+                p.sendMessage(Utils.fmtClr("&a&lUSAGE &8» &7/compass theme &ftheme-id"));
                 return true;
             }
 
             if (Compassance.themeManager.getTheme(args[1]) == null)
             {
-                p.sendMessage(Misc.fmtClr("&a&lCOMPASS &8» &cTheme ID doesn't exist."));
+                p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cTheme ID doesn't exist."));
                 return true;
             }
 
-            p.sendMessage(Misc.fmtClr(String.format("&a&lCOMPASS &8» &7Switching your selected theme to &r%s&7.", Compassance.themeManager.getTheme(args[1]).getName())));
-            Compassance.playerConfig.config.set(String.format(PlayerConfig.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId().toString()), args[1]);
+            p.sendMessage(Utils.fmtClr(String.format("&a&lCOMPASS &8» &7Switching your selected theme to &r%s&7.", Compassance.themeManager.getTheme(args[1]).meta.name)));
+            Compassance.playerConfig.config.set(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId().toString()), args[1]);
             return true;
         }
 
-        if (args[0].equalsIgnoreCase("track") || args[0].equalsIgnoreCase("trk"))
+        else if (args[0].equalsIgnoreCase("track") || args[0].equalsIgnoreCase("trk"))
         {
             Player p = (Player) sender;
 
-            boolean b = Compassance.playerConfig.config.getBoolean(String.format(PlayerConfig.SETTING_TRACKING, p.getPlayer().getUniqueId().toString()));
+            boolean b = Compassance.playerConfig.config.getBoolean(PlayerConfig.SETTING_TRACKING.format(p.getPlayer().getUniqueId().toString()));
             if (!b)
             {
-                p.sendMessage(Misc.fmtClr("&a&lCOMPASS &8» &cYou must enable tracking in the Compassance menu."));
+                p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cYou must enable tracking in the Compassance menu."));
                 return true;
             }
 
             if (args.length < 2)
             {
-                p.sendMessage(Misc.fmtClr("&a&lCOMPASS &8» &cInsufficient amount of arguments."));
-                p.sendMessage(Misc.fmtClr("&a&lUSAGE &8» &7/compass trk &fpl &7or &7/compass trk &floc"));
+                p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cInsufficient amount of arguments."));
+                p.sendMessage(Utils.fmtClr("&a&lUSAGE &8» &7/compass trk &fpl &7or &7/compass trk &floc"));
                 return true;
             }
 
@@ -76,8 +98,8 @@ public class CompassCommand implements CommandExecutor
             {
                 if (args.length != 3)
                 {
-                    p.sendMessage(Misc.fmtClr("&a&lCOMPASS &8» &cInsufficient amount of arguments."));
-                    p.sendMessage(Misc.fmtClr("&a&lUSAGE &8» &7/compass trk pl &f-player"));
+                    p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cInsufficient amount of arguments."));
+                    p.sendMessage(Utils.fmtClr("&a&lUSAGE &8» &7/compass trk pl &f-player"));
                     return true;
                 }
 
@@ -88,12 +110,12 @@ public class CompassCommand implements CommandExecutor
                     {
                         Compassance.trackingManager.newTracking(p, pl);
                         Compassance.compassTaskManager.refresh(p);
-                        p.sendMessage(Misc.fmtClr(String.format("&a&lCOMPASS &8» &7You are now tracking player &f%s&7.", pl.getName())));
-                        pl.sendMessage(Misc.fmtClr(String.format("&a&lCOMPASS &8» &7You are being tracked by &f%s&7.", p.getName())));
+                        p.sendMessage(Utils.fmtClr(String.format("&a&lCOMPASS &8» &7You are now tracking player &f%s&7.", pl.getName())));
+                        pl.sendMessage(Utils.fmtClr(String.format("&a&lCOMPASS &8» &7You are being tracked by &f%s&7.", p.getName())));
                         return true;
                     }
                 }
-                p.sendMessage(Misc.fmtClr("&a&lCOMPASS &8» &cThe player you are attempting to track is not found."));
+                p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cThe player you are attempting to track is not found."));
 
                 return true;
             }
@@ -101,8 +123,8 @@ public class CompassCommand implements CommandExecutor
             {
                 if (args.length != 5)
                 {
-                    p.sendMessage(Misc.fmtClr("&a&lCOMPASS &8» &cInsufficient amount of arguments."));
-                    p.sendMessage(Misc.fmtClr("&a&lUSAGE &8» &7/compass trk loc &f-x -y -z&7."));
+                    p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cInsufficient amount of arguments."));
+                    p.sendMessage(Utils.fmtClr("&a&lUSAGE &8» &7/compass trk loc &f-x -y -z&7."));
                     return true;
                 }
 
@@ -114,21 +136,27 @@ public class CompassCommand implements CommandExecutor
                     Compassance.trackingManager.newTracking(p, new Location(p.getWorld(), x, y, z));
 
                     Compassance.compassTaskManager.refresh(p);
-                    p.sendMessage(Misc.fmtClr(String.format("&a&lCOMPASS &8» &7You are now tracking coordinates &f%s&7, &f%s&7, &f%s&7.", x, y, z)));
+                    p.sendMessage(Utils.fmtClr(String.format("&a&lCOMPASS &8» &7You are now tracking coordinates &f%s&7, &f%s&7, &f%s&7.", x, y, z)));
                     return true;
                 }
                 catch (Exception e)
                 {
-                    p.sendMessage(Misc.fmtClr("&a&lCOMPASS &8» &cThe coordinates you entered failed to parse, make sure you are using numbers."));
+                    p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cThe coordinates you entered failed to parse, make sure you are using numbers."));
                 }
             }
             else
             {
-                p.sendMessage(Misc.fmtClr("&a&lCOMPASS &8» &cInvalid tracking type."));
-                p.sendMessage(Misc.fmtClr("&a&lUSAGE &8» &7/compass trk &fpl &7or &7/compass trk &floc"));
+                p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cInvalid tracking type."));
+                p.sendMessage(Utils.fmtClr("&a&lUSAGE &8» &7/compass trk &fpl &7or &7/compass trk &floc"));
                 return true;
             }
+        }
 
+        else
+        {
+            sender.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cInvalid arguments."));
+            sender.sendMessage(Utils.fmtClr("&a&lUSAGE &8» &7/compass help"));
+            return true;
         }
 
         return false;

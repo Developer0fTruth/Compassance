@@ -8,7 +8,7 @@ import com.hexragon.compassance.managers.compass.generator.GeneratorInfo;
 import com.hexragon.compassance.managers.compass.tasks.tracking.TrackedTarget;
 import com.hexragon.compassance.managers.themes.Theme;
 import com.hexragon.compassance.misc.ActionBarUtil;
-import com.hexragon.compassance.misc.Misc;
+import com.hexragon.compassance.misc.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -34,9 +34,9 @@ public class CompassUpdateTask
     public CompassUpdateTask(Player p)
     {
         this.p = p;
-        this.theme = Compassance.playerConfig.config.getString(String.format(PlayerConfig.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId().toString()));
-        this.cursor = Compassance.playerConfig.config.getBoolean(String.format(PlayerConfig.SETTING_CURSOR, p.getPlayer().getUniqueId().toString()));
-        this.alwaysOn = Compassance.playerConfig.config.getBoolean(String.format(PlayerConfig.SETTING_ALWAYSON, p.getPlayer().getUniqueId().toString()));
+        this.theme = Compassance.playerConfig.config.getString(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId().toString()));
+        this.cursor = Compassance.playerConfig.config.getBoolean(PlayerConfig.SETTING_CURSOR.format(p.getPlayer().getUniqueId().toString()));
+        this.alwaysOn = Compassance.playerConfig.config.getBoolean(PlayerConfig.SETTING_ALWAYSON.format(p.getPlayer().getUniqueId().toString()));
 
 
         this.running = false;
@@ -73,26 +73,26 @@ public class CompassUpdateTask
 
                     if (th == null)
                     {
-                        p.sendMessage(Misc.fmtClr("&a&lCOMPASS &8» &cYour selected theme doesn't exist. Switching to default."));
-                        Compassance.playerConfig.config.set(String.format(PlayerConfig.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId()), Compassance.themeManager.getDefaultID());
+                        p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cYour selected theme doesn't exist. Switching to default."));
+                        Compassance.playerConfig.config.set(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId()), Compassance.themeManager.getDefaultID());
                         Compassance.compassTaskManager.refresh(p);
                         return;
                     }
 
-                    if ((!Misc.permHandle(p, th.getPerm(), true)) &&
-                            Compassance.mainConfig.config.getBoolean(MainConfig.USE_PERMISSIONS))
+                    if ((!Utils.permHandle(p, th.meta.permission, true)) &&
+                            Compassance.mainConfig.config.getBoolean(MainConfig.USE_PERMISSIONS.path))
                     {
-                        if (th.getId().equalsIgnoreCase(Compassance.themeManager.getDefaultID()))
+                        if (th.id.equalsIgnoreCase(Compassance.themeManager.getDefaultID()))
                         {
-                            p.sendMessage(Misc.fmtClr("&a&lCOMPASS &8» &cYou don't have permission for default theme. Toggling off compass."));
-                            Compassance.playerConfig.config.set(String.format(PlayerConfig.SETTING_ENABLE, p.getPlayer().getUniqueId().toString()), false);
+                            p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cYou don't have permission for default theme. Toggling off compass."));
+                            Compassance.playerConfig.config.set(PlayerConfig.SETTING_ENABLE.format(p.getPlayer().getUniqueId().toString()), false);
                             Compassance.compassTaskManager.refresh(p);
                             ActionBarUtil.send(p, "");
                         }
                         else
                         {
-                            p.sendMessage(Misc.fmtClr("&a&lCOMPASS &8» &cYou don't have permission for this theme. Switching to default."));
-                            Compassance.playerConfig.config.set(String.format(PlayerConfig.SETTING_SELECTEDTHEME, p.getPlayer().getUniqueId()), Compassance.themeManager.getDefaultID());
+                            p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cYou don't have permission for this theme. Switching to default."));
+                            Compassance.playerConfig.config.set(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId()), Compassance.themeManager.getDefaultID());
                             Compassance.compassTaskManager.refresh(p);
                         }
                     }

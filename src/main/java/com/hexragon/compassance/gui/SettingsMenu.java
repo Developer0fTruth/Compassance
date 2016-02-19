@@ -3,7 +3,7 @@ package com.hexragon.compassance.gui;
 import com.hexragon.compassance.Compassance;
 import com.hexragon.compassance.files.configs.PlayerConfig;
 import com.hexragon.compassance.misc.ItemBuilder;
-import com.hexragon.compassance.misc.Misc;
+import com.hexragon.compassance.misc.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -15,7 +15,7 @@ import org.bukkit.inventory.Inventory;
 
 public class SettingsMenu implements Listener
 {
-    private final String name = Misc.fmtClr("&lSettings");
+    private final String name = Utils.fmtClr("&lSettings");
     private String[] bl;
 
     public SettingsMenu()
@@ -27,9 +27,9 @@ public class SettingsMenu implements Listener
 
     private String[] getBL(Player p)
     {
-        bl[0] = String.format(PlayerConfig.SETTING_ENABLE, p.getPlayer().getUniqueId().toString());
-        bl[1] = String.format(PlayerConfig.SETTING_ALWAYSON, p.getPlayer().getUniqueId().toString());
-        bl[2] = String.format(PlayerConfig.SETTING_CURSOR, p.getPlayer().getUniqueId().toString());
+        bl[0] = PlayerConfig.SETTING_ENABLE.format(p.getPlayer().getUniqueId().toString());
+        bl[1] = PlayerConfig.SETTING_ALWAYSON.format(p.getPlayer().getUniqueId().toString());
+        bl[2] = PlayerConfig.SETTING_CURSOR.format(p.getPlayer().getUniqueId().toString());
         return bl;
     }
 
@@ -79,7 +79,7 @@ public class SettingsMenu implements Listener
         inv.setItem(25,
                 new ItemBuilder().material(Material.BARRIER).data((byte) 0).amt(1)
                         .name("&c&lExit")
-                        .lore("", "&7Return to main menu.").toItemStack());
+                        .lore("", "&7Return to meta menu.").toItemStack());
 
         p.openInventory(inv);
     }

@@ -5,7 +5,7 @@ import com.hexragon.compassance.files.configs.PlayerConfig;
 import com.hexragon.compassance.managers.themes.Theme;
 import com.hexragon.compassance.misc.ActionBarUtil;
 import com.hexragon.compassance.misc.ItemBuilder;
-import com.hexragon.compassance.misc.Misc;
+import com.hexragon.compassance.misc.Utils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -55,33 +55,33 @@ public class TestCommand implements CommandExecutor
                 return true;
             }
 
-            sender.sendMessage("Displaying parsed data for theme " + theme.getId());
+            sender.sendMessage("Displaying parsed data for theme " + theme.id);
 
-            sender.sendMessage(Misc.fmtClr("&9&lMeta :"));
-            sender.sendMessage(Misc.fmtClr("  &8Name : &r" + theme.getName()));
-            sender.sendMessage(Misc.fmtClr("  &8Desc : &r" + theme.getDesc()));
-            sender.sendMessage(Misc.fmtClr("  &8Main Pattern Map : &r") + theme.getData_main_PatternMap());
+            sender.sendMessage(Utils.fmtClr("&9&lMeta :"));
+            sender.sendMessage(Utils.fmtClr("  &8Name : &r" + theme.meta.name));
+            sender.sendMessage(Utils.fmtClr("  &8Desc : &r" + theme.meta.desc));
+            sender.sendMessage(Utils.fmtClr("  &8Main Pattern Map : &r") + theme.meta.patternMap);
 
-            sender.sendMessage(Misc.fmtClr("&9&lDirect Replacers :"));
-            for (String s : theme.getData_DirectReplacers().keySet())
+            sender.sendMessage(Utils.fmtClr("&9&lDirect Replacers :"));
+            for (String s : theme.data.replacers.keySet())
             {
-                sender.sendMessage(Misc.fmtClr("  &8" + s + " : &r" + theme.getData_DirectReplacers().get(s)));
+                sender.sendMessage(Utils.fmtClr("  &8" + s + " : &r" + theme.data.replacers.get(s)));
             }
-            sender.sendMessage(Misc.fmtClr("&9&lSub-Patterns :"));
-            for (String s : theme.getData_subPatternMap().keySet())
+            sender.sendMessage(Utils.fmtClr("&9&lSub-Patterns :"));
+            for (String s : theme.data.sub.pattern.keySet())
             {
-                sender.sendMessage(Misc.fmtClr("  &8" + s + " : &r") + theme.getData_subPatternMap().get(s));
-                for (String s2 : theme.getData_subPatternReplacers().get(s).keySet())
+                sender.sendMessage(Utils.fmtClr("  &8" + s + " : &r") + theme.data.sub.pattern.get(s));
+                for (String s2 : theme.data.sub.replacers.get(s).keySet())
                 {
-                    sender.sendMessage(Misc.fmtClr("    &8" + s2 + " : &r" + theme.getData_subPatternReplacers().get(s).get(s2)));
+                    sender.sendMessage(Utils.fmtClr("    &8" + s2 + " : &r" + theme.data.sub.replacers.get(s).get(s2)));
                 }
             }
 
-            sender.sendMessage(Misc.fmtClr("&9&lPost Processing : "));
-            sender.sendMessage("  " + theme.getFinal_PatternMap());
-            for (String s : theme.getFinal_DirectReplacers().keySet())
+            sender.sendMessage(Utils.fmtClr("&9&lPost Processing : "));
+            sender.sendMessage("  " + theme.post.pattern);
+            for (String s : theme.post.replacers.keySet())
             {
-                sender.sendMessage(Misc.fmtClr("  &8" + s + " : &r" + theme.getFinal_DirectReplacers().get(s)));
+                sender.sendMessage(Utils.fmtClr("  &8" + s + " : &r" + theme.post.replacers.get(s)));
             }
 
             return true;
@@ -97,7 +97,7 @@ public class TestCommand implements CommandExecutor
                 return true;
             }
 
-            p.sendMessage(String.valueOf(Misc.permHandle(p, theme.getPerm(), true)));
+            p.sendMessage(String.valueOf(Utils.permHandle(p, theme.meta.permission, true)));
 
 
             return true;
@@ -163,14 +163,14 @@ public class TestCommand implements CommandExecutor
         {
             Player p = (Player) sender;
             //String uuid = p.getUniqueId().toString();
-            boolean b = Compassance.playerConfig.config.getBoolean(String.format(PlayerConfig.SETTING_ENABLE, p.getPlayer().getUniqueId().toString()));
+            boolean b = Compassance.playerConfig.config.getBoolean(PlayerConfig.SETTING_ENABLE.format(p.getPlayer().getUniqueId().toString()));
             if (b)
             {
-                Compassance.playerConfig.config.set(String.format(PlayerConfig.SETTING_ENABLE, p.getPlayer().getUniqueId().toString()), false);
+                Compassance.playerConfig.config.set(PlayerConfig.SETTING_ENABLE.format(p.getPlayer().getUniqueId().toString()), false);
             }
             else
             {
-                Compassance.playerConfig.config.set(String.format(PlayerConfig.SETTING_ENABLE, p.getPlayer().getUniqueId().toString()), true);
+                Compassance.playerConfig.config.set(PlayerConfig.SETTING_ENABLE.format(p.getPlayer().getUniqueId().toString()), true);
             }
             Compassance.compassTaskManager.refresh(p);
             ActionBarUtil.send(p, "");

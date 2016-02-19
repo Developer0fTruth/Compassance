@@ -7,51 +7,49 @@ import java.util.HashMap;
 
 public class Theme
 {
+    public final String id;
 
-    private final String id;
-    private String meta_name;
-    private String meta_desc;
-    private String meta_perm;
-
-    private String func_cursor;
-    private String func_target;
-
-    private String data_main_PatternMap;
-    private HashMap<String, String> data_DirectReplacers;
-
-    private HashMap<String, String> data_subPatternMap;
-    private HashMap<String, HashMap<String, String>> data_subPatternReplacers;
-
-    private String final_PatternMap;
-    private HashMap<String, String> final_DirectReplacers;
-
-    public Theme(String id)
-    {
-        this.id = id;
-
-        data_DirectReplacers = new HashMap<>();
-        data_subPatternMap = new HashMap<>();
-        data_subPatternReplacers = new HashMap<>();
-        final_DirectReplacers = new HashMap<>();
-    }
+    public ThemeMeta meta;
+    public ThemeData data;
+    public ThemeFinal post;
+    public ThemeFunctionals func;
 
     /**
      * Grab all data from themes-configs.configs using designated paths.
      * Associate values with a map so CompassStringGenerator can
      * generated string with styled characters.
      */
+    public Theme(String id)
+    {
+        this.id = id;
+
+        meta = new ThemeMeta();
+        data = new ThemeData();
+        post = new ThemeFinal();
+        func = new ThemeFunctionals();
+
+        data.replacers = new HashMap<>();
+        data.sub.pattern = new HashMap<>();
+        data.sub.replacers = new HashMap<>();
+
+        post.replacers = new HashMap<>();
+
+        loadData();
+    }
+
     public void loadData()
     {
+        meta.name = Compassance.themeConfig.config.getString(ThemeConfig.THEME_META_NAME.format(id));
+        meta.desc = Compassance.themeConfig.config.getString(ThemeConfig.THEME_META_DESC.format(id));
+        meta.permission = Compassance.themeConfig.config.getString(ThemeConfig.THEME_META_PERM.format(id));
+
         try
         {
-            this.meta_name = Compassance.themeConfig.config.getString(String.format(ThemeConfig.THEME_META_NAME, id));
-            this.meta_desc = Compassance.themeConfig.config.getString(String.format(ThemeConfig.THEME_META_DESC, id));
-            this.meta_perm = Compassance.themeConfig.config.getString(String.format(ThemeConfig.THEME_META_PERM, id));
+            meta.patternMap = Compassance.themeConfig.config.getString(ThemeConfig.THEME_DATA_MAIN_PATTERN_MAP.format(id));
 
-            this.data_main_PatternMap = Compassance.themeConfig.config.getString(String.format(ThemeConfig.THEME_DATA_MAIN_PATTERN_MAP, id));
-            if (data_main_PatternMap != null)
+            if (meta.patternMap != null)
             {
-                String[] mainPatternReplacers = data_main_PatternMap.split(";");
+                String[] mainPatternReplacers = meta.patternMap.split(";");
                 for (String s : mainPatternReplacers)
                 {
                     /*
@@ -59,18 +57,18 @@ public class Theme
                      */
                     if (s.startsWith("<s/") && s.endsWith(">"))
                     {
-                        String subPatternMap = Compassance.themeConfig.config.getString(String.format(ThemeConfig.THEME_DATA_SUBPATTERN_MAP, id, s));
+                        String subPatternMap = Compassance.themeConfig.config.getString(ThemeConfig.THEME_DATA_SUBPATTERN_MAP.format(id, s));
 
                         String[] subPatternReplacers = subPatternMap.split(";");
                         HashMap<String, String> map = new HashMap<>();
 
                         for (String s2 : subPatternReplacers)
                         {
-                            map.put(s2, Compassance.themeConfig.config.getString(String.format(ThemeConfig.THEME_DATA_SUBPATTERN_MAP_REPLACER, id, s, s2)));
+                            map.put(s2, Compassance.themeConfig.config.getString(ThemeConfig.THEME_DATA_SUBPATTERN_MAP_REPLACER.format(id, s, s2)));
                         }
 
-                        data_subPatternMap.put(s, subPatternMap);
-                        data_subPatternReplacers.put(s, map);
+                        data.sub.pattern.put(s, subPatternMap);
+                        data.sub.replacers.put(s, map);
                     }
 
                     /*
@@ -78,8 +76,8 @@ public class Theme
                      */
                     else if (s.startsWith("<") && s.endsWith(">"))
                     {
-                        String d_replacer = Compassance.themeConfig.config.getString(String.format(ThemeConfig.THEME_DATA_DIRECT_REPLACER, id, s));
-                        data_DirectReplacers.put(s, d_replacer);
+                        String d_replacer = Compassance.themeConfig.config.getString(ThemeConfig.THEME_DATA_DIRECT_REPLACER.format(id, s));
+                        data.replacers.put(s, d_replacer);
                     }
                 }
             }
@@ -91,20 +89,20 @@ public class Theme
         /*
          * Search in final node.
          */
-            final_PatternMap = Compassance.themeConfig.config.getString(String.format(ThemeConfig.THEME_FINAL_MAIN_PATTERN_MAP, id));
-            String[] finalPatternReplacers = final_PatternMap.split(";");
+            post.pattern = Compassance.themeConfig.config.getString(ThemeConfig.THEME_FINAL_MAIN_PATTERN_MAP.format(id));
+            String[] finalPatternReplacers = post.pattern.split(";");
 
             for (String s : finalPatternReplacers)
             {
                 if (s.startsWith("<") && s.endsWith(">"))
                 {
-                    String d_replacer = Compassance.themeConfig.config.getString(String.format(ThemeConfig.THEME_FINAL_DIRECT_REPLACER, id, s));
-                    final_DirectReplacers.put(s, d_replacer);
+                    String d_replacer = Compassance.themeConfig.config.getString(ThemeConfig.THEME_FINAL_DIRECT_REPLACER.format(id,s));
+                    post.replacers.put(s, d_replacer);
                 }
             }
 
-            func_cursor = Compassance.themeConfig.config.getString(String.format(ThemeConfig.THEME_DATA_FUNC_CURSOR, id));
-            func_target = Compassance.themeConfig.config.getString(String.format(ThemeConfig.THEME_DATA_FUNC_TARGET, id));
+            func.cursor = Compassance.themeConfig.config.getString(ThemeConfig.THEME_DATA_FUNC_CURSOR.format(id));
+            func.target = Compassance.themeConfig.config.getString(ThemeConfig.THEME_DATA_FUNC_TARGET.format(id));
         }
         catch (Exception ignored)
         {
@@ -117,14 +115,13 @@ public class Theme
      */
     public String getStringMapFull()
     {
-        String strMap = data_main_PatternMap;
-        for (String s : getData_subPatternMap().keySet())
+        String strMap = meta.patternMap;
+        for (String s : data.sub.pattern.keySet())
         {
-            strMap = strMap.replaceAll(s, getData_subPatternMap().get(s));
+            strMap = strMap.replaceAll(s, data.sub.pattern.get(s));
         }
         return strMap;
     }
-
 
     /**
      * @return Every replacing node of the theme.
@@ -134,63 +131,37 @@ public class Theme
         return getStringMapFull().split(";");
     }
 
-    public String getId()
+    public class ThemeMeta
     {
-        return id;
+        public String name;
+        public String desc;
+        public String permission;
+        public String patternMap;
     }
 
-    public String getName()
+    public class ThemeData
     {
-        return this.meta_name;
+        public ThemeSubData sub = new ThemeSubData();
+
+        public HashMap<String, String> replacers;
+
+        public class ThemeSubData
+        {
+            public HashMap<String, String> pattern;
+            public HashMap<String, HashMap<String, String>> replacers;
+        }
     }
 
-    public String getDesc()
+    public class ThemeFinal
     {
-        return this.meta_desc;
+        public String pattern;
+        public HashMap<String, String> replacers;
     }
 
-    public String getPerm()
+    public class ThemeFunctionals
     {
-        return meta_perm;
+        public String cursor;
+        public String target;
     }
 
-    public String getCursorNode()
-    {
-        return func_cursor;
-    }
-
-    public String getTargetNode()
-    {
-        return func_target;
-    }
-
-    public String getData_main_PatternMap()
-    {
-        return this.data_main_PatternMap;
-    }
-
-    public HashMap<String, String> getData_DirectReplacers()
-    {
-        return this.data_DirectReplacers;
-    }
-
-    public HashMap<String, String> getData_subPatternMap()
-    {
-        return data_subPatternMap;
-    }
-
-    public HashMap<String, HashMap<String, String>> getData_subPatternReplacers()
-    {
-        return data_subPatternReplacers;
-    }
-
-    public String getFinal_PatternMap()
-    {
-        return this.final_PatternMap;
-    }
-
-    public HashMap<String, String> getFinal_DirectReplacers()
-    {
-        return this.final_DirectReplacers;
-    }
 }
