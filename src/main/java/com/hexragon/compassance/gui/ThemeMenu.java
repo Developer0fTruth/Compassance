@@ -10,21 +10,35 @@ import com.hexragon.compassance.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
 
 public class ThemeMenu implements Listener
 {
-    public final String name = Utils.fmtClr("&lThemes");
+    public final String name;
+    private ArrayList<Player> users = new ArrayList<>();
 
     public ThemeMenu()
     {
+        String s = Utils.fmtClr("&lThemes");
+        if (s.length() > 32)
+        {
+            name = s.substring(0, 31);
+        }
+        else
+        {
+            name = s;
+        }
+
         Main.instance.getServer().getPluginManager().registerEvents(this, Main.instance);
     }
 
@@ -35,20 +49,20 @@ public class ThemeMenu implements Listener
         int itemSlot = 10;
         int wrapCounter = 1;
 
-        String selectedTheme = Main.playerConfig.config.getString(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId()));
+        String selectedId = Main.playerConfig.config.getString(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId()));
 
         for (String id : Main.themeManager.getThemes().keySet())
         {
             Theme t = Main.themeManager.getTheme(id);
 
-            byte data = (byte) (selectedTheme.equalsIgnoreCase(id) ? 11 : 7);
-
+            byte data = (byte) (selectedId.equalsIgnoreCase(id) ? 11 : 7);
 
             ItemBuilder itmBuild1 =
                     new ItemBuilder().material(Material.STAINED_GLASS_PANE).data(data).amt(1)
                             .name(Utils.fmtClr("&r" + t.meta.name))
-                            .lore("&7ID: &f" + t.id, "", Utils.fmtClr(t.meta.desc))
-                            .shiny(selectedTheme.equalsIgnoreCase(id));
+                            .lore("&7ID: &f" + t.id, "", Utils.fmtClr(t.meta.desc), "", "&fClick &7to select.", "&fRight Click &7to preview.")
+                            .hideEnchants(selectedId.equals(id))
+                            .enchant(selectedId.equals(id) ? Enchantment.DURABILITY : null, 1);
             inv.setItem(itemSlot, itmBuild1.toItemStack());
 
             wrapCounter++;
@@ -62,17 +76,18 @@ public class ThemeMenu implements Listener
                         .lore("", "&7Return to meta menu.");
         inv.setItem(49, itmBuild1.toItemStack());
 
+        users.add(p);
         p.openInventory(inv);
     }
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e)
     {
-        Inventory inv = e.getInventory();
+        Inventory inv = e.getClickedInventory();
         Player p = (Player) e.getWhoClicked();
         int slot = e.getSlot();
 
-        if (inv.getName().equalsIgnoreCase(name))
+        if (inv.getName().equalsIgnoreCase(name) && inv.getHolder() == p && users.contains(p))
         {
             e.setCancelled(true);
 
@@ -107,6 +122,7 @@ public class ThemeMenu implements Listener
                         if (target != null && target.getLocation() != null)
                             gi = new GeneratorInfo(p, p.getLocation(), target.getLocation(), p.getLocation().getYaw(), cursor);
                         else gi = new GeneratorInfo(p, null, null, p.getLocation().getYaw(), cursor);
+                        p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &7Showing preview of " + t.meta.name + "&7."));
                         p.sendMessage(t.getGenerator().getString(gi));
                         return;
                     }
@@ -128,6 +144,18 @@ public class ThemeMenu implements Listener
                 itemSlot += wrapCounter > 7 ? 3 : 1;
                 if (wrapCounter > 7) wrapCounter = 1;
             }
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent e)
+    {
+        Inventory inv = e.getInventory();
+        Player p = (Player) e.getPlayer();
+
+        if (inv.getName().equalsIgnoreCase(name) && inv.getHolder() == p && users.contains(p))
+        {
+            users.remove(p);
         }
     }
 

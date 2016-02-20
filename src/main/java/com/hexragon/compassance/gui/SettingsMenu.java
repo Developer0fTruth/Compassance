@@ -11,22 +11,34 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
+
+import java.util.ArrayList;
 
 public class SettingsMenu implements Listener
 {
-    private final String name = Utils.fmtClr("&lSettings");
-    private String[] bl;
+    private final String name;
+    private ArrayList<Player> users = new ArrayList<>();
 
     public SettingsMenu()
     {
-        Main.instance.getServer().getPluginManager().registerEvents(this, Main.instance);
+        String s = Utils.fmtClr("&lSettings");
+        if (s.length() > 32)
+        {
+            name = s.substring(0, 31);
+        }
+        else
+        {
+            name = s;
+        }
 
-        bl = new String[3];
+        Main.instance.getServer().getPluginManager().registerEvents(this, Main.instance);
     }
 
     private String[] getBL(Player p)
     {
+        String[] bl = new String[3];
         bl[0] = PlayerConfig.SETTING_ENABLE.format(p.getPlayer().getUniqueId().toString());
         bl[1] = PlayerConfig.SETTING_ALWAYSON.format(p.getPlayer().getUniqueId().toString());
         bl[2] = PlayerConfig.SETTING_CURSOR.format(p.getPlayer().getUniqueId().toString());
@@ -36,7 +48,7 @@ public class SettingsMenu implements Listener
 
     public void show(Player p)
     {
-        Inventory inv = Bukkit.createInventory(null, 4 * 9, name);
+        Inventory inv = Bukkit.createInventory(p, 4 * 9, name);
 
         inv.setItem(10,
                 new ItemBuilder().material(Material.COMPASS).data((byte) 0).amt(1)
@@ -55,7 +67,7 @@ public class SettingsMenu implements Listener
                         .lore("&cNot implemented yet.", "", "&7???").toItemStack());
 
 
-        bl = getBL(p);
+        String[] bl = getBL(p);
 
         int i = 0;
         for (String str : bl)
@@ -81,20 +93,21 @@ public class SettingsMenu implements Listener
                         .name("&c&lExit")
                         .lore("", "&7Return to meta menu.").toItemStack());
 
+        users.add(p);
         p.openInventory(inv);
     }
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e)
     {
-        Inventory inv = e.getInventory();
+        Inventory inv = e.getClickedInventory();
         Player p = (Player) e.getWhoClicked();
 
-        if (inv.getName().equalsIgnoreCase(name))
+        if (inv.getName().equalsIgnoreCase(name) && inv.getHolder() == p && users.contains(p))
         {
             e.setCancelled(true);
 
-            bl = getBL(p);
+            String[] bl = getBL(p);
 
             switch (e.getSlot())
             {
@@ -119,6 +132,18 @@ public class SettingsMenu implements Listener
                         i += 2;
                     }
             }
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent e)
+    {
+        Inventory inv = e.getInventory();
+        Player p = (Player) e.getPlayer();
+
+        if (inv.getName().equalsIgnoreCase(name) && inv.getHolder() == p && users.contains(p))
+        {
+            users.remove(p);
         }
     }
 

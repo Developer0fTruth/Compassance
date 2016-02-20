@@ -12,14 +12,28 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
+
+import java.util.ArrayList;
 
 public class MainMenu implements Listener
 {
-    private final String name = Utils.fmtClr("&lCompassance");
+    private final String name;
+    private ArrayList<Player> users = new ArrayList<>();
 
     public MainMenu()
     {
+        String s = Utils.fmtClr("&lCompassance");
+        if (s.length() > 32)
+        {
+            name = s.substring(0, 31);
+        }
+        else
+        {
+            name = s;
+        }
+
         Main.instance.getServer().getPluginManager().registerEvents(this, Main.instance);
     }
 
@@ -73,17 +87,17 @@ public class MainMenu implements Listener
                         .name("&c&lExit")
                         .lore("", "&7Close the menu.").toItemStack());
 
-
+        users.add(p);
         p.openInventory(inv);
     }
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e)
     {
-        Inventory inv = e.getInventory();
+        Inventory inv = e.getClickedInventory();
         Player p = (Player) e.getWhoClicked();
 
-        if (inv.getName().equalsIgnoreCase(name))
+        if (inv.getName().equalsIgnoreCase(name) && inv.getHolder() == p && users.contains(p))
         {
             e.setCancelled(true);
 
@@ -123,6 +137,18 @@ public class MainMenu implements Listener
                     break;
 
             }
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent e)
+    {
+        Inventory inv = e.getInventory();
+        Player p = (Player) e.getPlayer();
+
+        if (inv.getName().equalsIgnoreCase(name) && inv.getHolder() == p && users.contains(p))
+        {
+            users.remove(p);
         }
     }
 

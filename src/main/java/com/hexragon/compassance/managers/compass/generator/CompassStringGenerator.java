@@ -37,11 +37,11 @@ public class CompassStringGenerator
 
         try
         {
-            yaw = 360 + yaw;
+            yaw = 360.0d + yaw;
 
-            if (yaw > 360) yaw -= 360;
+            if (yaw > 360) yaw -= 360.0d;
 
-            double ratio = yaw / 360;
+            double ratio = yaw / 360.0d;
 
             StringBuilder strBuild = new StringBuilder();
 
@@ -53,7 +53,7 @@ public class CompassStringGenerator
                 double shift = length / 4;
                 int appendRead = (int) Math.round((length * ratio) - shift);
 
-                double step = 360 / length;
+                double step = 360.0d / length;
 
                 for (int i = 0; i < (length / 2) + 3; i++)
                 {
@@ -77,7 +77,7 @@ public class CompassStringGenerator
                             if (l1 != null && l2 != null)
                             {
                                 double angle = (Math.atan2(l1.getX() - l2.getX(), l1.getZ() - l2.getZ()));
-                                angle = (-(angle / Math.PI) * 360) / 2 + 180;
+                                angle = (-(angle / Math.PI) * 360.0d) / 2.0d + 180.0d;
 
                                 int num1 = num + 1;
                                 if (num1 >= length) num1 -= length;

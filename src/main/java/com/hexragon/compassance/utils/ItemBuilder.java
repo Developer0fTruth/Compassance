@@ -82,11 +82,12 @@ public class ItemBuilder implements Serializable
 
     public ItemBuilder enchant(Enchantment e, int l)
     {
+        if (e == null) return this;
         enchantList.put(e, l);
         return this;
     }
 
-    public ItemBuilder shiny(boolean b)
+    public ItemBuilder hideEnchants(boolean b)
     {
         shiny = b;
         return this;
@@ -110,7 +111,7 @@ public class ItemBuilder implements Serializable
         }
         for (Enchantment e : enchantList.keySet())
         {
-            item.addUnsafeEnchantment(e, enchantList.get(e));
+            itmMeta.addEnchant(e, enchantList.get(e), true);
         }
         item.setItemMeta(itmMeta);
         return item;

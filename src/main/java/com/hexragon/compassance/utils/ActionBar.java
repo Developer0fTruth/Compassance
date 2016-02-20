@@ -47,7 +47,7 @@ public class ActionBar
         {
             ex.printStackTrace();
             works = false;
-            Bukkit.getLogger().severe("Warning! ActionBar lookup failed! Are you running Minecraft 1.8?");
+            Bukkit.getLogger().severe("Warning! ActionBar lookup failed! Are you running the latest Minecraft 1.8?");
         }
     }
 
@@ -83,6 +83,8 @@ public class ActionBar
         catch (Exception ex)
         {
             ex.printStackTrace();
+            Bukkit.getLogger().severe("Warning! ActionBar execution failed! Are you running the latest Minecraft 1.8?");
+            works = false;
         }
     }
 }

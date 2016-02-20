@@ -168,3 +168,25 @@ themes:
       pattern-map: "<<>;%str%;<>>"
       <<>: "&f&l["
       <>>: "&f&l]"
+  minimal-normal:
+    meta:
+      name: "&lMinimalistic"
+      desc: "&7You keep it simple, I see."
+    data:
+      main-pattern-map: "<S>;<s/sep>;<W>;<s/sep>;<N>;<s/sep>;<E>;<s/sep>"
+      function:
+        cursor: "&f[;%str%;&f]"
+        target: "&6&l\u272A"
+      direct:
+        <S>: "&f&lS"
+        <W>: "&f&lW"
+        <N>: "&f&lN"
+        <E>: "&f&lE"
+      sub-pattern:
+        <s/sep>:
+          pattern-map: "<1>;<1>;<1>;<1>;<1>;<1>;<1>;<1>;<1>;<1>;<1>;<1>"
+          <1>: "  "
+    final:
+      pattern-map: "<<>;%str%;<>>"
+      <<>: "&f&l["
+      <>>: "&f&l]"

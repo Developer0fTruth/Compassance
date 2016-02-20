@@ -30,6 +30,12 @@ public class CompassCommand implements CommandExecutor
 
         if (args.length == 0)
         {
+            Main.mainMenu.show((Player) sender);
+            return true;
+        }
+
+        else if (args[0].equalsIgnoreCase("help"))
+        {
             ArrayList<String> arr = new ArrayList<>();
             arr.add("&8&m--------------------------------------------------");
             arr.add("");
