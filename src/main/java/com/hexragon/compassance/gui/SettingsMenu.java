@@ -1,9 +1,9 @@
 package com.hexragon.compassance.gui;
 
-import com.hexragon.compassance.Compassance;
+import com.hexragon.compassance.Main;
 import com.hexragon.compassance.files.configs.PlayerConfig;
-import com.hexragon.compassance.misc.ItemBuilder;
-import com.hexragon.compassance.misc.Utils;
+import com.hexragon.compassance.utils.ItemBuilder;
+import com.hexragon.compassance.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -20,7 +20,7 @@ public class SettingsMenu implements Listener
 
     public SettingsMenu()
     {
-        Compassance.instance.getServer().getPluginManager().registerEvents(this, Compassance.instance);
+        Main.instance.getServer().getPluginManager().registerEvents(this, Main.instance);
 
         bl = new String[3];
     }
@@ -61,7 +61,7 @@ public class SettingsMenu implements Listener
         for (String str : bl)
         {
 
-            boolean b = Compassance.playerConfig.config.getBoolean(str);
+            boolean b = Main.playerConfig.config.getBoolean(str);
 
             inv.setItem(19 + i,
                     new ItemBuilder()
@@ -100,19 +100,19 @@ public class SettingsMenu implements Listener
             {
                 case 25:
                     p.playSound(p.getLocation(), Sound.CLICK, 0.5f, 1);
-                    Compassance.mainMenu.show(p);
+                    Main.mainMenu.show(p);
                 default:
 
                     int i = 0;
                     for (String str : bl)
                     {
-                        boolean b = Compassance.playerConfig.config.getBoolean(str);
+                        boolean b = Main.playerConfig.config.getBoolean(str);
 
                         if (e.getSlot() == 19 + i)
                         {
                             p.playSound(p.getLocation(), Sound.CLICK, 0.5f, 1);
-                            Compassance.playerConfig.config.set(str, !b);
-                            Compassance.compassTaskManager.refresh(p);
+                            Main.playerConfig.config.set(str, !b);
+                            Main.taskManager.refresh(p);
                             show(p);
                             return;
                         }

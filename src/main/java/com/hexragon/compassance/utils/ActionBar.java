@@ -1,4 +1,4 @@
-package com.hexragon.compassance.misc;
+package com.hexragon.compassance.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -6,9 +6,9 @@ import org.bukkit.entity.Player;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
-public class ActionBarUtil
+public class ActionBar
 {
-    private static String nmsver;
+    private static final String nmsver;
 
     private static Class<?> craftPlayer;
     private static Class<?> chatSer;
@@ -17,7 +17,9 @@ public class ActionBarUtil
     private static Class<?> packet;
     private static Method getHandle;
 
-    static //Caching the found NMS classes.
+    private static boolean works = true;
+
+    static
     {
         String bukkitPackage = Bukkit.getServer().getClass().getPackage().getName();
         nmsver = bukkitPackage.substring(bukkitPackage.lastIndexOf(".") + 1);
@@ -39,15 +41,22 @@ public class ActionBarUtil
                 chatBase = Class.forName("net.minecraft.server." + nmsver + ".IChatBaseComponent");
             }
             getHandle = craftPlayer.getDeclaredMethod("getHandle");
+            Bukkit.getLogger().info("Success! ActionBar lookup complete.");
         }
         catch (Exception ex)
         {
             ex.printStackTrace();
+            works = false;
+            Bukkit.getLogger().severe("Warning! ActionBar lookup failed! Are you running Minecraft 1.8?");
         }
     }
 
     public static void send(Player p, String str)
     {
+        if (!works)
+        {
+            return;
+        }
         try
         {
             Object castPlayer = craftPlayer.cast(p);
@@ -76,11 +85,5 @@ public class ActionBarUtil
             ex.printStackTrace();
         }
     }
-
-//    public static void sendActionBar2(Player p, String str)
-//    {
-//        IChatBaseComponent c = IChatBaseComponent.ChatSerializer.a("{\"text\": \"" + str.replace("\"", "") + "\"}");
-//        PacketPlayOutChat packet = new PacketPlayOutChat(c, (byte) 2);
-//        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
-//    }
 }
+

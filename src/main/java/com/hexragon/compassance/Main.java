@@ -5,14 +5,14 @@ import com.hexragon.compassance.commands.ReloadCommand;
 import com.hexragon.compassance.commands.TestCommand;
 import com.hexragon.compassance.files.Gearbox;
 import com.hexragon.compassance.files.configs.MainConfig;
-import com.hexragon.compassance.files.text.ReferenceText;
+import com.hexragon.compassance.files.text.GearboxText;
 import com.hexragon.compassance.gui.MainMenu;
 import com.hexragon.compassance.gui.SettingsMenu;
 import com.hexragon.compassance.gui.ThemeMenu;
-import com.hexragon.compassance.managers.compass.tasks.CompassTaskManager;
+import com.hexragon.compassance.managers.compass.tasks.TaskManager;
 import com.hexragon.compassance.managers.compass.tasks.tracking.TrackingManager;
 import com.hexragon.compassance.managers.themes.ThemeManager;
-import com.hexragon.compassance.misc.Utils;
+import com.hexragon.compassance.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.MetricsLite;
@@ -20,15 +20,15 @@ import org.mcstats.MetricsLite;
 import java.io.IOException;
 import java.util.logging.Level;
 
-public class Compassance extends JavaPlugin
+public class Main extends JavaPlugin
 {
-    public static Compassance instance;
+    public static Main instance;
 
     public static Gearbox themeConfig;
     public static Gearbox playerConfig;
     public static Gearbox mainConfig;
 
-    public static CompassTaskManager compassTaskManager;
+    public static TaskManager taskManager;
     public static ThemeManager themeManager;
     public static TrackingManager trackingManager;
 
@@ -36,7 +36,7 @@ public class Compassance extends JavaPlugin
     public static SettingsMenu settingsMenu;
     public static ThemeMenu themeMenu;
 
-    public static boolean placeholderAPI;
+    public static boolean placeholderAPIExist;
 
     public void onEnable()
     {
@@ -54,7 +54,7 @@ public class Compassance extends JavaPlugin
 
         // MANAGERS INSTANTIATION
         themeManager = new ThemeManager();
-        compassTaskManager = new CompassTaskManager();
+        taskManager = new TaskManager();
         trackingManager = new TrackingManager();
 
         mainMenu = new MainMenu();
@@ -62,13 +62,12 @@ public class Compassance extends JavaPlugin
         themeMenu = new ThemeMenu();
 
         themeManager.loadThemes();
-        compassTaskManager.newTaskAll();
+        taskManager.newTaskAll();
 
         // SECONDARY INSTANTIATION
-        new ReferenceText().forceCopy();
+        new GearboxText(this, "references.txt").load();
         new CompassCommand();
         new ReloadCommand();
-
 
         if (mainConfig.config.getBoolean(MainConfig.DEBUG_MODE.path))
         {
@@ -76,13 +75,13 @@ public class Compassance extends JavaPlugin
 
             if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null && Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI"))
             {
-                placeholderAPI = true;
+                placeholderAPIExist = true;
                 Utils.logHandle(Level.INFO, "Detected PlaceholderAPI.");
-                new CompassancePlaceholderHook(this);
+                new Placeholders(this);
             }
             else
             {
-                placeholderAPI = false;
+                placeholderAPIExist = false;
                 Utils.logHandle(Level.INFO, "Did not find PlaceholderAPI.");
             }
         }
@@ -113,7 +112,7 @@ public class Compassance extends JavaPlugin
     public void onDisable()
     {
         playerConfig.save();
-        compassTaskManager.endTaskAll();
+        taskManager.endTaskAll();
         instance = null;
     }
 }

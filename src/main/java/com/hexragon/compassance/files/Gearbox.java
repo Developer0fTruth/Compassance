@@ -1,6 +1,6 @@
 package com.hexragon.compassance.files;
 
-import com.hexragon.compassance.misc.FileUtil;
+import com.hexragon.compassance.utils.FileUtil;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;

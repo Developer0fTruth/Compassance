@@ -1,17 +1,17 @@
 package com.hexragon.compassance.managers.compass.tasks;
 
-import com.hexragon.compassance.Compassance;
+import com.hexragon.compassance.Main;
 import com.hexragon.compassance.files.configs.PlayerConfig;
-import com.hexragon.compassance.misc.Utils;
+import com.hexragon.compassance.utils.Utils;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 
-public class CompassTaskManager
+public class TaskManager
 {
-    private HashMap<Player, CompassUpdateTask> tasks;
+    private final HashMap<Player, CUpdateTask> tasks;
 
-    public CompassTaskManager()
+    public TaskManager()
     {
 
         tasks = new HashMap<>();
@@ -27,10 +27,10 @@ public class CompassTaskManager
         if (!tasks.containsKey(p))
         {
             Utils.updateProfile(p);
-            CompassUpdateTask updateTask = new CompassUpdateTask(p);
+            CUpdateTask updateTask = new CUpdateTask(p);
             tasks.put(p, updateTask);
 
-            if (Compassance.playerConfig.config.getBoolean(PlayerConfig.SETTING_ENABLE.format(p.getUniqueId().toString())))
+            if (Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_ENABLE.format(p.getUniqueId().toString())))
             {
                 startTask(p);
             }
@@ -46,7 +46,7 @@ public class CompassTaskManager
     {
         if (tasks.containsKey(p))
         {
-            CompassUpdateTask instance = tasks.get(p);
+            CUpdateTask instance = tasks.get(p);
             if (!instance.isActive())
             {
                 instance.start();
@@ -63,7 +63,7 @@ public class CompassTaskManager
     {
         if (tasks.containsKey(p))
         {
-            CompassUpdateTask instance = tasks.get(p);
+            CUpdateTask instance = tasks.get(p);
             if (instance.isActive())
             {
                 instance.stop();
@@ -90,7 +90,7 @@ public class CompassTaskManager
      */
     public void newTaskAll()
     {
-        for (Player e : Compassance.instance.getServer().getOnlinePlayers())
+        for (Player e : Main.instance.getServer().getOnlinePlayers())
         {
             newTask(e);
         }

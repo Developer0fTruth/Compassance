@@ -1,8 +1,8 @@
 package com.hexragon.compassance.managers.themes;
 
-import com.hexragon.compassance.Compassance;
+import com.hexragon.compassance.Main;
 import com.hexragon.compassance.files.configs.ThemeConfig;
-import com.hexragon.compassance.misc.Utils;
+import com.hexragon.compassance.utils.Utils;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -32,7 +32,7 @@ public class ThemeManager
 
         LinkedHashSet<String> allThemes = new LinkedHashSet<>();
         allThemes.add("default");
-        allThemes.addAll(Compassance.themeConfig.config.getStringList(ThemeConfig.ENABLED_THEMES.path));
+        allThemes.addAll(Main.themeConfig.config.getStringList(ThemeConfig.ENABLED_THEMES.path));
 
         int i = 0;
         for (String s : allThemes)
@@ -60,7 +60,7 @@ public class ThemeManager
 
             i++;
         }
-        Utils.logHandle(errors >= 1 ? Level.WARNING : Level.INFO, String.format("Successfully loaded %s theme(s) with %s theme-related errors.", themes.size(), errors));
+        Main.instance.getLogger().log(errors >= 1 ? Level.WARNING : Level.INFO, String.format("Successfully loaded %s theme(s) with %s theme-related errors.", themes.size(), errors));
     }
 
     /**
@@ -76,10 +76,10 @@ public class ThemeManager
         {
             if (defaultHasErrors)
             {
-                Utils.logHandle(Level.SEVERE, String.format("Attempted to get theme '%s', but default theme '%s' is not properly formatted. " + "Therefore access to other themes will be automatically denied.", s, defaultID));
+                Main.instance.getLogger().severe(String.format("Attempted to get theme '%s', but default theme '%s' is not properly formatted. " + "Therefore access to other themes will be automatically denied.", s, defaultID));
                 return null;
             }
-            Utils.logHandle(Level.SEVERE, String.format("Attempted to get theme '%s', but it is not found.", s));
+            Main.instance.getLogger().severe(String.format("Attempted to get theme '%s', but it is not found.", s));
             return null;
         }
         return themes.get(s);

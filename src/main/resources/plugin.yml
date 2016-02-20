@@ -1,8 +1,8 @@
 name: Compassance
 author: Hexragon
 softdepend: [PlaceholderAPI]
-main: com.hexragon.compassance.Compassance
-version: 1.4-SNAPSHOT
+main: com.hexragon.compassance.Main
+version: 1.4-BETA
 
 description: A cooler action bar.
 

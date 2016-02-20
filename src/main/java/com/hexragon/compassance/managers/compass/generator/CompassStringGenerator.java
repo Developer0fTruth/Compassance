@@ -1,31 +1,22 @@
 package com.hexragon.compassance.managers.compass.generator;
 
+import com.hexragon.compassance.Main;
 import com.hexragon.compassance.managers.themes.Theme;
-import com.hexragon.compassance.misc.Utils;
+import com.hexragon.compassance.utils.Utils;
+import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Location;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 public class CompassStringGenerator
 {
-    private final GeneratorInfo gi;
-    private final Theme theme;
-    private final boolean cursor;
+    public final Theme theme;
 
-    private final Location l1;
-    private final Location l2;
-
-    private double yaw;
-
-    public CompassStringGenerator(GeneratorInfo gi)
+    public CompassStringGenerator(Theme t)
     {
-        this.gi = gi;
-
-        this.theme = gi.theme;
-        this.yaw = gi.yaw;
-        this.l1 = gi.l1;
-        this.l2 = gi.l2;
-        this.cursor = gi.cursor;
+        this.theme = t;
     }
 
     /**
@@ -37,8 +28,13 @@ public class CompassStringGenerator
      * If any exceptions is caught during replacement,
      * it will just skip that value.
      */
-    public String getString()
+    public String getString(GeneratorInfo gi)
     {
+        double yaw = gi.yaw;
+        Location l1 = gi.l1;
+        Location l2 = gi.l2;
+        boolean cursor = gi.cursor;
+
         try
         {
             yaw = 360 + yaw;
@@ -89,11 +85,11 @@ public class CompassStringGenerator
 
                                 if (angle >= step * num && angle <= step * num1)
                                 {
-                                    String target = theme.func.target;
-                                    if (target != null)
+                                    String targetNode = theme.func.target;
+                                    if (targetNode != null)
                                     {
-                                        target = target.replaceAll("%str%", appending).replaceAll(";", "");
-                                        appending = target;
+                                        targetNode = targetNode.replaceAll("%str%", appending).replaceAll(";", "");
+                                        appending = targetNode;
                                     }
                                 }
 
@@ -103,11 +99,11 @@ public class CompassStringGenerator
                             {
                                 if (i == (((length / 2) + 2) / 2))
                                 {
-                                    String cursor = theme.func.cursor;
-                                    if (cursor != null)
+                                    String cursorNode = theme.func.cursor;
+                                    if (cursorNode != null)
                                     {
-                                        cursor = cursor.replaceAll("%str%", appending).replaceAll(";", "");
-                                        appending = cursor;
+                                        cursorNode = cursorNode.replaceAll("%str%", appending).replaceAll(";", "");
+                                        appending = cursorNode;
                                     }
                                 }
                             }
@@ -189,7 +185,42 @@ public class CompassStringGenerator
                 finalString = processsedString;
             }
 
-            finalString = Utils.fmtRefs(gi, finalString);
+            Date d = new Date();
+
+            finalString = finalString.replaceAll("%theme-id%", theme.id)
+                    .replaceAll("%theme%", theme.meta.name)
+            ;
+
+            // TIME
+            //Day of Week ex. Tues, Monday
+            finalString = finalString.replaceAll("%dow%", new SimpleDateFormat("EEEE").format(d))
+                    .replaceAll("%a/dow%", new SimpleDateFormat("E").format(d))
+
+                    //Date
+                    .replaceAll("%month%", new SimpleDateFormat("MMMM").format(d))
+                    .replaceAll("%a/month%", new SimpleDateFormat("MMM").format(d))
+                    .replaceAll("%n/month%", new SimpleDateFormat("M").format(d))
+                    .replaceAll("%day%", new SimpleDateFormat("d").format(d))
+
+                    //Time
+                    .replaceAll("%time-zone%", new SimpleDateFormat("z").format(d))
+                    .replaceAll("%marker%", new SimpleDateFormat("a").format(d))
+                    .replaceAll("%second%", new SimpleDateFormat("ss").format(d))
+                    .replaceAll("%minute%", new SimpleDateFormat("mm").format(d))
+                    .replaceAll("%hour%", new SimpleDateFormat("h").format(d))
+            ;
+
+            // LOCATION
+            Location loc = gi.p.getLocation();
+            finalString = finalString.replaceAll("%x%", String.valueOf(loc.getBlockX()))
+                    .replaceAll("%y%", String.valueOf(loc.getBlockY()))
+                    .replaceAll("%z%", String.valueOf(loc.getBlockZ()))
+            ;
+
+            // YAW
+            finalString = finalString.replaceAll("%yaw%", String.format("%.2f", yaw));
+
+            if (Main.placeholderAPIExist) finalString = PlaceholderAPI.setPlaceholders(gi.p, finalString);
 
             return Utils.fmtClr(finalString);
 

@@ -1,7 +1,9 @@
-package com.hexragon.compassance.misc;
+package com.hexragon.compassance.utils;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -12,13 +14,13 @@ import java.util.HashMap;
 
 public class ItemBuilder implements Serializable
 {
+    private final HashMap<Enchantment, Integer> enchantList;
     private Material mat;
     private int amount;
     private short data;
-
     private String name;
     private ArrayList<String> loreList;
-    private HashMap<Enchantment, Integer> enchantList;
+    private boolean shiny;
 
     public ItemBuilder()
     {
@@ -71,7 +73,7 @@ public class ItemBuilder implements Serializable
             {
                 continue;
             }
-            String[] lines = Utils.fmtClr(text).split("%nl%");
+            String[] lines = ChatColor.translateAlternateColorCodes('&', text).split("%nl%");
             Collections.addAll(list, lines);
         }
         loreList = list;
@@ -84,13 +86,23 @@ public class ItemBuilder implements Serializable
         return this;
     }
 
+    public ItemBuilder shiny(boolean b)
+    {
+        shiny = b;
+        return this;
+    }
+
     public ItemStack toItemStack()
     {
         ItemStack item = new ItemStack(mat, amount, data);
         ItemMeta itmMeta = item.getItemMeta();
         if (name != null && !name.isEmpty())
         {
-            itmMeta.setDisplayName(Utils.fmtClr(name));
+            itmMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+        }
+        if (shiny)
+        {
+            itmMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         }
         if (loreList != null)
         {

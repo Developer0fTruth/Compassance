@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 public class TrackingManager
 {
-    public HashMap<Player, TrackedTarget> targetsMap;
+    private final HashMap<Player, TrackedTarget> targetsMap;
 
     public TrackingManager()
     {

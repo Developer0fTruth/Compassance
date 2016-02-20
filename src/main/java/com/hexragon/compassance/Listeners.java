@@ -14,7 +14,7 @@ public class Listeners implements Listener
 {
     public Listeners()
     {
-        getPluginManager().registerEvents(this, Compassance.instance);
+        getPluginManager().registerEvents(this, Main.instance);
     }
 
     @EventHandler
@@ -22,19 +22,19 @@ public class Listeners implements Listener
     {
         Player p = e.getPlayer();
 
-        if (!Compassance.mainConfig.config.getBoolean(MainConfig.USE_TRACKING.path))
+        if (!Main.mainConfig.config.getBoolean(MainConfig.USE_TRACKING.path))
         {
-            Compassance.playerConfig.config.set(PlayerConfig.SETTING_TRACKING.format(p.getUniqueId().toString()), false);
+            Main.playerConfig.config.set(PlayerConfig.SETTING_TRACKING.format(p.getUniqueId().toString()), false);
         }
-        Compassance.compassTaskManager.newTask(p);
+        Main.taskManager.newTask(p);
     }
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e)
     {
         Player p = e.getPlayer();
-        Compassance.compassTaskManager.endTask(p);
-        Compassance.trackingManager.removeTrackingFrom(p);
-        Compassance.trackingManager.removeTrackingOf(p);
+        Main.taskManager.endTask(p);
+        Main.trackingManager.removeTrackingFrom(p);
+        Main.trackingManager.removeTrackingOf(p);
     }
 }

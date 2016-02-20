@@ -6,9 +6,9 @@ import org.bukkit.entity.Entity;
 public class TrackedTarget
 {
 
+    private final Location location;
+    private final TrackingType type;
     private Entity target;
-    private Location location;
-    private TrackingType type;
 
     public TrackedTarget(Entity e)
     {

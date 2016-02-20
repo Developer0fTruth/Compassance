@@ -1,4 +1,4 @@
-package com.hexragon.compassance.misc;
+package com.hexragon.compassance.utils;
 
 import java.io.*;
 import java.util.LinkedList;
@@ -34,6 +34,7 @@ public class FileUtil
         }
     }
 
+    @SuppressWarnings("unused")
     public static LinkedList<String> fileToList(File file)
     {
         LinkedList<String> arr = new LinkedList<>();
@@ -52,6 +53,7 @@ public class FileUtil
         return arr;
     }
 
+    @SuppressWarnings("unused")
     public static void listToFile(List<String> arr, File file)
     {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, false)))

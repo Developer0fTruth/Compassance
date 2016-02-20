@@ -1,6 +1,6 @@
 package com.hexragon.compassance.commands;
 
-import com.hexragon.compassance.Compassance;
+import com.hexragon.compassance.Main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -9,7 +9,7 @@ public class ReloadCommand implements CommandExecutor
 {
     public ReloadCommand()
     {
-        Compassance.instance.getCommand("tcomp").setExecutor(this);
+        Main.instance.getCommand("tcomp").setExecutor(this);
     }
 
     @Override
@@ -21,16 +21,16 @@ public class ReloadCommand implements CommandExecutor
             return true;
         }
 
-        Compassance.mainConfig.load();
+        Main.mainConfig.load();
 
-        Compassance.themeConfig.load();
+        Main.themeConfig.load();
 
-        Compassance.playerConfig.save();
-        Compassance.playerConfig.load();
+        Main.playerConfig.save();
+        Main.playerConfig.load();
 
-        Compassance.themeManager.loadThemes();
+        Main.themeManager.loadThemes();
 
-        Compassance.compassTaskManager.refreshAll();
+        Main.taskManager.refreshAll();
 
         sender.sendMessage("Compassance configs reloaded.");
 

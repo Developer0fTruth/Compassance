@@ -1,8 +1,8 @@
 package com.hexragon.compassance.commands;
 
-import com.hexragon.compassance.Compassance;
+import com.hexragon.compassance.Main;
 import com.hexragon.compassance.files.configs.PlayerConfig;
-import com.hexragon.compassance.misc.Utils;
+import com.hexragon.compassance.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -16,7 +16,7 @@ public class CompassCommand implements CommandExecutor
 {
     public CompassCommand()
     {
-        Compassance.instance.getCommand("compass").setExecutor(this);
+        Main.instance.getCommand("compass").setExecutor(this);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class CompassCommand implements CommandExecutor
 
         else if (args[0].equalsIgnoreCase("open"))
         {
-            Compassance.mainMenu.show((Player) sender);
+            Main.mainMenu.show((Player) sender);
             return true;
         }
 
@@ -65,14 +65,14 @@ public class CompassCommand implements CommandExecutor
                 return true;
             }
 
-            if (Compassance.themeManager.getTheme(args[1]) == null)
+            if (Main.themeManager.getTheme(args[1]) == null)
             {
                 p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cTheme ID doesn't exist."));
                 return true;
             }
 
-            p.sendMessage(Utils.fmtClr(String.format("&a&lCOMPASS &8» &7Switching your selected theme to &r%s&7.", Compassance.themeManager.getTheme(args[1]).meta.name)));
-            Compassance.playerConfig.config.set(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId().toString()), args[1]);
+            p.sendMessage(Utils.fmtClr(String.format("&a&lCOMPASS &8» &7Switching your selected theme to &r%s&7.", Main.themeManager.getTheme(args[1]).meta.name)));
+            Main.playerConfig.config.set(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId().toString()), args[1]);
             return true;
         }
 
@@ -80,7 +80,7 @@ public class CompassCommand implements CommandExecutor
         {
             Player p = (Player) sender;
 
-            boolean b = Compassance.playerConfig.config.getBoolean(PlayerConfig.SETTING_TRACKING.format(p.getPlayer().getUniqueId().toString()));
+            boolean b = Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_TRACKING.format(p.getPlayer().getUniqueId().toString()));
             if (!b)
             {
                 p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cYou must enable tracking in the Compassance menu."));
@@ -108,8 +108,8 @@ public class CompassCommand implements CommandExecutor
                 {
                     if (pl.getName().equalsIgnoreCase(targetName))
                     {
-                        Compassance.trackingManager.newTracking(p, pl);
-                        Compassance.compassTaskManager.refresh(p);
+                        Main.trackingManager.newTracking(p, pl);
+                        Main.taskManager.refresh(p);
                         p.sendMessage(Utils.fmtClr(String.format("&a&lCOMPASS &8» &7You are now tracking player &f%s&7.", pl.getName())));
                         pl.sendMessage(Utils.fmtClr(String.format("&a&lCOMPASS &8» &7You are being tracked by &f%s&7.", p.getName())));
                         return true;
@@ -133,9 +133,9 @@ public class CompassCommand implements CommandExecutor
                     Double x = Double.parseDouble(args[2]);
                     Double y = Double.parseDouble(args[3]);
                     Double z = Double.parseDouble(args[4]);
-                    Compassance.trackingManager.newTracking(p, new Location(p.getWorld(), x, y, z));
+                    Main.trackingManager.newTracking(p, new Location(p.getWorld(), x, y, z));
 
-                    Compassance.compassTaskManager.refresh(p);
+                    Main.taskManager.refresh(p);
                     p.sendMessage(Utils.fmtClr(String.format("&a&lCOMPASS &8» &7You are now tracking coordinates &f%s&7, &f%s&7, &f%s&7.", x, y, z)));
                     return true;
                 }

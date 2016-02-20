@@ -1,11 +1,11 @@
 package com.hexragon.compassance.commands;
 
-import com.hexragon.compassance.Compassance;
+import com.hexragon.compassance.Main;
 import com.hexragon.compassance.files.configs.PlayerConfig;
 import com.hexragon.compassance.managers.themes.Theme;
-import com.hexragon.compassance.misc.ActionBarUtil;
-import com.hexragon.compassance.misc.ItemBuilder;
-import com.hexragon.compassance.misc.Utils;
+import com.hexragon.compassance.utils.ActionBar;
+import com.hexragon.compassance.utils.ItemBuilder;
+import com.hexragon.compassance.utils.Utils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -29,7 +29,7 @@ public class TestCommand implements CommandExecutor
 {
     public TestCommand()
     {
-        Compassance.instance.getCommand("test").setExecutor(this);
+        Main.instance.getCommand("test").setExecutor(this);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class TestCommand implements CommandExecutor
 
         if (args.length == 2 && args[0].equalsIgnoreCase("data"))
         {
-            Theme theme = Compassance.themeManager.getTheme(args[1]);
+            Theme theme = Main.themeManager.getTheme(args[1]);
 
             if (theme == null)
             {
@@ -91,7 +91,7 @@ public class TestCommand implements CommandExecutor
         {
             Player p = (Player) sender;
 
-            Theme theme = Compassance.themeManager.getTheme(args[1]);
+            Theme theme = Main.themeManager.getTheme(args[1]);
             if (theme == null)
             {
                 return true;
@@ -131,9 +131,9 @@ public class TestCommand implements CommandExecutor
                 Double x = Double.parseDouble(args[1]);
                 Double y = Double.parseDouble(args[2]);
                 Double z = Double.parseDouble(args[3]);
-                Compassance.trackingManager.newTracking(p, new Location(p.getWorld(), x, y, z));
+                Main.trackingManager.newTracking(p, new Location(p.getWorld(), x, y, z));
 
-                Compassance.compassTaskManager.refresh(p);
+                Main.taskManager.refresh(p);
             }
             catch (Exception e)
             {
@@ -151,11 +151,11 @@ public class TestCommand implements CommandExecutor
             {
                 if (pl.getName().equalsIgnoreCase(targetName))
                 {
-                    Compassance.trackingManager.newTracking(p, pl);
+                    Main.trackingManager.newTracking(p, pl);
                     break;
                 }
             }
-            Compassance.compassTaskManager.refresh(p);
+            Main.taskManager.refresh(p);
             return true;
         }
 
@@ -163,30 +163,30 @@ public class TestCommand implements CommandExecutor
         {
             Player p = (Player) sender;
             //String uuid = p.getUniqueId().toString();
-            boolean b = Compassance.playerConfig.config.getBoolean(PlayerConfig.SETTING_ENABLE.format(p.getPlayer().getUniqueId().toString()));
+            boolean b = Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_ENABLE.format(p.getPlayer().getUniqueId().toString()));
             if (b)
             {
-                Compassance.playerConfig.config.set(PlayerConfig.SETTING_ENABLE.format(p.getPlayer().getUniqueId().toString()), false);
+                Main.playerConfig.config.set(PlayerConfig.SETTING_ENABLE.format(p.getPlayer().getUniqueId().toString()), false);
             }
             else
             {
-                Compassance.playerConfig.config.set(PlayerConfig.SETTING_ENABLE.format(p.getPlayer().getUniqueId().toString()), true);
+                Main.playerConfig.config.set(PlayerConfig.SETTING_ENABLE.format(p.getPlayer().getUniqueId().toString()), true);
             }
-            Compassance.compassTaskManager.refresh(p);
-            ActionBarUtil.send(p, "");
+            Main.taskManager.refresh(p);
+            ActionBar.send(p, "");
             return true;
         }
 
         if (args.length == 1 && args[0].equalsIgnoreCase("menu"))
         {
-            Compassance.mainMenu.show((Player) sender);
+            Main.mainMenu.show((Player) sender);
             return true;
         }
 
         if (args.length == 1 && args[0].equalsIgnoreCase("version"))
         {
-            sender.sendMessage("Theme: " + Compassance.themeConfig.config.getDefaults().getString("version") + " default vs have " + Compassance.themeConfig.config.getString("version"));
-            sender.sendMessage("Player: " + Compassance.playerConfig.config.getDefaults().getString("version") + " default vs have " + Compassance.playerConfig.config.getString("version"));
+            sender.sendMessage("Theme: " + Main.themeConfig.config.getDefaults().getString("version") + " default vs have " + Main.themeConfig.config.getString("version"));
+            sender.sendMessage("Player: " + Main.playerConfig.config.getDefaults().getString("version") + " default vs have " + Main.playerConfig.config.getString("version"));
 
             sender.sendMessage(PlaceholderAPI.setPlaceholders((Player) sender, "%compassance_p_string%"));
             sender.sendMessage(PlaceholderAPI.setPlaceholders((Player) sender, "%compassance_p_string_theme_default%"));

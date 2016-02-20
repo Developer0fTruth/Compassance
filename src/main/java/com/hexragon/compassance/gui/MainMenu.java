@@ -1,10 +1,10 @@
 package com.hexragon.compassance.gui;
 
-import com.hexragon.compassance.Compassance;
+import com.hexragon.compassance.Main;
 import com.hexragon.compassance.files.configs.MainConfig;
 import com.hexragon.compassance.files.configs.PlayerConfig;
-import com.hexragon.compassance.misc.ItemBuilder;
-import com.hexragon.compassance.misc.Utils;
+import com.hexragon.compassance.utils.ItemBuilder;
+import com.hexragon.compassance.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -20,7 +20,7 @@ public class MainMenu implements Listener
 
     public MainMenu()
     {
-        Compassance.instance.getServer().getPluginManager().registerEvents(this, Compassance.instance);
+        Main.instance.getServer().getPluginManager().registerEvents(this, Main.instance);
     }
 
     public void show(Player p)
@@ -38,7 +38,7 @@ public class MainMenu implements Listener
                                 "&7theme using &f/compass theme -id"
                         ).toItemStack());
 
-        boolean b = Compassance.playerConfig.config.getBoolean(PlayerConfig.SETTING_TRACKING.format(p.getPlayer().getUniqueId().toString()));
+        boolean b = Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_TRACKING.format(p.getPlayer().getUniqueId().toString()));
 
         ItemBuilder trkItem = new ItemBuilder()
                 .material(b ? Material.EYE_OF_ENDER : Material.ENDER_PEARL)
@@ -56,7 +56,7 @@ public class MainMenu implements Listener
                         b ? "&7Click to disable." : "&7Click to enable."
                 );
 
-        if (!Compassance.mainConfig.config.getBoolean(MainConfig.USE_TRACKING.path))
+        if (!Main.mainConfig.config.getBoolean(MainConfig.USE_TRACKING.path))
         {
             trkItem.lore("", "&cTracking is globally disabled.", "");
         }
@@ -90,31 +90,31 @@ public class MainMenu implements Listener
             switch (e.getSlot())
             {
                 case 10:
-                    Compassance.themeMenu.show(p);
+                    Main.themeMenu.show(p);
                     p.playSound(p.getLocation(), Sound.CLICK, 0.5f, 1);
                     break;
                 case 12:
                     String str = PlayerConfig.SETTING_TRACKING.format(p.getPlayer().getUniqueId().toString());
-                    boolean b = Compassance.playerConfig.config.getBoolean(str);
-                    Compassance.playerConfig.config.set(str, !b);
+                    boolean b = Main.playerConfig.config.getBoolean(str);
+                    Main.playerConfig.config.set(str, !b);
                     p.playSound(p.getLocation(), Sound.CLICK, 0.5f, 1);
 
-                    if (!Compassance.mainConfig.config.getBoolean(MainConfig.USE_TRACKING.path))
+                    if (!Main.mainConfig.config.getBoolean(MainConfig.USE_TRACKING.path))
                     {
-                        Compassance.playerConfig.config.set(str, false);
+                        Main.playerConfig.config.set(str, false);
                         p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cTracking is globally disabled."));
                     }
                     if (b)
                     {
-                        Compassance.trackingManager.removeTrackingFrom(p);
-                        Compassance.trackingManager.removeTrackingOf(p);
+                        Main.trackingManager.removeTrackingFrom(p);
+                        Main.trackingManager.removeTrackingOf(p);
                     }
 
                     show(p);
 
                     break;
                 case 14:
-                    Compassance.settingsMenu.show(p);
+                    Main.settingsMenu.show(p);
                     p.playSound(p.getLocation(), Sound.CLICK, 0.5f, 1);
                     break;
                 case 16:
