@@ -2,7 +2,6 @@ package com.hexragon.compassance.managers.themes;
 
 import com.hexragon.compassance.Main;
 import com.hexragon.compassance.files.configs.ThemeConfig;
-import com.hexragon.compassance.utils.Utils;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -49,7 +48,7 @@ public class ThemeManager
                 if (s.equalsIgnoreCase(defaultID))
                 {
                     defaultHasErrors = true;
-                    Utils.logHandle(Level.SEVERE, "Default theme has errors!");
+                    Main.instance.getLogger().severe("Default theme has errors!");
                     return;
                 }
                 errors++;

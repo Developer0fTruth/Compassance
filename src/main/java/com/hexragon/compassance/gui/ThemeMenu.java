@@ -2,7 +2,7 @@ package com.hexragon.compassance.gui;
 
 import com.hexragon.compassance.Main;
 import com.hexragon.compassance.files.configs.PlayerConfig;
-import com.hexragon.compassance.managers.compass.generator.GeneratorInfo;
+import com.hexragon.compassance.managers.compass.CompassGenerator.GeneratorInfo;
 import com.hexragon.compassance.managers.compass.tasks.tracking.TrackedTarget;
 import com.hexragon.compassance.managers.themes.Theme;
 import com.hexragon.compassance.utils.ItemBuilder;
@@ -24,7 +24,7 @@ import java.util.LinkedHashSet;
 
 public class ThemeMenu implements Listener
 {
-    public final String name;
+    private final String name;
     private ArrayList<Player> users = new ArrayList<>();
 
     public ThemeMenu()
@@ -38,7 +38,6 @@ public class ThemeMenu implements Listener
         {
             name = s;
         }
-
         Main.instance.getServer().getPluginManager().registerEvents(this, Main.instance);
     }
 

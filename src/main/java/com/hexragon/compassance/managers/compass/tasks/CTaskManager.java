@@ -7,13 +7,12 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 
-public class TaskManager
+public class CTaskManager
 {
     private final HashMap<Player, CUpdateTask> tasks;
 
-    public TaskManager()
+    public CTaskManager()
     {
-
         tasks = new HashMap<>();
     }
 

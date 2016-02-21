@@ -33,7 +33,6 @@ public class CompassCommand implements CommandExecutor
             Main.mainMenu.show((Player) sender);
             return true;
         }
-
         else if (args[0].equalsIgnoreCase("help"))
         {
             ArrayList<String> arr = new ArrayList<>();
@@ -53,13 +52,11 @@ public class CompassCommand implements CommandExecutor
             }
             return true;
         }
-
         else if (args[0].equalsIgnoreCase("open"))
         {
             Main.mainMenu.show((Player) sender);
             return true;
         }
-
         else if (args[0].equalsIgnoreCase("theme"))
         {
             Player p = (Player) sender;
@@ -81,12 +78,11 @@ public class CompassCommand implements CommandExecutor
             Main.playerConfig.config.set(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId().toString()), args[1]);
             return true;
         }
-
         else if (args[0].equalsIgnoreCase("track") || args[0].equalsIgnoreCase("trk"))
         {
             Player p = (Player) sender;
 
-            boolean b = Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_TRACKING.format(p.getPlayer().getUniqueId().toString()));
+            boolean b = Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_TRACKING.format(p.getUniqueId().toString()));
             if (!b)
             {
                 p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cYou must enable tracking in the Compassance menu."));
@@ -114,6 +110,13 @@ public class CompassCommand implements CommandExecutor
                 {
                     if (pl.getName().equalsIgnoreCase(targetName))
                     {
+                        boolean b1 = Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_TRACKING.format(pl.getUniqueId().toString()));
+                        if (!b1)
+                        {
+                            p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cThat player must enable tracking to be able to be tracked."));
+                            return true;
+                        }
+
                         Main.trackingManager.newTracking(p, pl);
                         Main.taskManager.refresh(p);
                         p.sendMessage(Utils.fmtClr(String.format("&a&lCOMPASS &8» &7You are now tracking player &f%s&7.", pl.getName())));
@@ -157,7 +160,6 @@ public class CompassCommand implements CommandExecutor
                 return true;
             }
         }
-
         else
         {
             sender.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cInvalid arguments."));

@@ -54,16 +54,6 @@ public class ItemBuilder implements Serializable
         return this;
     }
 
-    public ItemBuilder lore(ArrayList<String> list)
-    {
-        if (list == null)
-        {
-            return this;
-        }
-        loreList = list;
-        return this;
-    }
-
     public ItemBuilder lore(String... texts)
     {
         ArrayList<String> list = new ArrayList<>();

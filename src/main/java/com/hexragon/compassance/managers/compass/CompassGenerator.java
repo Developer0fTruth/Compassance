@@ -1,20 +1,21 @@
-package com.hexragon.compassance.managers.compass.generator;
+package com.hexragon.compassance.managers.compass;
 
 import com.hexragon.compassance.Main;
 import com.hexragon.compassance.managers.themes.Theme;
 import com.hexragon.compassance.utils.Utils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
-public class CompassStringGenerator
+public class CompassGenerator
 {
-    public final Theme theme;
+    private final Theme theme;
 
-    public CompassStringGenerator(Theme t)
+    public CompassGenerator(Theme t)
     {
         this.theme = t;
     }
@@ -228,6 +229,31 @@ public class CompassStringGenerator
         catch (Exception e)
         {
             return "Compassance failed to parse this theme.";
+        }
+    }
+
+    public static class GeneratorInfo
+    {
+        public final Player p;
+        public final double yaw;
+        public final boolean cursor;
+
+        public final Location l1;
+        public final Location l2;
+
+        /**
+         * @param l1 Original location.
+         * @param l2 Targetted location.
+         * @param y  Yaw rotational value.
+         * @param c  Use a cursor.
+         */
+        public GeneratorInfo(Player p, Location l1, Location l2, double y, boolean c)
+        {
+            this.p = p;
+            this.yaw = y;
+            this.l1 = l1;
+            this.l2 = l2;
+            this.cursor = c;
         }
     }
 }

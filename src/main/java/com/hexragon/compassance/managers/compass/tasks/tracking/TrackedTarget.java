@@ -5,22 +5,21 @@ import org.bukkit.entity.Entity;
 
 public class TrackedTarget
 {
-
     private final Location location;
-    private final TrackingType type;
+    private final TrackType trackType;
     private Entity target;
 
     public TrackedTarget(Entity e)
     {
         target = e;
         location = e.getLocation();
-        type = TrackingType.DYNAMIC;
+        trackType = TrackType.DYNAMIC;
     }
 
     public TrackedTarget(Location l)
     {
         location = l;
-        type = TrackingType.STATIC;
+        trackType = TrackType.STATIC;
     }
 
     public Entity getTarget()
@@ -30,16 +29,23 @@ public class TrackedTarget
 
     public Location getLocation()
     {
-        if (type == TrackingType.DYNAMIC)
+        if (trackType == TrackType.DYNAMIC)
         {
             return target.getLocation();
         }
         return location;
     }
 
-    public TrackingType getType()
+    public TrackType getType()
     {
-        return this.type;
+        return this.trackType;
     }
+
+    public enum TrackType
+    {
+        DYNAMIC,
+        STATIC
+    }
+
 
 }

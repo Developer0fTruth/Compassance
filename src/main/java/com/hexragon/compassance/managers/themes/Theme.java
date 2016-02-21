@@ -2,7 +2,7 @@ package com.hexragon.compassance.managers.themes;
 
 import com.hexragon.compassance.Main;
 import com.hexragon.compassance.files.configs.ThemeConfig;
-import com.hexragon.compassance.managers.compass.generator.CompassStringGenerator;
+import com.hexragon.compassance.managers.compass.CompassGenerator;
 
 import java.util.HashMap;
 
@@ -15,7 +15,7 @@ public class Theme
     public final ThemeFinal post;
     public final ThemeFunctionals func;
 
-    public final CompassStringGenerator generator;
+    private final CompassGenerator generator;
 
     /**
      * Grab all data from themes-configs.configs using designated paths.
@@ -26,7 +26,7 @@ public class Theme
     {
         this.id = id;
 
-        generator = new CompassStringGenerator(this);
+        generator = new CompassGenerator(this);
 
         meta = new ThemeMeta();
         data = new ThemeData();
@@ -136,7 +136,7 @@ public class Theme
         return getStringMapFull().split(";");
     }
 
-    public CompassStringGenerator getGenerator()
+    public CompassGenerator getGenerator()
     {
         return generator;
     }

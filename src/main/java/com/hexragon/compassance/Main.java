@@ -9,7 +9,7 @@ import com.hexragon.compassance.files.text.GearboxText;
 import com.hexragon.compassance.gui.MainMenu;
 import com.hexragon.compassance.gui.SettingsMenu;
 import com.hexragon.compassance.gui.ThemeMenu;
-import com.hexragon.compassance.managers.compass.tasks.TaskManager;
+import com.hexragon.compassance.managers.compass.tasks.CTaskManager;
 import com.hexragon.compassance.managers.compass.tasks.tracking.TrackingManager;
 import com.hexragon.compassance.managers.themes.ThemeManager;
 import com.hexragon.compassance.utils.Utils;
@@ -18,7 +18,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.MetricsLite;
 
 import java.io.IOException;
-import java.util.logging.Level;
 
 public class Main extends JavaPlugin
 {
@@ -28,7 +27,7 @@ public class Main extends JavaPlugin
     public static Gearbox playerConfig;
     public static Gearbox mainConfig;
 
-    public static TaskManager taskManager;
+    public static CTaskManager taskManager;
     public static ThemeManager themeManager;
     public static TrackingManager trackingManager;
 
@@ -44,17 +43,20 @@ public class Main extends JavaPlugin
 
         // LOAD CONFIGURATIONS
         mainConfig = new Gearbox(this, "config.yml");
+        Utils.versionCheck(mainConfig);
         mainConfig.load();
 
         themeConfig = new Gearbox(this, "themes-config.yml");
+        Utils.versionCheck(themeConfig);
         themeConfig.load();
 
         playerConfig = new Gearbox(this, "players-config.yml");
+        Utils.versionCheck(playerConfig);
         playerConfig.load();
 
         // MANAGERS INSTANTIATION
         themeManager = new ThemeManager();
-        taskManager = new TaskManager();
+        taskManager = new CTaskManager();
         trackingManager = new TrackingManager();
 
         mainMenu = new MainMenu();
@@ -76,13 +78,13 @@ public class Main extends JavaPlugin
             if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null && Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI"))
             {
                 placeholderAPIExist = true;
-                Utils.logHandle(Level.INFO, "Detected PlaceholderAPI.");
+                getLogger().info("Detected PlaceholderAPI.");
                 new Placeholders(this);
             }
             else
             {
                 placeholderAPIExist = false;
-                Utils.logHandle(Level.INFO, "Did not find PlaceholderAPI.");
+                getLogger().info("Did not find PlaceholderAPI.");
             }
         }
 
@@ -93,19 +95,24 @@ public class Main extends JavaPlugin
             {
                 MetricsLite metrics = new MetricsLite(this);
                 metrics.start();
-                Utils.logHandle(Level.INFO, "Metrics initialized. You can disable this by going into the meta config.");
+                getLogger().info("Metrics initialized. You can disable this by going into the main config.");
             }
             catch (IOException e)
             {
-                Utils.logHandle(Level.WARNING, "Unable to submit stats to Metrics.");
+                getLogger().warning("Unable to submit data to Metrics.");
             }
         }
         else
         {
-            Utils.logHandle(Level.INFO, "Metrics is disabled.");
+            getLogger().info("Metrics is disabled.");
         }
 
         new Listeners();
+    }
+
+    double damn()
+    {
+        return 2;
     }
 
 

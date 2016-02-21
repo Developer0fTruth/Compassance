@@ -3,7 +3,7 @@ package com.hexragon.compassance.managers.compass.tasks;
 import com.hexragon.compassance.Main;
 import com.hexragon.compassance.files.configs.MainConfig;
 import com.hexragon.compassance.files.configs.PlayerConfig;
-import com.hexragon.compassance.managers.compass.generator.GeneratorInfo;
+import com.hexragon.compassance.managers.compass.CompassGenerator;
 import com.hexragon.compassance.managers.compass.tasks.tracking.TrackedTarget;
 import com.hexragon.compassance.managers.themes.Theme;
 import com.hexragon.compassance.utils.ActionBar;
@@ -11,7 +11,7 @@ import com.hexragon.compassance.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class CUpdateTask
+class CUpdateTask
 {
     private final Player p;
     private boolean running;
@@ -19,7 +19,7 @@ public class CUpdateTask
 
     /**
      * Create a new task for player p.
-     * Values will be handled.
+     * Values will be handled upon start.
      *
      * @param p Player
      */
@@ -44,12 +44,11 @@ public class CUpdateTask
     {
         class TaskVariables
         {
+            private final String id = Main.playerConfig.config.getString(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId().toString()));
+            private final boolean cursor = Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_CURSOR.format(p.getPlayer().getUniqueId().toString()));
+            private final boolean alwaysOn = Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_ALWAYSON.format(p.getPlayer().getUniqueId().toString()));
             private double yaw;
-            private String id = Main.playerConfig.config.getString(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId().toString()));
-            private boolean cursor = Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_CURSOR.format(p.getPlayer().getUniqueId().toString()));
-            private boolean alwaysOn = Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_ALWAYSON.format(p.getPlayer().getUniqueId().toString()));
         }
-
         final TaskVariables thisTask = new TaskVariables();
 
         if (!running)
@@ -94,15 +93,15 @@ public class CUpdateTask
                         }
                     }
 
-                    GeneratorInfo gi;
+                    CompassGenerator.GeneratorInfo gi;
                     TrackedTarget target = Main.trackingManager.getTargetOf(p);
                     if (target != null && target.getLocation() != null)
                     {
-                        gi = new GeneratorInfo(p, p.getLocation(), target.getLocation(), p.getLocation().getYaw(), thisTask.cursor);
+                        gi = new CompassGenerator.GeneratorInfo(p, p.getLocation(), target.getLocation(), p.getLocation().getYaw(), thisTask.cursor);
                     }
                     else
                     {
-                        gi = new GeneratorInfo(p, null, null, p.getLocation().getYaw(), thisTask.cursor);
+                        gi = new CompassGenerator.GeneratorInfo(p, null, null, p.getLocation().getYaw(), thisTask.cursor);
                     }
                     if (th.getGenerator().getString(gi) != null) ActionBar.send(p, th.getGenerator().getString(gi));
 

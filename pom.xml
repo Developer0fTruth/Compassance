@@ -5,7 +5,7 @@
 
     <groupId>com.hexragon</groupId>
     <artifactId>Compassance</artifactId>
-    <version>1.4-BETA</version>
+    <version>1.5.1-BETA</version>
 
     <build>
         <plugins>
@@ -75,13 +75,6 @@
             <scope>system</scope>
             <systemPath>${basedir}/lib/nmsServer.jar</systemPath>
         </dependency>
-        <!--<dependency>-->
-        <!--<groupId>me.clip</groupId>-->
-        <!--<artifactId>placeholderapi</artifactId>-->
-        <!--<version>1.9.0.1</version>-->
-        <!--<scope>system</scope>-->
-        <!--<systemPath>${basedir}/lib/PlaceholderAPI.jar</systemPath>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>

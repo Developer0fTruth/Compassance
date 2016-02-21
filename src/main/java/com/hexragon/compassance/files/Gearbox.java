@@ -25,17 +25,15 @@ import java.util.logging.Level;
 public class Gearbox
 {
     /**
-     * Main java instance required to grab the
-     * plugin folder and handle writing logs.
-     */
-    public final JavaPlugin instance;
-
-    /**
      * File name of configuration grabbed
      * from the plugin's resource folder.
      */
     public final String fileName;
-
+    /**
+     * Main java instance required to grab the
+     * plugin folder and handle writing logs.
+     */
+    private final JavaPlugin instance;
     /**
      * Access to the loaded configuration
      * once you used [Gearbox].load().
@@ -95,8 +93,6 @@ public class Gearbox
         Reader defConfigStream = new InputStreamReader(instance.getResource(fileName), StandardCharsets.UTF_8);
         YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(defConfigStream);
         config.setDefaults(defConfig);
-
-        versionCheck();
     }
 
     /**
@@ -118,18 +114,6 @@ public class Gearbox
         {
             instance.getLogger().severe(String.format("Attempted saving file '%s' encountered an IOException.", fileName));
             e.printStackTrace();
-        }
-    }
-
-    public void versionCheck()
-    {
-        if (!config.getDefaults().getString("version").equals(config.getString("version")) || config.getString("version") == null)
-        {
-            instance.getLogger().warning(String.format("%s is outdated, compatibility problems may occur.", fileName));
-        }
-        else
-        {
-            instance.getLogger().info(String.format("%s config is up to date.", fileName));
         }
     }
 }

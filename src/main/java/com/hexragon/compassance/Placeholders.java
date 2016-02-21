@@ -1,25 +1,23 @@
 package com.hexragon.compassance;
 
 import com.hexragon.compassance.files.configs.PlayerConfig;
-import com.hexragon.compassance.managers.compass.generator.GeneratorInfo;
+import com.hexragon.compassance.managers.compass.CompassGenerator;
 import com.hexragon.compassance.managers.compass.tasks.tracking.TrackedTarget;
-import com.hexragon.compassance.managers.compass.tasks.tracking.TrackingType;
+import com.hexragon.compassance.managers.compass.tasks.tracking.TrackedTarget.TrackType;
 import com.hexragon.compassance.managers.themes.Theme;
 import com.hexragon.compassance.utils.ActionBar;
-import com.hexragon.compassance.utils.Utils;
 import me.clip.placeholderapi.PlaceholderAPI;
+import me.clip.placeholderapi.PlaceholderHook;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.logging.Level;
-
-public class Placeholders extends me.clip.placeholderapi.PlaceholderHook
+class Placeholders extends PlaceholderHook
 {
     public Placeholders(Main instance)
     {
         if (PlaceholderAPI.registerPlaceholderHook(instance, this))
         {
-            Utils.logHandle(Level.INFO, "Registered placeholders to PlaceholderAPI.");
+            instance.getLogger().info("Registered placeholders to PlaceholderAPI.");
         }
     }
 
@@ -46,11 +44,11 @@ public class Placeholders extends me.clip.placeholderapi.PlaceholderHook
                 return "None";
             }
 
-            if (t.getType() == TrackingType.DYNAMIC)
+            if (t.getType() == TrackType.DYNAMIC)
             {
                 return t.getTarget().getName();
             }
-            else if (t.getType() == TrackingType.STATIC)
+            else if (t.getType() == TrackType.STATIC)
             {
                 return "Location";
             }
@@ -80,15 +78,15 @@ public class Placeholders extends me.clip.placeholderapi.PlaceholderHook
                 theme = Main.themeManager.getTheme(Main.themeManager.defaultID);
             }
 
-            GeneratorInfo gi;
+            CompassGenerator.GeneratorInfo gi;
             TrackedTarget target = Main.trackingManager.getTargetOf(p);
             if (target != null && target.getLocation() != null)
             {
-                gi = new GeneratorInfo(p, p.getLocation(), target.getLocation(), p.getLocation().getYaw(), cursor);
+                gi = new CompassGenerator.GeneratorInfo(p, p.getLocation(), target.getLocation(), p.getLocation().getYaw(), cursor);
             }
             else
             {
-                gi = new GeneratorInfo(p, null, null, p.getLocation().getYaw(), cursor);
+                gi = new CompassGenerator.GeneratorInfo(p, null, null, p.getLocation().getYaw(), cursor);
             }
             if (theme.getGenerator().getString(gi) != null) ActionBar.send(p, theme.getGenerator().getString(gi));
         }
@@ -104,15 +102,15 @@ public class Placeholders extends me.clip.placeholderapi.PlaceholderHook
                 return "Theme doesn't exist!";
             }
 
-            GeneratorInfo gi;
+            CompassGenerator.GeneratorInfo gi;
             TrackedTarget target = Main.trackingManager.getTargetOf(p);
             if (target != null && target.getLocation() != null)
             {
-                gi = new GeneratorInfo(p, p.getLocation(), target.getLocation(), p.getLocation().getYaw(), cursor);
+                gi = new CompassGenerator.GeneratorInfo(p, p.getLocation(), target.getLocation(), p.getLocation().getYaw(), cursor);
             }
             else
             {
-                gi = new GeneratorInfo(p, null, null, p.getLocation().getYaw(), cursor);
+                gi = new CompassGenerator.GeneratorInfo(p, null, null, p.getLocation().getYaw(), cursor);
             }
             if (theme.getGenerator().getString(gi) != null) ActionBar.send(p, theme.getGenerator().getString(gi));
         }
