@@ -15,9 +15,6 @@
 version: 1.1
 
 players:
-  # ========================================================
-  #   These are the settings new players will be setted to.
-  # ========================================================
   default:
     settings:
       selectedTheme: default

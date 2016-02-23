@@ -1,6 +1,7 @@
 package com.hexragon.compassance.commands;
 
 import com.hexragon.compassance.Main;
+import com.hexragon.compassance.files.configs.MainConfig;
 import com.hexragon.compassance.files.configs.PlayerConfig;
 import com.hexragon.compassance.utils.Utils;
 import org.bukkit.Bukkit;
@@ -82,6 +83,12 @@ public class CompassCommand implements CommandExecutor
         {
             Player p = (Player) sender;
 
+            if (!Main.mainConfig.config.getBoolean(MainConfig.USE_TRACKING.path))
+            {
+                p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cTracking is globally disabled."));
+                return true;
+            }
+
             boolean b = Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_TRACKING.format(p.getUniqueId().toString()));
             if (!b)
             {
@@ -110,6 +117,12 @@ public class CompassCommand implements CommandExecutor
                 {
                     if (pl.getName().equalsIgnoreCase(targetName))
                     {
+                        if (pl == p)
+                        {
+                            p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cYou can't track yourself."));
+                            return true;
+                        }
+
                         boolean b1 = Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_TRACKING.format(pl.getUniqueId().toString()));
                         if (!b1)
                         {

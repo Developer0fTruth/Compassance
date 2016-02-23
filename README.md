@@ -7,6 +7,8 @@ Compassance brings a unique gadget for players on servers. This project allows f
 
 #### Theming Guide
 
+More in-depth guide will come soon.
+
 This will dictate what characters will go where, what sub patterns will go where, etc. It is highly recomended that you follow the 'default' template provided, so that data can be accurate and the plugin won't start throwing all kinds of errors.
 
 **Direct** `<?>` are direct replacers. These keys will immediately point the generator towards the 'data/direct' section and look for the corresponding character to replace in the main map. The generator will process them first.
@@ -44,4 +46,4 @@ default:
 ```
         
 #### Development Information
-This project is developed in Java 8. No APIs to hook up because most of the code relates to the theming anyways.
+This project is developed in Java 7. No APIs to hook up because most of the code relates to the theming anyways.
