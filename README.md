@@ -5,7 +5,7 @@
 # Compassance
 Compassance brings a unique gadget for players on servers. This project allows for a whole new level of customization and personalization of a player's experience on a Bukkit/Spigot server. The plugin allows for a Skyrim flat compass right on the action bar, turning around will move the compass respectively. Honestly you'll turn around just for the fun of it.
 
-#### Theming Guide
+#### Quick Theming Guide
 
 More in-depth guide will come soon.
 

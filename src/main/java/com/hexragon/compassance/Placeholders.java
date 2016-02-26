@@ -2,10 +2,8 @@ package com.hexragon.compassance;
 
 import com.hexragon.compassance.files.configs.PlayerConfig;
 import com.hexragon.compassance.managers.compass.CompassGenerator;
-import com.hexragon.compassance.managers.compass.tasks.tracking.TrackedTarget;
-import com.hexragon.compassance.managers.compass.tasks.tracking.TrackedTarget.TrackType;
+import com.hexragon.compassance.managers.tasks.tracking.TrackedTarget;
 import com.hexragon.compassance.managers.themes.Theme;
-import com.hexragon.compassance.utils.ActionBar;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.PlaceholderHook;
 import org.bukkit.Location;
@@ -31,8 +29,7 @@ class Placeholders extends PlaceholderHook
 
         if (identifier.equals("p_selectedtheme"))
         {
-
-            return Main.playerConfig.config.getString(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId()));
+            return Main.playerConfig.config.getString(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getUniqueId()));
         }
 
         if (identifier.equals("p_target"))
@@ -44,11 +41,11 @@ class Placeholders extends PlaceholderHook
                 return "None";
             }
 
-            if (t.getType() == TrackType.DYNAMIC)
+            if (t.getType() == TrackedTarget.TrackType.DYNAMIC)
             {
                 return t.getTarget().getName();
             }
-            else if (t.getType() == TrackType.STATIC)
+            else if (t.getType() == TrackedTarget.TrackType.STATIC)
             {
                 return "Location";
             }
@@ -60,7 +57,7 @@ class Placeholders extends PlaceholderHook
 
             if (t == null || t.getLocation() == null)
             {
-                return "None";
+                return "N/A";
             }
 
             Location l = t.getLocation();
@@ -88,7 +85,7 @@ class Placeholders extends PlaceholderHook
             {
                 gi = new CompassGenerator.GeneratorInfo(p, null, null, p.getLocation().getYaw(), cursor);
             }
-            if (theme.getGenerator().getString(gi) != null) ActionBar.send(p, theme.getGenerator().getString(gi));
+            if (theme.getGenerator().getString(gi) != null) return theme.getGenerator().getString(gi);
         }
 
         if (identifier.startsWith("p_string_theme_"))
@@ -112,7 +109,7 @@ class Placeholders extends PlaceholderHook
             {
                 gi = new CompassGenerator.GeneratorInfo(p, null, null, p.getLocation().getYaw(), cursor);
             }
-            if (theme.getGenerator().getString(gi) != null) ActionBar.send(p, theme.getGenerator().getString(gi));
+            if (theme.getGenerator().getString(gi) != null) return theme.getGenerator().getString(gi);
         }
 
         return null;

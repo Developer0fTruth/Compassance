@@ -1,16 +1,17 @@
 package com.hexragon.compassance;
 
+
 import com.hexragon.compassance.commands.CompassCommand;
 import com.hexragon.compassance.commands.ReloadCommand;
 import com.hexragon.compassance.commands.TestCommand;
 import com.hexragon.compassance.files.Gearbox;
+import com.hexragon.compassance.files.GearboxText;
 import com.hexragon.compassance.files.configs.MainConfig;
-import com.hexragon.compassance.files.text.GearboxText;
 import com.hexragon.compassance.gui.MainMenu;
 import com.hexragon.compassance.gui.SettingsMenu;
 import com.hexragon.compassance.gui.ThemeMenu;
-import com.hexragon.compassance.managers.compass.tasks.CTaskManager;
-import com.hexragon.compassance.managers.compass.tasks.tracking.TrackingManager;
+import com.hexragon.compassance.managers.tasks.CTaskManager;
+import com.hexragon.compassance.managers.tasks.tracking.TrackingManager;
 import com.hexragon.compassance.managers.themes.ThemeManager;
 import com.hexragon.compassance.utils.Utils;
 import org.bukkit.Bukkit;
@@ -109,12 +110,6 @@ public class Main extends JavaPlugin
 
         new Listeners();
     }
-
-    double damn()
-    {
-        return 2;
-    }
-
 
     public void onDisable()
     {

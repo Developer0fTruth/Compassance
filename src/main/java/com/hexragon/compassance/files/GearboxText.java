@@ -1,4 +1,4 @@
-package com.hexragon.compassance.files.text;
+package com.hexragon.compassance.files;
 
 import com.hexragon.compassance.Main;
 import com.hexragon.compassance.utils.FileUtil;

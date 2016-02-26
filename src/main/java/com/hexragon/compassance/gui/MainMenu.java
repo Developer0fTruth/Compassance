@@ -97,10 +97,13 @@ public class MainMenu implements Listener
         Inventory inv = e.getClickedInventory();
         Player p = (Player) e.getWhoClicked();
 
-        if (inv.getName().equalsIgnoreCase(name) && inv.getHolder() == p && users.contains(p))
+        if (e.getInventory().getName().equalsIgnoreCase(name))
         {
             e.setCancelled(true);
+        }
 
+        if (inv.getContents()[e.getSlot()] != null && inv.getName().equalsIgnoreCase(name) && inv.getHolder() == p && users.contains(p))
+        {
             switch (e.getSlot())
             {
                 case 10:

@@ -3,7 +3,7 @@ package com.hexragon.compassance.utils;
 import com.hexragon.compassance.Main;
 import com.hexragon.compassance.files.Gearbox;
 import com.hexragon.compassance.files.configs.PlayerConfig;
-import net.md_5.bungee.api.ChatColor;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 

@@ -3,7 +3,7 @@ package com.hexragon.compassance.gui;
 import com.hexragon.compassance.Main;
 import com.hexragon.compassance.files.configs.PlayerConfig;
 import com.hexragon.compassance.managers.compass.CompassGenerator.GeneratorInfo;
-import com.hexragon.compassance.managers.compass.tasks.tracking.TrackedTarget;
+import com.hexragon.compassance.managers.tasks.tracking.TrackedTarget;
 import com.hexragon.compassance.managers.themes.Theme;
 import com.hexragon.compassance.utils.ItemBuilder;
 import com.hexragon.compassance.utils.Utils;
@@ -86,10 +86,13 @@ public class ThemeMenu implements Listener
         Player p = (Player) e.getWhoClicked();
         int slot = e.getSlot();
 
-        if (inv.getName().equalsIgnoreCase(name) && inv.getHolder() == p && users.contains(p))
+        if (e.getInventory().getName().equalsIgnoreCase(name))
         {
             e.setCancelled(true);
+        }
 
+        if (inv.getContents()[slot] != null && inv.getName().equalsIgnoreCase(name) && inv.getHolder() == p && users.contains(p))
+        {
             int itemSlot = 10;
             int wrapCounter = 1;
 

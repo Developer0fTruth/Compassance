@@ -190,6 +190,7 @@ public class TestCommand implements CommandExecutor
 
             sender.sendMessage(PlaceholderAPI.setPlaceholders((Player) sender, "%compassance_p_string%"));
             sender.sendMessage(PlaceholderAPI.setPlaceholders((Player) sender, "%compassance_p_string_theme_default%"));
+            sender.sendMessage(PlaceholderAPI.setPlaceholders((Player) sender, "%compassance_p_string_theme_midnight-light%"));
             sender.sendMessage(PlaceholderAPI.setPlaceholders((Player) sender, "%compassance_p_selectedtheme% %compassance_p_target% %compassance_p_target_location%"));
             return true;
         }

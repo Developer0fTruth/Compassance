@@ -1,7 +1,6 @@
-package com.hexragon.compassance.managers.compass.tasks;
+package com.hexragon.compassance.managers.tasks;
 
 import com.hexragon.compassance.Main;
-import com.hexragon.compassance.files.configs.PlayerConfig;
 import com.hexragon.compassance.utils.Utils;
 import org.bukkit.entity.Player;
 
@@ -28,11 +27,6 @@ public class CTaskManager
             Utils.updateProfile(p);
             CUpdateTask updateTask = new CUpdateTask(p);
             tasks.put(p, updateTask);
-
-            if (Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_ENABLE.format(p.getUniqueId().toString())))
-            {
-                startTask(p);
-            }
         }
     }
 

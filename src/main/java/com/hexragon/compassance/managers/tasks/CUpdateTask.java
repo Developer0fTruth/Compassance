@@ -1,10 +1,10 @@
-package com.hexragon.compassance.managers.compass.tasks;
+package com.hexragon.compassance.managers.tasks;
 
 import com.hexragon.compassance.Main;
 import com.hexragon.compassance.files.configs.MainConfig;
 import com.hexragon.compassance.files.configs.PlayerConfig;
 import com.hexragon.compassance.managers.compass.CompassGenerator;
-import com.hexragon.compassance.managers.compass.tasks.tracking.TrackedTarget;
+import com.hexragon.compassance.managers.tasks.tracking.TrackedTarget;
 import com.hexragon.compassance.managers.themes.Theme;
 import com.hexragon.compassance.utils.ActionBar;
 import com.hexragon.compassance.utils.Utils;
@@ -27,6 +27,11 @@ class CUpdateTask
     {
         this.p = p;
         this.running = false;
+
+        if (Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_ENABLE.format(p.getUniqueId().toString())))
+        {
+            start();
+        }
     }
 
     /**

@@ -113,29 +113,29 @@ public class CompassCommand implements CommandExecutor
                 }
 
                 String targetName = args[2];
-                for (Player pl : Bukkit.getOnlinePlayers())
+
+                if (Bukkit.getPlayer(targetName) == p)
                 {
-                    if (pl.getName().equalsIgnoreCase(targetName))
+                    p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cYou can't track yourself."));
+                    return true;
+                }
+
+                Player pl = Bukkit.getPlayer(targetName);
+
+                if (pl != null)
+                {
+                    boolean b1 = Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_TRACKING.format(pl.getUniqueId().toString()));
+                    if (!b1)
                     {
-                        if (pl == p)
-                        {
-                            p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cYou can't track yourself."));
-                            return true;
-                        }
-
-                        boolean b1 = Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_TRACKING.format(pl.getUniqueId().toString()));
-                        if (!b1)
-                        {
-                            p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cThat player must enable tracking to be able to be tracked."));
-                            return true;
-                        }
-
-                        Main.trackingManager.newTracking(p, pl);
-                        Main.taskManager.refresh(p);
-                        p.sendMessage(Utils.fmtClr(String.format("&a&lCOMPASS &8» &7You are now tracking player &f%s&7.", pl.getName())));
-                        pl.sendMessage(Utils.fmtClr(String.format("&a&lCOMPASS &8» &7You are being tracked by &f%s&7.", p.getName())));
+                        p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cThat player must enable tracking to be able to be tracked."));
                         return true;
                     }
+
+                    Main.trackingManager.newTracking(p, pl);
+                    Main.taskManager.refresh(p);
+                    p.sendMessage(Utils.fmtClr(String.format("&a&lCOMPASS &8» &7You are now tracking player &f%s&7.", pl.getName())));
+                    pl.sendMessage(Utils.fmtClr(String.format("&a&lCOMPASS &8» &7You are being tracked by &f%s&7.", p.getName())));
+                    return true;
                 }
                 p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cThe player you are attempting to track is not found."));
 
