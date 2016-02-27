@@ -4,7 +4,7 @@
 
     <groupId>com.hexragon</groupId>
     <artifactId>Compassance</artifactId>
-    <version>B-1.5.2-beta</version>
+    <version>B-1.6-beta</version>
     <url>https://github.com/Hexragon/Compassance</url>
 
     <build>
@@ -65,10 +65,6 @@
     </build>
 
     <repositories>
-        <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/</url>
-        </repository>
         <repository>
             <id>Plugin Metrics</id>
             <url>http://repo.mcstats.org/content/repositories/public</url>

@@ -65,28 +65,28 @@ public class Main extends JavaPlugin
         themeMenu = new ThemeMenu();
 
         themeManager.loadThemes();
-        taskManager.newTaskAll();
 
         // SECONDARY INSTANTIATION
         new GearboxText(this, "references.txt").load();
         new CompassCommand();
         new ReloadCommand();
 
+        // PLACEHOLDER API DEPENDENCY
+        if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null && Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI"))
+        {
+            placeholderAPIExist = true;
+            getLogger().info("Detected PlaceholderAPI. Placeholder functionality will work.");
+            new Placeholders(this);
+        }
+        else
+        {
+            placeholderAPIExist = false;
+            getLogger().info("Did not find PlaceholderAPI. Placeholder functionality will not work.");
+        }
+
         if (mainConfig.config.getBoolean(MainConfig.DEBUG_MODE.path))
         {
             new TestCommand();
-
-            if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null && Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI"))
-            {
-                placeholderAPIExist = true;
-                getLogger().info("Detected PlaceholderAPI.");
-                new Placeholders(this);
-            }
-            else
-            {
-                placeholderAPIExist = false;
-                getLogger().info("Did not find PlaceholderAPI.");
-            }
         }
 
         // METRICS
@@ -109,6 +109,8 @@ public class Main extends JavaPlugin
         }
 
         new Listeners();
+
+        taskManager.newTaskAll();
     }
 
     public void onDisable()

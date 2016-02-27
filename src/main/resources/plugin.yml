@@ -1,15 +1,23 @@
-name: Compassance
+name: ${project.artifactId}
 author: Hexragon
+
+website: ${project.url}
+
+description: >
+  Compassance is bold and original. Discover something you never thought that you wanted,
+  a dynamic compass on your action bar. With amazing coding, simple GUI, self-theming
+  capabilities, configurations, tracking and more; Compassance is a simple plugin
+  that personalizes the Minecraft experience. Basically a cooler action bar.
+
 softdepend: [PlaceholderAPI]
 main: com.hexragon.compassance.Main
 version: ${project.version}
 
-description: A cooler action bar.
-
 commands:
   compass:
-    description: Open up the compass setting menu.
+    description: Open up the compass settings menu.
     usage: /<command>
+    aliases: [comp, compassance, cmps]
   test:
     description: hi
     usage: /<command>

@@ -157,6 +157,16 @@ public class CompassCommand implements CommandExecutor
                     Double z = Double.parseDouble(args[4]);
                     Main.trackingManager.newTracking(p, new Location(p.getWorld(), x, y, z));
 
+                    if (
+                            x > 100000 || x < -100000 ||
+                                    y > 1000 || y < 0 ||
+                                    z > 100000 || z < -100000
+                            )
+                    {
+                        p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cValues are too large."));
+                        return true;
+                    }
+
                     Main.taskManager.refresh(p);
                     p.sendMessage(Utils.fmtClr(String.format("&a&lCOMPASS &8» &7You are now tracking coordinates &f%s&7, &f%s&7, &f%s&7.", x, y, z)));
                     return true;

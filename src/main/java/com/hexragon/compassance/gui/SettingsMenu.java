@@ -58,13 +58,13 @@ public class SettingsMenu implements Listener
 
         inv.setItem(12,
                 new ItemBuilder().material(Material.BEACON).data((byte) 0).amt(1)
-                        .name("&b&lAlways Show")
+                        .name("&b&lAlways Update")
                         .lore("&7If this setting is enabled, then the", "&7compass will always show. Disable it", "&7and it will only show when you turn.").toItemStack());
 
         inv.setItem(14,
                 new ItemBuilder().material(Material.ARROW).data((byte) 0).amt(1)
                         .name("&cCursor")
-                        .lore("&cNot implemented yet.", "", "&7???").toItemStack());
+                        .lore("&7Show a cursor right in the center of", "the action bar.").toItemStack());
 
 
         String[] bl = getBL(p);
@@ -80,7 +80,7 @@ public class SettingsMenu implements Listener
                             .material(Material.INK_SACK)
                             .data(b ? (byte) 10 : (byte) 8)
                             .amt(1)
-                            .name(b ? "&aToggle" : "&cToggle")
+                            .name(b ? "&aToggle Option" : "&cToggle Option")
                             .lore(
                                     "",
                                     b ? "&2✔ &aEnabled" : "&4✘ &cDisabled",

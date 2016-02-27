@@ -57,12 +57,32 @@ class Placeholders extends PlaceholderHook
 
             if (t == null || t.getLocation() == null)
             {
-                return "N/A";
+                return "None";
             }
 
             Location l = t.getLocation();
-            return String.format("%.2f %.2f %.2f", l.getX(), l.getY(), l.getZ());
+            return String.format("%d %d %d", l.getBlockX(), l.getBlockY(), l.getBlockZ());
         }
+
+        if (identifier.equals("p_target_distance"))
+        {
+            TrackedTarget t = Main.trackingManager.getTargetOf(p);
+
+            if (t == null || t.getLocation() == null)
+            {
+                return "N/A";
+            }
+
+            if (p.getLocation().getWorld() != t.getLocation().getWorld())
+            {
+                return "Otherworldly";
+            }
+
+            long distance = Math.round(p.getLocation().distance(t.getLocation()));
+
+            return String.valueOf(distance) + "m";
+        }
+
 
         if (identifier.equals("p_string"))
         {

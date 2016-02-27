@@ -7,8 +7,6 @@ import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 
 public class CompassGenerator
@@ -165,7 +163,7 @@ public class CompassGenerator
 
             HashMap<String, String> finalPatternReplacers = theme.post.replacers;
 
-            if (finalPatternReplacers != null && finalPatternReplacers.size() != 0)
+            if (finalString.length() != 0)
             {
                 finalString = finalString.replaceAll("%str%", processsedString);
                 finalString = finalString.replaceAll(";", "");
@@ -185,41 +183,6 @@ public class CompassGenerator
             {
                 finalString = processsedString;
             }
-
-            Date d = new Date();
-
-            finalString = finalString.replaceAll("%theme-id%", theme.id)
-                    .replaceAll("%theme%", theme.meta.name)
-            ;
-
-            // TIME
-            //Day of Week ex. Tues, Monday
-            finalString = finalString.replaceAll("%dow%", new SimpleDateFormat("EEEE").format(d))
-                    .replaceAll("%a/dow%", new SimpleDateFormat("E").format(d))
-
-                    //Date
-                    .replaceAll("%month%", new SimpleDateFormat("MMMM").format(d))
-                    .replaceAll("%a/month%", new SimpleDateFormat("MMM").format(d))
-                    .replaceAll("%n/month%", new SimpleDateFormat("M").format(d))
-                    .replaceAll("%day%", new SimpleDateFormat("d").format(d))
-
-                    //Time
-                    .replaceAll("%time-zone%", new SimpleDateFormat("z").format(d))
-                    .replaceAll("%marker%", new SimpleDateFormat("a").format(d))
-                    .replaceAll("%second%", new SimpleDateFormat("ss").format(d))
-                    .replaceAll("%minute%", new SimpleDateFormat("mm").format(d))
-                    .replaceAll("%hour%", new SimpleDateFormat("h").format(d))
-            ;
-
-            // LOCATION
-            Location loc = gi.p.getLocation();
-            finalString = finalString.replaceAll("%x%", String.valueOf(loc.getBlockX()))
-                    .replaceAll("%y%", String.valueOf(loc.getBlockY()))
-                    .replaceAll("%z%", String.valueOf(loc.getBlockZ()))
-            ;
-
-            // YAW
-            finalString = finalString.replaceAll("%yaw%", String.format("%.2f", yaw));
 
             if (Main.placeholderAPIExist) finalString = PlaceholderAPI.setPlaceholders(gi.p, finalString);
 

@@ -191,3 +191,46 @@ themes:
       pattern-map: "<<>;%str%;<>>"
       <<>: "&f&l["
       <>>: "&f&l]"
+  minimal-staff:
+    meta:
+      name: "&lMinimalistic Staff"
+      desc: "&7All compact and cozy!"
+    data:
+      main-pattern-map: "<M>;<s/sep>;<M>;<s/sep>;<M>;<s/sep>;<M>;<s/sep>"
+      function:
+        cursor: "&f[;%str%;&f]"
+        target: "&6|"
+      direct:
+        <M>: "&f|"
+      sub-pattern:
+        <s/sep>:
+          pattern-map: "<1>;<1>;<1>;<1>;<1>;<1>;<1>;<1>;<1>;<1>;<1>;<1>;<1>;<1>;<1>;<1>;<1>;<1>;<1>;<1>;<1>;<1>;<1>;<1>;<1>;<1>;<1>;<1>"
+          <1>: "&8|"
+    final:
+      pattern-map: "<<>;%str%;<>>"
+      <<>: "&f["
+      <>>: "&f]"
+  locational-red:
+    meta:
+      name: "&lLocational &c&lRed"
+      desc: "&7Location to the nearest volcano!"
+    data:
+      main-pattern-map: "None"
+    final:
+      pattern-map: "&4&lYou:&f %player_x% %player_y% %player_z% &c\u27A4&f %compassance_p_target_distance% &c\u27A4 &4&lTarget:&f %compassance_p_target_location%"
+  locational-blue:
+    meta:
+      name: "&lLocational &3&lBlue"
+      desc: "&7Directions to the North Pole!"
+    data:
+      main-pattern-map: "None"
+    final:
+      pattern-map: "&3&lYou:&f %player_x% %player_y% %player_z% &b\u27A4&f %compassance_p_target_distance% &b\u27A4 &3&lTarget:&f %compassance_p_target_location%"
+  time-compass:
+    meta:
+      name: "&lTime Compass"
+      desc: "&7Break me free!"
+    data:
+      main-pattern-map: "None"
+    final:
+      pattern-map: "&f%date_MMMM d, yyyy% &8&m-----&f %date_h:mm:ss a z%"
