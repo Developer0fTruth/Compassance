@@ -23,6 +23,10 @@ enabled-themes:
   - midnight-mini
   - midnight-color
   - minimal-normal
+  - minimal-staff
+  - locational-red
+  - locational-blue
+  - time-compass
 
 # === THEMING GUIDE ========================================
 #

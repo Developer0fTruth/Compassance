@@ -22,7 +22,7 @@
                     <relocations>
                         <relocation>
                             <pattern>org.mcstats</pattern>
-                            <shadedPattern>com.hexsquared.compassance</shadedPattern>
+                            <shadedPattern>com.hexragon.compassance</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
