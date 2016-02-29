@@ -48,7 +48,7 @@ public class ThemeManager
                 if (s.equalsIgnoreCase(defaultID))
                 {
                     defaultHasErrors = true;
-                    Main.instance.getLogger().severe("Default theme has errors!");
+                    Main.logger.severe("Default theme has errors!");
                     return;
                 }
                 errors++;
@@ -59,7 +59,7 @@ public class ThemeManager
 
             i++;
         }
-        Main.instance.getLogger().log(errors >= 1 ? Level.WARNING : Level.INFO, String.format("Successfully loaded %s theme(s) with %s theme-related errors.", themes.size(), errors));
+        Main.logger.log(errors >= 1 ? Level.WARNING : Level.INFO, String.format("Successfully loaded %s theme(s) with %s theme-related errors.", themes.size(), errors));
     }
 
     /**
@@ -75,10 +75,10 @@ public class ThemeManager
         {
             if (defaultHasErrors)
             {
-                Main.instance.getLogger().severe(String.format("Attempted to get theme '%s', but default theme '%s' is not properly formatted. " + "Therefore access to other themes will be automatically denied.", s, defaultID));
+                Main.logger.severe(String.format("Attempted to get theme '%s', but default theme '%s' is not properly formatted. " + "Therefore access to other themes will be automatically denied.", s, defaultID));
                 return null;
             }
-            Main.instance.getLogger().severe(String.format("Attempted to get theme '%s', but it is not found.", s));
+            Main.logger.severe(String.format("Attempted to get theme '%s', but it is not found.", s));
             return null;
         }
         return themes.get(s);

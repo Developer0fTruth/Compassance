@@ -9,15 +9,25 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-public class CompassCommand implements CommandExecutor
+public class CompassCommand implements CommandExecutor, TabCompleter
 {
+    private String prefix = "&9&lCOMPASS &8» ";
+    private String usage = "&9&lUSAGE &8» ";
+
+    private String[] arg0 = {"help", "open", "theme", "track"};
+    private String[] arg1trk = {"player", "location"};
+
     public CompassCommand()
     {
         Main.instance.getCommand("compass").setExecutor(this);
+        Main.instance.getCommand("compass").setTabCompleter(this);
     }
 
     @Override
@@ -39,11 +49,11 @@ public class CompassCommand implements CommandExecutor
             ArrayList<String> arr = new ArrayList<>();
             arr.add("&8&m--------------------------------------------------");
             arr.add("");
-            arr.add("        &2&lCompassance");
+            arr.add("        &9&lCompassance");
             arr.add("");
-            arr.add("    &f/compass open &7- &f&aOpen compass settings menu.");
-            arr.add("    &f/compass theme -id &7- &f&aChange theme based on id.");
-            arr.add("    &f/compass track -args... &7- &f&aTrack a target.");
+            arr.add("    &f/compass open &8- &7Open compass settings menu.");
+            arr.add("    &f/compass theme -id &8- &7Change theme based on id.");
+            arr.add("    &f/compass track -args... &8- &7Track a target.");
             arr.add("");
             arr.add("&8&m--------------------------------------------------");
 
@@ -64,18 +74,18 @@ public class CompassCommand implements CommandExecutor
 
             if (args.length < 2)
             {
-                p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cInsufficient amount of arguments."));
-                p.sendMessage(Utils.fmtClr("&a&lUSAGE &8» &7/compass theme &ftheme-id"));
+                p.sendMessage(Utils.fmtClr(prefix + "&cInsufficient amount of arguments."));
+                p.sendMessage(Utils.fmtClr(usage + "&7/compass theme &ftheme-id"));
                 return true;
             }
 
             if (Main.themeManager.getTheme(args[1]) == null)
             {
-                p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cTheme ID doesn't exist."));
+                p.sendMessage(Utils.fmtClr(prefix + "&cTheme ID doesn't exist."));
                 return true;
             }
 
-            p.sendMessage(Utils.fmtClr(String.format("&a&lCOMPASS &8» &7Switching your selected theme to &r%s&7.", Main.themeManager.getTheme(args[1]).meta.name)));
+            p.sendMessage(Utils.fmtClr(String.format(prefix + "&7Switching your selected theme to &r%s&7.", Main.themeManager.getTheme(args[1]).meta.name)));
             Main.playerConfig.config.set(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId().toString()), args[1]);
             return true;
         }
@@ -85,21 +95,21 @@ public class CompassCommand implements CommandExecutor
 
             if (!Main.mainConfig.config.getBoolean(MainConfig.USE_TRACKING.path))
             {
-                p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cTracking is globally disabled."));
+                p.sendMessage(Utils.fmtClr(prefix + "&cTracking is globally disabled."));
                 return true;
             }
 
             boolean b = Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_TRACKING.format(p.getUniqueId().toString()));
             if (!b)
             {
-                p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cYou must enable tracking in the Compassance menu."));
+                p.sendMessage(Utils.fmtClr(prefix + "&cYou must enable tracking in the Compassance menu."));
                 return true;
             }
 
             if (args.length < 2)
             {
-                p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cInsufficient amount of arguments."));
-                p.sendMessage(Utils.fmtClr("&a&lUSAGE &8» &7/compass trk &fpl &7or &7/compass trk &floc"));
+                p.sendMessage(Utils.fmtClr(prefix + "&cInsufficient amount of arguments."));
+                p.sendMessage(Utils.fmtClr(usage + "&7/compass trk &fpl &7or &7/compass trk &floc"));
                 return true;
             }
 
@@ -107,8 +117,8 @@ public class CompassCommand implements CommandExecutor
             {
                 if (args.length != 3)
                 {
-                    p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cInsufficient amount of arguments."));
-                    p.sendMessage(Utils.fmtClr("&a&lUSAGE &8» &7/compass trk pl &f-player"));
+                    p.sendMessage(Utils.fmtClr(prefix + "&cInsufficient amount of arguments."));
+                    p.sendMessage(Utils.fmtClr(usage + "&7/compass trk pl &f-player"));
                     return true;
                 }
 
@@ -116,7 +126,7 @@ public class CompassCommand implements CommandExecutor
 
                 if (Bukkit.getPlayer(targetName) == p)
                 {
-                    p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cYou can't track yourself."));
+                    p.sendMessage(Utils.fmtClr(prefix + "&cYou can't track yourself."));
                     return true;
                 }
 
@@ -127,17 +137,17 @@ public class CompassCommand implements CommandExecutor
                     boolean b1 = Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_TRACKING.format(pl.getUniqueId().toString()));
                     if (!b1)
                     {
-                        p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cThat player must enable tracking to be able to be tracked."));
+                        p.sendMessage(Utils.fmtClr(prefix + "&cThat player must enable tracking to be able to be tracked."));
                         return true;
                     }
 
                     Main.trackingManager.newTracking(p, pl);
                     Main.taskManager.refresh(p);
-                    p.sendMessage(Utils.fmtClr(String.format("&a&lCOMPASS &8» &7You are now tracking player &f%s&7.", pl.getName())));
-                    pl.sendMessage(Utils.fmtClr(String.format("&a&lCOMPASS &8» &7You are being tracked by &f%s&7.", p.getName())));
+                    p.sendMessage(Utils.fmtClr(String.format(prefix + "&7You are now tracking player &f%s&7.", pl.getName())));
+                    pl.sendMessage(Utils.fmtClr(String.format(prefix + "&7You are being tracked by &f%s&7.", p.getName())));
                     return true;
                 }
-                p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cThe player you are attempting to track is not found."));
+                p.sendMessage(Utils.fmtClr(prefix + "&cThe player you are attempting to track is not found."));
 
                 return true;
             }
@@ -145,8 +155,8 @@ public class CompassCommand implements CommandExecutor
             {
                 if (args.length != 5)
                 {
-                    p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cInsufficient amount of arguments."));
-                    p.sendMessage(Utils.fmtClr("&a&lUSAGE &8» &7/compass trk loc &f-x -y -z&7."));
+                    p.sendMessage(Utils.fmtClr(prefix + "&cInsufficient amount of arguments."));
+                    p.sendMessage(Utils.fmtClr(usage + "&7/compass trk loc &f-x -y -z&7."));
                     return true;
                 }
 
@@ -163,33 +173,124 @@ public class CompassCommand implements CommandExecutor
                                     z > 100000 || z < -100000
                             )
                     {
-                        p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cValues are too large."));
+                        p.sendMessage(Utils.fmtClr(prefix + "&cValues are too large."));
                         return true;
                     }
 
                     Main.taskManager.refresh(p);
-                    p.sendMessage(Utils.fmtClr(String.format("&a&lCOMPASS &8» &7You are now tracking coordinates &f%s&7, &f%s&7, &f%s&7.", x, y, z)));
+                    p.sendMessage(Utils.fmtClr(String.format(prefix + "&7You are now tracking coordinates &f%s&7, &f%s&7, &f%s&7.", x, y, z)));
                     return true;
                 }
                 catch (Exception e)
                 {
-                    p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cThe coordinates you entered failed to parse, make sure you are using numbers."));
+                    p.sendMessage(Utils.fmtClr(prefix + "&cThe coordinates you entered failed to parse, make sure you are using numbers."));
                 }
             }
             else
             {
-                p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cInvalid tracking type."));
-                p.sendMessage(Utils.fmtClr("&a&lUSAGE &8» &7/compass trk &fpl &7or &7/compass trk &floc"));
+                p.sendMessage(Utils.fmtClr(prefix + "&cInvalid tracking type."));
+                p.sendMessage(Utils.fmtClr(usage + "&7/compass trk &fpl &7or &7/compass trk &floc"));
                 return true;
             }
         }
         else
         {
-            sender.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cInvalid arguments."));
-            sender.sendMessage(Utils.fmtClr("&a&lUSAGE &8» &7/compass help"));
+            sender.sendMessage(Utils.fmtClr(prefix + "&cInvalid arguments."));
+            sender.sendMessage(Utils.fmtClr(usage + "&7/compass help"));
             return true;
         }
 
         return false;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args)
+    {
+        ArrayList<String> list = new ArrayList<>();
+
+        if (args.length == 1)
+        {
+            if (!args[0].equals(""))
+            {
+                for (String s : arg0)
+                {
+                    if (s.toLowerCase().startsWith(args[0].toLowerCase())) list.add(s);
+                }
+            }
+            else
+            {
+                Collections.addAll(list, arg0);
+            }
+        }
+
+        if (args.length == 2)
+        {
+            if (args[0].equalsIgnoreCase("track") || args[0].equalsIgnoreCase("trk"))
+            {
+                if (!args[1].equals(""))
+                {
+                    for (String s : arg1trk)
+                    {
+                        if (s.toLowerCase().startsWith(args[1].toLowerCase())) list.add(s);
+                    }
+                }
+                else
+                {
+                    Collections.addAll(list, arg1trk);
+                }
+            }
+
+            if (args[0].equalsIgnoreCase("theme"))
+            {
+                if (!args[1].equals(""))
+                {
+                    for (String s : Main.themeManager.getThemes().keySet())
+                    {
+                        if (s.toLowerCase().startsWith(args[1].toLowerCase())) list.add(s);
+                    }
+                }
+                else
+                {
+                    for (String s : Main.themeManager.getThemes().keySet())
+                    {
+                        list.add(s);
+                    }
+                }
+            }
+        }
+
+        if (args.length == 3)
+        {
+            if ((args[0].equalsIgnoreCase("track") || args[0].equalsIgnoreCase("trk")) &&
+                    (args[1].equals("player") || (args[1].equals("pl"))))
+            {
+                if (!args[2].equals(""))
+                {
+                    for (Player pl : Bukkit.getOnlinePlayers())
+                    {
+                        if (pl.getName().toLowerCase().startsWith(args[2].toLowerCase())) list.add(pl.getName());
+                    }
+                }
+                else
+                {
+                    for (Player pl : Bukkit.getOnlinePlayers())
+                    {
+                        list.add(pl.getName());
+                    }
+                }
+            }
+        }
+
+        if ((args[0].equalsIgnoreCase("track") || args[0].equalsIgnoreCase("trk")) &&
+                (args[1].equals("location") || (args[1].equals("loc"))))
+        {
+            Player p = (Player) sender;
+            if (args.length == 3) list.add(String.valueOf(p.getLocation().getBlockX()));
+            if (args.length == 4) list.add(String.valueOf(p.getLocation().getBlockY()));
+            if (args.length == 5) list.add(String.valueOf(p.getLocation().getBlockZ()));
+        }
+
+        Collections.sort(list);
+        return list;
     }
 }

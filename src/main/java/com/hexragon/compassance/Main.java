@@ -5,24 +5,27 @@ import com.hexragon.compassance.commands.CompassCommand;
 import com.hexragon.compassance.commands.ReloadCommand;
 import com.hexragon.compassance.commands.TestCommand;
 import com.hexragon.compassance.files.Gearbox;
-import com.hexragon.compassance.files.GearboxText;
 import com.hexragon.compassance.files.configs.MainConfig;
 import com.hexragon.compassance.gui.MainMenu;
 import com.hexragon.compassance.gui.SettingsMenu;
 import com.hexragon.compassance.gui.ThemeMenu;
 import com.hexragon.compassance.managers.tasks.CTaskManager;
+import com.hexragon.compassance.managers.tasks.UpdateCheckTask;
 import com.hexragon.compassance.managers.tasks.tracking.TrackingManager;
 import com.hexragon.compassance.managers.themes.ThemeManager;
 import com.hexragon.compassance.utils.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.MetricsLite;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 public class Main extends JavaPlugin
 {
     public static Main instance;
+    public static Logger logger;
 
     public static Gearbox themeConfig;
     public static Gearbox playerConfig;
@@ -37,10 +40,12 @@ public class Main extends JavaPlugin
     public static ThemeMenu themeMenu;
 
     public static boolean placeholderAPIExist;
+    private UpdateCheckTask uct;
 
     public void onEnable()
     {
         instance = this;
+        logger = instance.getLogger();
 
         // LOAD CONFIGURATIONS
         mainConfig = new Gearbox(this, "config.yml");
@@ -67,7 +72,6 @@ public class Main extends JavaPlugin
         themeManager.loadThemes();
 
         // SECONDARY INSTANTIATION
-        new GearboxText(this, "references.txt").load();
         new CompassCommand();
         new ReloadCommand();
 
@@ -108,6 +112,23 @@ public class Main extends JavaPlugin
             getLogger().info("Metrics is disabled.");
         }
 
+        if (mainConfig.config.getBoolean(MainConfig.UPDATE_CHECK.path))
+        {
+            PluginDescriptionFile pdf = Main.instance.getDescription();
+            String version = pdf.getVersion();
+
+            String onlineVer = Utils.onlineUpdateCheck();
+            if (!onlineVer.equals(version))
+            {
+                uct = new UpdateCheckTask();
+                uct.start();
+            }
+            else if (onlineVer.equals(version))
+            {
+                getLogger().info(String.format("Running the latest version of Compassance %s.", version));
+            }
+        }
+
         new Listeners();
 
         taskManager.newTaskAll();
@@ -117,6 +138,8 @@ public class Main extends JavaPlugin
     {
         playerConfig.save();
         taskManager.endTaskAll();
+        if (uct != null) uct.stop();
+
         instance = null;
     }
 }

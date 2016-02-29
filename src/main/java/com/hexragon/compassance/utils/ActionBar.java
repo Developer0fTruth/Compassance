@@ -1,6 +1,6 @@
 package com.hexragon.compassance.utils;
 
-import org.bukkit.Bukkit;
+import com.hexragon.compassance.Main;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;
@@ -21,7 +21,7 @@ public class ActionBar
 
     static
     {
-        String bukkitPackage = Bukkit.getServer().getClass().getPackage().getName();
+        String bukkitPackage = Main.instance.getServer().getClass().getPackage().getName();
         nmsver = bukkitPackage.substring(bukkitPackage.lastIndexOf(".") + 1);
 
         try
@@ -41,13 +41,13 @@ public class ActionBar
                 chatBase = Class.forName("net.minecraft.server." + nmsver + ".IChatBaseComponent");
             }
             getHandle = craftPlayer.getDeclaredMethod("getHandle");
-            Bukkit.getLogger().info("Success! ActionBar lookup complete.");
+            Main.logger.info("Success! ActionBar lookup complete.");
         }
         catch (Exception ex)
         {
             ex.printStackTrace();
             works = false;
-            Bukkit.getLogger().severe("Warning! ActionBar lookup failed! Are you running the latest Minecraft 1.8?");
+            Main.logger.severe("Warning! ActionBar lookup failed! Are you running the latest Minecraft 1.8?");
         }
     }
 
@@ -83,7 +83,7 @@ public class ActionBar
         catch (Exception ex)
         {
             ex.printStackTrace();
-            Bukkit.getLogger().severe("Warning! ActionBar execution failed! Are you running the latest Minecraft 1.8?");
+            Main.logger.severe("Warning! ActionBar execution failed! Are you running the latest Minecraft 1.8?");
             works = false;
         }
     }

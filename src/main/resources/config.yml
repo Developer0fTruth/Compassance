@@ -12,6 +12,16 @@
 version: 1.1
 
 # ==========================================================
+#   This option will check for latest updates online.
+#   It will not download anything, just notify you
+#   if there is a new version of the plugin. If outdated,
+#   the plugin will notify you every (update-interval)
+#   seconds that is adjustible below.
+# ==========================================================
+update-checker: true
+checker-interval: 600           # 600 seconds is 10 minutes.
+
+# ==========================================================
 #   This option will send data such as player count and
 #   java version to mcstats.org. Compassance uses
 #   MetricsLite which will only send basic information.

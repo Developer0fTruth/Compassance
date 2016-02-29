@@ -7,6 +7,13 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.nio.charset.Charset;
+
 public class Utils
 {
     public static String fmtClr(String s)
@@ -50,11 +57,47 @@ public class Utils
 
         if (!config.getDefaults().getString("version").equals(config.getString("version")) || config.getString("version") == null)
         {
-            Main.instance.getLogger().warning(String.format("%s is outdated, compatibility problems may occur.", gb.fileName));
+            Main.logger.warning(String.format("%s is outdated, compatibility problems may occur.", gb.fileName));
         }
         else
         {
-            Main.instance.getLogger().info(String.format("%s config is up to date.", gb.fileName));
+            Main.logger.info(String.format("%s config is up to date.", gb.fileName));
         }
+    }
+
+
+    public static String onlineUpdateCheck()
+    {
+        String urlStr = "https://raw.githubusercontent.com/Hexragon/Compassance/master/latest-version";
+        String text = null;
+        try
+        {
+            try
+            {
+                BufferedReader reader = new BufferedReader(new InputStreamReader(new URL(urlStr).openStream(), Charset.defaultCharset()));
+                StringBuilder stringBuilder = new StringBuilder();
+                String str;
+                while ((str = reader.readLine()) != null)
+                {
+                    stringBuilder.append(str);
+                }
+                text = stringBuilder.toString();
+                reader.close();
+            }
+            catch (MalformedURLException e)
+            {
+                e.printStackTrace();
+            }
+            if (text != null)
+            {
+                return text;
+            }
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            return "error";
+        }
+        return "null";
     }
 }

@@ -6,7 +6,8 @@ public enum MainConfig
     USE_TRACKING("use-tracking"),
     METRICS("metrics"),
     DEBUG_MODE("bleeding-edge"),
-    UPDATE_CHECK("update-check");
+    UPDATE_CHECK("update-checker"),
+    CHECKER_INTERVAL("checker-interval");
 
     public final String path;
 

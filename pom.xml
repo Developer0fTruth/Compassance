@@ -4,7 +4,7 @@
 
     <groupId>com.hexragon</groupId>
     <artifactId>Compassance</artifactId>
-    <version>B-1.6-beta</version>
+    <version>B-1.6.1-beta</version>
     <url>https://github.com/Hexragon/Compassance</url>
 
     <build>
@@ -92,7 +92,7 @@
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.0.5</version>
+            <version>2.0.8</version>
         </dependency>
     </dependencies>
 

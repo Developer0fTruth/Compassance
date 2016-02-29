@@ -58,11 +58,6 @@ enabled-themes:
 #
 #   Separate keys by using ';'.
 #
-# ===== Static References
-#   This is a work in progress. These values are generated
-#   dynamically and it is not recomended that you name a
-#   key after them. They can be viewd on references.txt
-#
 # ==========================================================
 themes:
   default:
