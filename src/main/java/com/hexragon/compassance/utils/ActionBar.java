@@ -16,6 +16,7 @@ public class ActionBar
     private static Class<?> pktPOChat;
     private static Class<?> packet;
     private static Method getHandle;
+    private static Method a;
 
     private static boolean works = true;
 
@@ -30,10 +31,12 @@ public class ActionBar
             pktPOChat = Class.forName("net.minecraft.server." + nmsver + ".PacketPlayOutChat");
 
             packet = Class.forName("net.minecraft.server." + nmsver + ".Packet");
-            if (nmsver.equalsIgnoreCase("v1_8_R1") || !nmsver.startsWith("v1_8_"))
+
+            if ((nmsver.equalsIgnoreCase("v1_8_R1") || !nmsver.startsWith("v1_8_")) && !nmsver.startsWith("v1_9_"))
             {
                 chatSer = Class.forName("net.minecraft.server." + nmsver + ".ChatSerializer");
                 chatBase = Class.forName("net.minecraft.server." + nmsver + ".IChatBaseComponent");
+                a = chatSer.getDeclaredMethod("a", String.class);
             }
             else
             {
@@ -41,13 +44,12 @@ public class ActionBar
                 chatBase = Class.forName("net.minecraft.server." + nmsver + ".IChatBaseComponent");
             }
             getHandle = craftPlayer.getDeclaredMethod("getHandle");
-            Main.logger.info("Success! ActionBar lookup complete.");
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            ex.printStackTrace();
+            e.printStackTrace();
+            Main.logger.severe("Warning! ActionBar reflection failed!");
             works = false;
-            Main.logger.severe("Warning! ActionBar lookup failed! Are you running the latest Minecraft 1.8?");
         }
     }
 
@@ -59,13 +61,11 @@ public class ActionBar
         }
         try
         {
-            Object castPlayer = craftPlayer.cast(p);
-            Object pkt;
+            Object pl = craftPlayer.cast(p);
             Object o;
-
-            if (nmsver.equalsIgnoreCase("v1_8_R1") || !nmsver.startsWith("v1_8_"))
+            Object pkt;
+            if ((nmsver.equalsIgnoreCase("v1_8_R1") || !nmsver.startsWith("v1_8_")) && !nmsver.startsWith("v1_9_"))
             {
-                Method a = chatSer.getDeclaredMethod("a", String.class);
                 o = chatBase.cast(a.invoke(chatSer, "{\"text\": \"" + str + "\"}"));
             }
             else
@@ -73,17 +73,16 @@ public class ActionBar
                 o = chatSer.getConstructor(new Class<?>[]{String.class}).newInstance(str);
             }
             pkt = pktPOChat.getConstructor(new Class<?>[]{chatBase, byte.class}).newInstance(o, (byte) 2);
-
-            Object handle = getHandle.invoke(castPlayer);
+            Object handle = getHandle.invoke(pl);
             Field pCon = handle.getClass().getDeclaredField("playerConnection");
             Object pc = pCon.get(handle);
-            Method sendPkt = pc.getClass().getDeclaredMethod("sendPacket", packet);
-            sendPkt.invoke(pc, pkt);
+            Method sendPacket = pc.getClass().getDeclaredMethod("sendPacket", packet);
+            sendPacket.invoke(pc, pkt);
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            ex.printStackTrace();
-            Main.logger.severe("Warning! ActionBar execution failed! Are you running the latest Minecraft 1.8?");
+            e.printStackTrace();
+            Main.logger.severe("Warning! ActionBar execution failed. Reflection functions threw an exception.");
             works = false;
         }
     }
