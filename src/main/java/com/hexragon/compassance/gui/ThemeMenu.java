@@ -9,7 +9,6 @@ import com.hexragon.compassance.utils.ItemBuilder;
 import com.hexragon.compassance.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,6 +23,9 @@ import java.util.LinkedHashSet;
 
 public class ThemeMenu implements Listener
 {
+    private final String prefix = "&9&lCOMPASS &8» ";
+    private final String usage = "&9&lUSAGE &8» ";
+
     private final String name;
     private ArrayList<Player> users = new ArrayList<>();
 
@@ -50,18 +52,17 @@ public class ThemeMenu implements Listener
 
         String selectedId = Main.playerConfig.config.getString(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId()));
 
-        for (String id : Main.themeManager.getThemes().keySet())
+        LinkedHashSet<Theme> themeList = Main.themeManager.themesAccessibleTo(p); // If player do not have permission of themes, it is omitted.
+        for (Theme t : themeList)
         {
-            Theme t = Main.themeManager.getTheme(id);
-
-            byte data = (byte) (selectedId.equalsIgnoreCase(id) ? 11 : 7);
+            byte data = (byte) (selectedId.equalsIgnoreCase(t.id) ? 11 : 7);
 
             ItemBuilder itmBuild1 =
                     new ItemBuilder().material(Material.STAINED_GLASS_PANE).data(data).amt(1)
                             .name(Utils.fmtClr("&r" + t.meta.name))
                             .lore("&7ID: &f" + t.id, "", Utils.fmtClr(t.meta.desc), "", "&fClick &7to select.", "&fRight Click &7to preview.")
-                            .hideEnchants(selectedId.equals(id))
-                            .enchant(selectedId.equals(id) ? Enchantment.DURABILITY : null, 1);
+                            .hideEnchants(selectedId.equals(t.id))
+                            .enchant(selectedId.equals(t.id) ? Enchantment.DURABILITY : null, 1);
             inv.setItem(itemSlot, itmBuild1.toItemStack());
 
             wrapCounter++;
@@ -82,69 +83,66 @@ public class ThemeMenu implements Listener
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e)
     {
-        Inventory inv = e.getClickedInventory();
+        Inventory inv = e.getInventory();
         Player p = (Player) e.getWhoClicked();
         int slot = e.getSlot();
 
-        if (e.getInventory().getName().equalsIgnoreCase(name))
+        if (inv.getName().equalsIgnoreCase(name) && inv.getHolder() == p && users.contains(p))
         {
             e.setCancelled(true);
-        }
 
-        if (inv.getContents()[slot] != null && inv.getName().equalsIgnoreCase(name) && inv.getHolder() == p && users.contains(p))
-        {
-            int itemSlot = 10;
-            int wrapCounter = 1;
+            if (slot < 0) return;
 
-            if (e.getSlot() == 49)
+            if (inv.getContents()[slot] != null && inv.getName().equalsIgnoreCase(name) && inv.getHolder() == p && users.contains(p))
             {
-                p.playSound(p.getLocation(), Sound.CLICK, 0.5f, 1);
-                Main.mainMenu.show(p);
-                return;
-            }
+                int itemSlot = 10;
+                int wrapCounter = 1;
 
-            for (int i = 1; i <= Main.themeManager.getThemes().keySet().size(); i++)
-            {
-                LinkedHashSet<String> idList = new LinkedHashSet<>(Main.themeManager.getThemes().keySet());
-
-                if (slot == itemSlot && inv.getContents()[slot].getType() != Material.AIR)
+                if (e.getSlot() == 49)
                 {
-                    p.playSound(p.getLocation(), Sound.CLICK, 0.5f, 1);
-
-                    String clickedId = idList.toArray()[i - 1].toString();
-
-                    if (e.getClick() == ClickType.RIGHT)
-                    {
-                        Theme t = Main.themeManager.getTheme(clickedId);
-                        //PREVIEW GENERATION
-                        boolean cursor = Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_CURSOR.format(p.getPlayer().getUniqueId().toString()));
-
-                        GeneratorInfo gi;
-                        TrackedTarget target = Main.trackingManager.getTargetOf(p);
-                        if (target != null && target.getLocation() != null)
-                            gi = new GeneratorInfo(p, p.getLocation(), target.getLocation(), p.getLocation().getYaw(), cursor);
-                        else gi = new GeneratorInfo(p, null, null, p.getLocation().getYaw(), cursor);
-                        p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &7Showing preview of " + t.meta.name + "&7."));
-                        p.sendMessage(t.getGenerator().getString(gi));
-                        return;
-                    }
-
-                    Main.playerConfig.config.set(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId()), clickedId);
-                    Main.taskManager.refresh(p);
-
-                    e.getWhoClicked().sendMessage(
-                            Utils.fmtClr(
-                                    String.format(
-                                            "&a&lCOMPASS &8» &7Switching your selected theme to &r%s&7.",
-                                            Main.themeManager.getTheme(clickedId).meta.name)));
-
-                    show(p);
+                    Main.mainMenu.show(p);
                     return;
                 }
 
-                wrapCounter++;
-                itemSlot += wrapCounter > 7 ? 3 : 1;
-                if (wrapCounter > 7) wrapCounter = 1;
+                LinkedHashSet<Theme> themeList = Main.themeManager.themesAccessibleTo(p); // If player do not have permission of themes, it is omitted.
+
+                for (int i = 1; i <= themeList.size(); i++)
+                {
+                    if (slot == itemSlot && inv.getContents()[slot].getType() != Material.AIR)
+                    {
+                        Theme t = (Theme) themeList.toArray()[i - 1];
+
+                        // PREVIEW GENERATION
+                        if (e.getClick() == ClickType.RIGHT)
+                        {
+                            boolean cursor = Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_CURSOR.format(p.getPlayer().getUniqueId().toString()));
+
+                            GeneratorInfo gi;
+                            TrackedTarget target = Main.trackingManager.getTargetOf(p);
+                            if (target != null && target.getLocation() != null)
+                                gi = new GeneratorInfo(p, p.getLocation(), target.getLocation(), p.getLocation().getYaw(), cursor);
+                            else gi = new GeneratorInfo(p, null, null, p.getLocation().getYaw(), cursor);
+                            p.sendMessage(Utils.fmtClr(prefix + "&7Showing preview of " + t.meta.name + "&7."));
+                            p.sendMessage(t.getGenerator().getString(gi));
+                            return;
+                        }
+
+                        Main.playerConfig.config.set(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId()), t.id);
+                        Main.taskManager.refresh(p);
+
+                        e.getWhoClicked().sendMessage(
+                                Utils.fmtClr(
+                                        String.format(
+                                                prefix + "&7Switching your selected theme to &r%s&7.",
+                                                t.meta.name)));
+                        show(p);
+                        return;
+                    }
+
+                    wrapCounter++;
+                    itemSlot += wrapCounter > 7 ? 3 : 1;
+                    if (wrapCounter > 7) wrapCounter = 1;
+                }
             }
         }
     }

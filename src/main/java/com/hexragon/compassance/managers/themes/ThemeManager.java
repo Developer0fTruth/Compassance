@@ -1,7 +1,10 @@
 package com.hexragon.compassance.managers.themes;
 
 import com.hexragon.compassance.Main;
+import com.hexragon.compassance.files.configs.MainConfig;
 import com.hexragon.compassance.files.configs.ThemeConfig;
+import com.hexragon.compassance.utils.Utils;
+import org.bukkit.entity.Player;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -92,5 +95,32 @@ public class ThemeManager
     public LinkedHashMap<String, Theme> getThemes()
     {
         return themes;
+    }
+
+    public LinkedHashSet<Theme> themesAccessibleTo(Player p)
+    {
+        LinkedHashSet<String> idList = new LinkedHashSet<>(Main.themeManager.getThemes().keySet());
+        LinkedHashSet<Theme> themeList = new LinkedHashSet<>(); // If player do not have permission of themes, it is omitted.
+        if (Main.mainConfig.config.getBoolean(MainConfig.USE_PERMISSIONS.path))
+        {
+            for (String id : idList)
+            {
+                Theme t = Main.themeManager.getTheme(id);
+
+                if (Utils.permHandle(p, t.meta.permission, true))
+                {
+                    themeList.add(t);
+                }
+            }
+        }
+        else
+        {
+            for (String id : idList)
+            {
+                Theme t = Main.themeManager.getTheme(id);
+                themeList.add(t);
+            }
+        }
+        return themeList;
     }
 }

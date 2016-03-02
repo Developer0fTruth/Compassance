@@ -7,7 +7,6 @@ import com.hexragon.compassance.utils.ItemBuilder;
 import com.hexragon.compassance.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -94,51 +93,48 @@ public class MainMenu implements Listener
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e)
     {
-        Inventory inv = e.getClickedInventory();
+        Inventory inv = e.getInventory();
         Player p = (Player) e.getWhoClicked();
 
-        if (e.getInventory().getName().equalsIgnoreCase(name))
+        if (inv.getName().equalsIgnoreCase(name) && inv.getHolder() == p && users.contains(p))
         {
             e.setCancelled(true);
-        }
 
-        if (inv.getContents()[e.getSlot()] != null && inv.getName().equalsIgnoreCase(name) && inv.getHolder() == p && users.contains(p))
-        {
-            switch (e.getSlot())
+            if (e.getSlot() < 0) return;
+
+            if (inv.getContents()[e.getSlot()] != null)
             {
-                case 10:
-                    Main.themeMenu.show(p);
-                    p.playSound(p.getLocation(), Sound.CLICK, 0.5f, 1);
-                    break;
-                case 12:
-                    String str = PlayerConfig.SETTING_TRACKING.format(p.getPlayer().getUniqueId().toString());
-                    boolean b = Main.playerConfig.config.getBoolean(str);
-                    Main.playerConfig.config.set(str, !b);
-                    p.playSound(p.getLocation(), Sound.CLICK, 0.5f, 1);
+                switch (e.getSlot())
+                {
+                    case 10:
+                        Main.themeMenu.show(p);
+                        break;
+                    case 12:
+                        String str = PlayerConfig.SETTING_TRACKING.format(p.getPlayer().getUniqueId().toString());
+                        boolean b = Main.playerConfig.config.getBoolean(str);
+                        Main.playerConfig.config.set(str, !b);
 
-                    if (!Main.mainConfig.config.getBoolean(MainConfig.USE_TRACKING.path))
-                    {
-                        Main.playerConfig.config.set(str, false);
-                        p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cTracking is globally disabled."));
-                    }
-                    if (b)
-                    {
-                        Main.trackingManager.removeTrackingFrom(p);
-                        Main.trackingManager.removeTrackingOf(p);
-                    }
+                        if (!Main.mainConfig.config.getBoolean(MainConfig.USE_TRACKING.path))
+                        {
+                            Main.playerConfig.config.set(str, false);
+                            p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cTracking is globally disabled."));
+                        }
+                        if (b)
+                        {
+                            Main.trackingManager.removeTrackingFrom(p);
+                            Main.trackingManager.removeTrackingOf(p);
+                        }
+                        show(p);
 
-                    show(p);
+                        break;
+                    case 14:
+                        Main.settingsMenu.show(p);
+                        break;
+                    case 16:
+                        p.closeInventory();
+                        break;
 
-                    break;
-                case 14:
-                    Main.settingsMenu.show(p);
-                    p.playSound(p.getLocation(), Sound.CLICK, 0.5f, 1);
-                    break;
-                case 16:
-                    p.playSound(p.getLocation(), Sound.CLICK, 0.5f, 1);
-                    p.closeInventory();
-                    break;
-
+                }
             }
         }
     }

@@ -50,15 +50,15 @@ public class Main extends JavaPlugin
         // LOAD CONFIGURATIONS
         mainConfig = new Gearbox(this, "config.yml");
         mainConfig.load();
-        Utils.versionCheck(mainConfig);
+        Utils.gbVersionCheck(mainConfig);
 
         themeConfig = new Gearbox(this, "themes-config.yml");
         themeConfig.load();
-        Utils.versionCheck(themeConfig);
+        Utils.gbVersionCheck(themeConfig);
 
         playerConfig = new Gearbox(this, "players-config.yml");
         playerConfig.load();
-        Utils.versionCheck(playerConfig);
+        Utils.gbVersionCheck(playerConfig);
 
         // MANAGERS INSTANTIATION
         themeManager = new ThemeManager();

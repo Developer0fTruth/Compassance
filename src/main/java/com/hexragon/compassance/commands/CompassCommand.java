@@ -18,8 +18,8 @@ import java.util.List;
 
 public class CompassCommand implements CommandExecutor, TabCompleter
 {
-    private String prefix = "&9&lCOMPASS &8» ";
-    private String usage = "&9&lUSAGE &8» ";
+    private final String prefix = "&9&lCOMPASS &8» ";
+    private final String usage = "&9&lUSAGE &8» ";
 
     private String[] arg0 = {"help", "open", "theme", "track"};
     private String[] arg1trk = {"player", "location"};
@@ -87,6 +87,8 @@ public class CompassCommand implements CommandExecutor, TabCompleter
 
             p.sendMessage(Utils.fmtClr(String.format(prefix + "&7Switching your selected theme to &r%s&7.", Main.themeManager.getTheme(args[1]).meta.name)));
             Main.playerConfig.config.set(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId().toString()), args[1]);
+            Main.taskManager.refresh(p);
+
             return true;
         }
         else if (args[0].equalsIgnoreCase("track") || args[0].equalsIgnoreCase("trk"))

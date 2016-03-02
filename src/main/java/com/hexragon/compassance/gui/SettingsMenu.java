@@ -6,7 +6,6 @@ import com.hexragon.compassance.utils.ItemBuilder;
 import com.hexragon.compassance.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -64,7 +63,7 @@ public class SettingsMenu implements Listener
         inv.setItem(14,
                 new ItemBuilder().material(Material.ARROW).data((byte) 0).amt(1)
                         .name("&cCursor")
-                        .lore("&7Show a cursor right in the center of", "the action bar.").toItemStack());
+                        .lore("&7Show a cursor right in the center of", "&7the action bar.").toItemStack());
 
 
         String[] bl = getBL(p);
@@ -100,40 +99,40 @@ public class SettingsMenu implements Listener
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e)
     {
-        Inventory inv = e.getClickedInventory();
+        Inventory inv = e.getInventory();
         Player p = (Player) e.getWhoClicked();
 
-        if (e.getInventory().getName().equalsIgnoreCase(name))
+        if (inv.getName().equalsIgnoreCase(name) && inv.getHolder() == p && users.contains(p))
         {
             e.setCancelled(true);
-        }
 
-        if (inv.getContents()[e.getSlot()] != null && inv.getName().equalsIgnoreCase(name) && inv.getHolder() == p && users.contains(p))
-        {
-            String[] bl = getBL(p);
+            if (e.getSlot() < 0) return;
 
-            switch (e.getSlot())
+            if (inv.getContents()[e.getSlot()] != null && inv.getName().equalsIgnoreCase(name) && inv.getHolder() == p && users.contains(p))
             {
-                case 25:
-                    p.playSound(p.getLocation(), Sound.CLICK, 0.5f, 1);
-                    Main.mainMenu.show(p);
-                default:
+                String[] bl = getBL(p);
 
-                    int i = 0;
-                    for (String str : bl)
-                    {
-                        boolean b = Main.playerConfig.config.getBoolean(str);
+                switch (e.getSlot())
+                {
+                    case 25:
+                        Main.mainMenu.show(p);
+                    default:
 
-                        if (e.getSlot() == 19 + i)
+                        int i = 0;
+                        for (String str : bl)
                         {
-                            p.playSound(p.getLocation(), Sound.CLICK, 0.5f, 1);
-                            Main.playerConfig.config.set(str, !b);
-                            Main.taskManager.refresh(p);
-                            show(p);
-                            return;
+                            boolean b = Main.playerConfig.config.getBoolean(str);
+
+                            if (e.getSlot() == 19 + i)
+                            {
+                                Main.playerConfig.config.set(str, !b);
+                                Main.taskManager.refresh(p);
+                                show(p);
+                                return;
+                            }
+                            i += 2;
                         }
-                        i += 2;
-                    }
+                }
             }
         }
     }

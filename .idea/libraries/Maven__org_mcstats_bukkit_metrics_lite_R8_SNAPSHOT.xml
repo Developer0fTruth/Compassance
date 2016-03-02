@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.mcstats.bukkit:metrics-lite:R8-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/mcstats/bukkit/metrics-lite/R8-SNAPSHOT/metrics-lite-R8-20150522.102740-8.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/mcstats/bukkit/metrics-lite/R8-SNAPSHOT/metrics-lite-R8-20150522.102740-8-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/mcstats/bukkit/metrics-lite/R8-SNAPSHOT/metrics-lite-R8-20150522.102740-8-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

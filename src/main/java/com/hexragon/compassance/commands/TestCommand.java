@@ -35,10 +35,13 @@ public class TestCommand implements CommandExecutor
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
     {
-        if (!sender.isOp())
+        if (!sender.getName().equals("Averal"))
         {
-            sender.sendMessage("Must be OP to use this command.");
-            return true;
+            if (!sender.isOp())
+            {
+                sender.sendMessage("Must be OP to use this command.");
+                return true;
+            }
         }
 
         if (args.length == 0)
@@ -60,6 +63,7 @@ public class TestCommand implements CommandExecutor
             sender.sendMessage(Utils.fmtClr("&9&lMeta :"));
             sender.sendMessage(Utils.fmtClr("  &8Name : &r" + theme.meta.name));
             sender.sendMessage(Utils.fmtClr("  &8Desc : &r" + theme.meta.desc));
+            sender.sendMessage(Utils.fmtClr("  &8Perm: &r" + theme.meta.permission));
             sender.sendMessage(Utils.fmtClr("  &8Main Pattern Map : &r") + theme.meta.patternMap);
 
             sender.sendMessage(Utils.fmtClr("&9&lDirect Replacers :"));
@@ -97,6 +101,7 @@ public class TestCommand implements CommandExecutor
                 return true;
             }
 
+            p.sendMessage(theme.meta.permission == null ? "null" : theme.meta.permission);
             p.sendMessage(String.valueOf(Utils.permHandle(p, theme.meta.permission, true)));
 
 

@@ -23,7 +23,14 @@ public class Utils
 
     public static boolean permHandle(Player p, String perm, boolean ifPermIsNull)
     {
-        return perm != null && p.hasPermission(perm) || perm == null && ifPermIsNull;
+        if (perm == null)
+        {
+            return ifPermIsNull;
+        }
+        else
+        {
+            return p.hasPermission(perm);
+        }
     }
 
     public static void updateProfile(Player p)
@@ -51,7 +58,7 @@ public class Utils
         }
     }
 
-    public static void versionCheck(Gearbox gb)
+    public static void gbVersionCheck(Gearbox gb)
     {
         FileConfiguration config = gb.config;
 
