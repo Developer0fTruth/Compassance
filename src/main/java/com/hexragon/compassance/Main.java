@@ -1,8 +1,8 @@
 package com.hexragon.compassance;
 
 
+import com.hexragon.compassance.commands.AdminCommand;
 import com.hexragon.compassance.commands.CompassCommand;
-import com.hexragon.compassance.commands.ReloadCommand;
 import com.hexragon.compassance.commands.TestCommand;
 import com.hexragon.compassance.files.Gearbox;
 import com.hexragon.compassance.files.configs.MainConfig;
@@ -10,12 +10,11 @@ import com.hexragon.compassance.gui.MainMenu;
 import com.hexragon.compassance.gui.SettingsMenu;
 import com.hexragon.compassance.gui.ThemeMenu;
 import com.hexragon.compassance.managers.tasks.CTaskManager;
-import com.hexragon.compassance.managers.tasks.UpdateCheckTask;
 import com.hexragon.compassance.managers.tasks.tracking.TrackingManager;
 import com.hexragon.compassance.managers.themes.ThemeManager;
+import com.hexragon.compassance.utils.ActionBar;
 import com.hexragon.compassance.utils.Utils;
 import org.bukkit.Bukkit;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.MetricsLite;
 
@@ -24,8 +23,9 @@ import java.util.logging.Logger;
 
 public class Main extends JavaPlugin
 {
-    public static Main instance;
+    public static Main plugin;
     public static Logger logger;
+    public static String nmsver;
 
     public static Gearbox themeConfig;
     public static Gearbox playerConfig;
@@ -40,12 +40,16 @@ public class Main extends JavaPlugin
     public static ThemeMenu themeMenu;
 
     public static boolean placeholderAPIExist;
-    private UpdateCheckTask uct;
+    public static boolean bossbarAPIExist;
+    private UpdateChecker uct;
 
     public void onEnable()
     {
-        instance = this;
-        logger = instance.getLogger();
+        plugin = this;
+        logger = plugin.getLogger();
+
+        String bukkitPackage = Main.plugin.getServer().getClass().getPackage().getName();
+        nmsver = bukkitPackage.substring(bukkitPackage.lastIndexOf(".") + 1);
 
         // LOAD CONFIGURATIONS
         mainConfig = new Gearbox(this, "config.yml");
@@ -72,8 +76,9 @@ public class Main extends JavaPlugin
         themeManager.loadThemes();
 
         // SECONDARY INSTANTIATION
+        ActionBar.setup();
         new CompassCommand();
-        new ReloadCommand();
+        new AdminCommand();
 
         // PLACEHOLDER API DEPENDENCY
         if (getServer().getPluginManager().getPlugin("PlaceholderAPI") != null && Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI"))
@@ -85,12 +90,23 @@ public class Main extends JavaPlugin
         else
         {
             placeholderAPIExist = false;
-            getLogger().info("Did not find PlaceholderAPI. Placeholder functionality will not work.");
+            getLogger().warning("Did not find PlaceholderAPI. Placeholder functionality will not work.");
         }
 
         if (mainConfig.config.getBoolean(MainConfig.DEBUG_MODE.path))
         {
             new TestCommand();
+
+            if (getServer().getPluginManager().getPlugin("BossBarAPI") != null && Bukkit.getPluginManager().isPluginEnabled("BossBarAPI"))
+            {
+                bossbarAPIExist = true;
+                getLogger().info("Detected BossBarAPI.");
+            }
+            else
+            {
+                bossbarAPIExist = false;
+                getLogger().info("Did not find BossBarAPI.");
+            }
         }
 
         // METRICS
@@ -114,19 +130,8 @@ public class Main extends JavaPlugin
 
         if (mainConfig.config.getBoolean(MainConfig.UPDATE_CHECK.path))
         {
-            PluginDescriptionFile pdf = Main.instance.getDescription();
-            String version = pdf.getVersion();
-
-            String onlineVer = Utils.onlineUpdateCheck();
-            if (!onlineVer.equals(version))
-            {
-                uct = new UpdateCheckTask();
-                uct.start();
-            }
-            else if (onlineVer.equals(version))
-            {
-                getLogger().info(String.format("Running the latest version of Compassance %s.", version));
-            }
+            uct = new UpdateChecker();
+            uct.start();
         }
 
         new Listeners();
@@ -138,8 +143,8 @@ public class Main extends JavaPlugin
     {
         playerConfig.save();
         taskManager.endTaskAll();
-        if (uct != null) uct.stop();
+        uct.stop();
 
-        instance = null;
+        plugin = null;
     }
 }

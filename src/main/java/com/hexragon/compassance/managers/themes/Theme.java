@@ -38,8 +38,6 @@ public class Theme
         data.sub.replacers = new HashMap<>();
 
         post.replacers = new HashMap<>();
-
-        loadData();
     }
 
     public void loadData()

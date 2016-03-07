@@ -24,6 +24,7 @@
         </SOURCES>
       </library>
     </orderEntry>
+    <orderEntry type="library" name="BossBarAPI" level="project" />
     <orderEntry type="library" name="Maven: org.mcstats.bukkit:metrics-lite:R8-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.bukkit:bukkit:1.8.8-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: commons-lang:commons-lang:2.6" level="project" />
@@ -35,6 +36,9 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.avaje:ebean:2.8.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.persistence:persistence-api:1.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.yaml:snakeyaml:1.15" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.spigotmc:spigot-api:1.8.8-R0.1-SNAPSHOT" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: net.md-5:bungeecord-chat:1.8-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Maven: me.clip:placeholderapi:2.0.8" level="project" />
+    <orderEntry type="library" name="Maven: org.inventivetalent:bossbarapi:2.0.1" level="project" />
   </component>
 </module>

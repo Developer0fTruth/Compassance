@@ -2,6 +2,7 @@ package com.hexragon.compassance.gui;
 
 import com.hexragon.compassance.Main;
 import com.hexragon.compassance.files.configs.PlayerConfig;
+import com.hexragon.compassance.language.Tags;
 import com.hexragon.compassance.managers.compass.CompassGenerator.GeneratorInfo;
 import com.hexragon.compassance.managers.tasks.tracking.TrackedTarget;
 import com.hexragon.compassance.managers.themes.Theme;
@@ -23,8 +24,6 @@ import java.util.LinkedHashSet;
 
 public class ThemeMenu implements Listener
 {
-    private final String prefix = "&9&lCOMPASS &8» ";
-    private final String usage = "&9&lUSAGE &8» ";
 
     private final String name;
     private ArrayList<Player> users = new ArrayList<>();
@@ -40,7 +39,7 @@ public class ThemeMenu implements Listener
         {
             name = s;
         }
-        Main.instance.getServer().getPluginManager().registerEvents(this, Main.instance);
+        Main.plugin.getServer().getPluginManager().registerEvents(this, Main.plugin);
     }
 
     public void show(Player p)
@@ -122,7 +121,7 @@ public class ThemeMenu implements Listener
                             if (target != null && target.getLocation() != null)
                                 gi = new GeneratorInfo(p, p.getLocation(), target.getLocation(), p.getLocation().getYaw(), cursor);
                             else gi = new GeneratorInfo(p, null, null, p.getLocation().getYaw(), cursor);
-                            p.sendMessage(Utils.fmtClr(prefix + "&7Showing preview of " + t.meta.name + "&7."));
+                            p.sendMessage(Utils.fmtClr(Tags.prefix + "&7Showing preview of " + t.meta.name + "&7."));
                             p.sendMessage(t.getGenerator().getString(gi));
                             return;
                         }
@@ -133,7 +132,7 @@ public class ThemeMenu implements Listener
                         e.getWhoClicked().sendMessage(
                                 Utils.fmtClr(
                                         String.format(
-                                                prefix + "&7Switching your selected theme to &r%s&7.",
+                                                Tags.prefix + "&7Switching your selected theme to &r%s&7.",
                                                 t.meta.name)));
                         show(p);
                         return;

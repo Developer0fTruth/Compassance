@@ -33,7 +33,7 @@ public class MainMenu implements Listener
             name = s;
         }
 
-        Main.instance.getServer().getPluginManager().registerEvents(this, Main.instance);
+        Main.plugin.getServer().getPluginManager().registerEvents(this, Main.plugin);
     }
 
     public void show(Player p)

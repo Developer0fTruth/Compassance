@@ -15,11 +15,6 @@ public class CTaskManager
         tasks = new HashMap<>();
     }
 
-    /**
-     * Creates a new task for this player.
-     *
-     * @param p Player
-     */
     public void newTask(Player p)
     {
         if (!tasks.containsKey(p))
@@ -30,11 +25,6 @@ public class CTaskManager
         }
     }
 
-    /**
-     * Start the task for this player.
-     *
-     * @param p Player
-     */
     public void startTask(Player p)
     {
         if (tasks.containsKey(p))
@@ -47,11 +37,6 @@ public class CTaskManager
         }
     }
 
-    /**
-     * Stop the task for this player.
-     *
-     * @param p Player
-     */
     public void stopTask(Player p)
     {
         if (tasks.containsKey(p))
@@ -64,11 +49,6 @@ public class CTaskManager
         }
     }
 
-    /**
-     * Delete the task for this player.
-     *
-     * @param p Player
-     */
     public void endTask(Player p)
     {
         if (tasks.containsKey(p))
@@ -78,20 +58,14 @@ public class CTaskManager
         }
     }
 
-    /**
-     * Creates a new task for all online players.
-     */
     public void newTaskAll()
     {
-        for (Player e : Main.instance.getServer().getOnlinePlayers())
+        for (Player e : Main.plugin.getServer().getOnlinePlayers())
         {
             newTask(e);
         }
     }
 
-    /**
-     * Stop all tasks registered.
-     */
     public void stopTaskAll()
     {
         for (Player e : tasks.keySet())
@@ -100,30 +74,18 @@ public class CTaskManager
         }
     }
 
-    /**
-     * Stop and delete all registered tasks.
-     */
     public void endTaskAll()
     {
         stopTaskAll();
         tasks.clear();
     }
 
-    /**
-     * Refresh all tasks. (Recreate all tasks).
-     */
     public void refreshAll()
     {
         endTaskAll();
         newTaskAll();
     }
 
-
-    /**
-     * Recreate task for the player.
-     *
-     * @param p Player
-     */
     public void refresh(Player p)
     {
         if (tasks.containsKey(p))

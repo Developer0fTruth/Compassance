@@ -29,7 +29,7 @@ public class TestCommand implements CommandExecutor
 {
     public TestCommand()
     {
-        Main.instance.getCommand("test").setExecutor(this);
+        Main.plugin.getCommand("test").setExecutor(this);
     }
 
     @Override
@@ -222,6 +222,20 @@ public class TestCommand implements CommandExecutor
 
         }
 
+        if (args.length == 1 && args[0].equalsIgnoreCase("suggest"))
+        {
+            Player p = (Player) sender;
+            p.chat("/test");
+        }
+
+        if (args.length == 1 && args[0].equalsIgnoreCase("serialize"))
+        {
+            Player p = (Player) sender;
+            Main.playerConfig.config.set("players.ouuid.settings.selectedTheme".replaceAll("ouuid", p.getPlayer().getUniqueId().toString()), new Location(p.getWorld(), 50, 100, 150));
+
+            p.sendMessage(String.valueOf(((Location) Main.playerConfig.config.get("players.ouuid.settings.selectedTheme".replaceAll("ouuid", p.getPlayer().getUniqueId().toString()))).getY()));
+        }
+
         if (args.length == 1 && args[0].equalsIgnoreCase("tracklist"))
         {
             Player p = (Player) sender;
@@ -268,8 +282,8 @@ public class TestCommand implements CommandExecutor
                                 .amt(1)
                                 .material(spawnEgg.getType())
                                 .data(spawnEgg.getDurability())
-                                .name("&7&l" + e.getName())
-                                .lore("&fD: &b" + d1, "&fUUID: &b" + e.getUniqueId().toString())
+                                .name("&f" + e.getName())
+                                .lore("&7Distance: &f" + d1, "&7UUID: &f" + e.getUniqueId().toString())
                                 .toItemStack());
 
                 i++;

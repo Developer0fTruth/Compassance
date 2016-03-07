@@ -168,11 +168,11 @@ public class CompassGenerator
                 finalString = finalString.replaceAll("%str%", processsedString);
                 finalString = finalString.replaceAll(";", "");
 
-                for (String s : theme.post.replacers.keySet())
+                for (String s : finalPatternReplacers.keySet())
                 {
                     try
                     {
-                        finalString = finalString.replaceAll(s, theme.post.replacers.get(s));
+                        finalString = finalString.replaceAll(s, finalPatternReplacers.get(s));
                     }
                     catch (Exception ignore)
                     {

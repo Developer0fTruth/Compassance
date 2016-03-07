@@ -5,6 +5,7 @@ public enum PlayerConfig
     PLAYER_NAME("players.%s.name"),
 
     SETTING_SELECTEDTHEME("players.%s.settings.selectedTheme"),
+    SETTING_POSITION("players.%s.settings.position"),
     SETTING_ENABLE("players.%s.settings.enableCompass"),
     SETTING_CURSOR("players.%s.settings.enableCursor"),
     SETTING_ALWAYSON("players.%s.settings.alwaysOn"),

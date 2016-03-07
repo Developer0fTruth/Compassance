@@ -3,6 +3,8 @@ package com.hexragon.compassance.commands;
 import com.hexragon.compassance.Main;
 import com.hexragon.compassance.files.configs.MainConfig;
 import com.hexragon.compassance.files.configs.PlayerConfig;
+import com.hexragon.compassance.language.Tags;
+import com.hexragon.compassance.managers.themes.Theme;
 import com.hexragon.compassance.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -18,16 +20,13 @@ import java.util.List;
 
 public class CompassCommand implements CommandExecutor, TabCompleter
 {
-    private final String prefix = "&9&lCOMPASS &8» ";
-    private final String usage = "&9&lUSAGE &8» ";
-
-    private String[] arg0 = {"help", "open", "theme", "track"};
-    private String[] arg1trk = {"player", "location"};
+    private final String[] arg0 = {"help", "open", "theme", "track"};
+    private final String[] arg1trk = {"player", "location"};
 
     public CompassCommand()
     {
-        Main.instance.getCommand("compass").setExecutor(this);
-        Main.instance.getCommand("compass").setTabCompleter(this);
+        Main.plugin.getCommand("compass").setExecutor(this);
+        Main.plugin.getCommand("compass").setTabCompleter(this);
     }
 
     @Override
@@ -49,7 +48,7 @@ public class CompassCommand implements CommandExecutor, TabCompleter
             ArrayList<String> arr = new ArrayList<>();
             arr.add("&8&m--------------------------------------------------");
             arr.add("");
-            arr.add("        &9&lCompassance");
+            arr.add("        &9&lCompassance &7v&f&n" + Main.plugin.getDescription().getVersion());
             arr.add("");
             arr.add("    &f/compass open &8- &7Open compass settings menu.");
             arr.add("    &f/compass theme -id &8- &7Change theme based on id.");
@@ -74,18 +73,18 @@ public class CompassCommand implements CommandExecutor, TabCompleter
 
             if (args.length < 2)
             {
-                p.sendMessage(Utils.fmtClr(prefix + "&cInsufficient amount of arguments."));
-                p.sendMessage(Utils.fmtClr(usage + "&7/compass theme &ftheme-id"));
+                p.sendMessage(Utils.fmtClr(Tags.prefix + "&cInsufficient amount of arguments."));
+                p.sendMessage(Utils.fmtClr(Tags.usage + "&7/compass theme &ftheme-id"));
                 return true;
             }
 
             if (Main.themeManager.getTheme(args[1]) == null)
             {
-                p.sendMessage(Utils.fmtClr(prefix + "&cTheme ID doesn't exist."));
+                p.sendMessage(Utils.fmtClr(Tags.prefix + "&cTheme ID doesn't exist."));
                 return true;
             }
 
-            p.sendMessage(Utils.fmtClr(String.format(prefix + "&7Switching your selected theme to &r%s&7.", Main.themeManager.getTheme(args[1]).meta.name)));
+            p.sendMessage(Utils.fmtClr(String.format(Tags.prefix + "&7Switching your selected theme to &r%s&7.", Main.themeManager.getTheme(args[1]).meta.name)));
             Main.playerConfig.config.set(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId().toString()), args[1]);
             Main.taskManager.refresh(p);
 
@@ -97,21 +96,21 @@ public class CompassCommand implements CommandExecutor, TabCompleter
 
             if (!Main.mainConfig.config.getBoolean(MainConfig.USE_TRACKING.path))
             {
-                p.sendMessage(Utils.fmtClr(prefix + "&cTracking is globally disabled."));
+                p.sendMessage(Utils.fmtClr(Tags.prefix + "&cTracking is globally disabled."));
                 return true;
             }
 
             boolean b = Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_TRACKING.format(p.getUniqueId().toString()));
             if (!b)
             {
-                p.sendMessage(Utils.fmtClr(prefix + "&cYou must enable tracking in the Compassance menu."));
+                p.sendMessage(Utils.fmtClr(Tags.prefix + "&cYou must enable tracking in the Compassance menu."));
                 return true;
             }
 
             if (args.length < 2)
             {
-                p.sendMessage(Utils.fmtClr(prefix + "&cInsufficient amount of arguments."));
-                p.sendMessage(Utils.fmtClr(usage + "&7/compass trk &fpl &7or &7/compass trk &floc"));
+                p.sendMessage(Utils.fmtClr(Tags.prefix + "&cInsufficient amount of arguments."));
+                p.sendMessage(Utils.fmtClr(Tags.usage + "&7/compass trk &fpl &7or &7/compass trk &floc"));
                 return true;
             }
 
@@ -119,8 +118,8 @@ public class CompassCommand implements CommandExecutor, TabCompleter
             {
                 if (args.length != 3)
                 {
-                    p.sendMessage(Utils.fmtClr(prefix + "&cInsufficient amount of arguments."));
-                    p.sendMessage(Utils.fmtClr(usage + "&7/compass trk pl &f-player"));
+                    p.sendMessage(Utils.fmtClr(Tags.prefix + "&cInsufficient amount of arguments."));
+                    p.sendMessage(Utils.fmtClr(Tags.usage + "&7/compass trk pl &f-player"));
                     return true;
                 }
 
@@ -128,7 +127,7 @@ public class CompassCommand implements CommandExecutor, TabCompleter
 
                 if (Bukkit.getPlayer(targetName) == p)
                 {
-                    p.sendMessage(Utils.fmtClr(prefix + "&cYou can't track yourself."));
+                    p.sendMessage(Utils.fmtClr(Tags.prefix + "&cYou can't track yourself."));
                     return true;
                 }
 
@@ -139,17 +138,17 @@ public class CompassCommand implements CommandExecutor, TabCompleter
                     boolean b1 = Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_TRACKING.format(pl.getUniqueId().toString()));
                     if (!b1)
                     {
-                        p.sendMessage(Utils.fmtClr(prefix + "&cThat player must enable tracking to be able to be tracked."));
+                        p.sendMessage(Utils.fmtClr(Tags.prefix + "&cThat player must enable tracking to be able to be tracked."));
                         return true;
                     }
 
                     Main.trackingManager.newTracking(p, pl);
                     Main.taskManager.refresh(p);
-                    p.sendMessage(Utils.fmtClr(String.format(prefix + "&7You are now tracking player &f%s&7.", pl.getName())));
-                    pl.sendMessage(Utils.fmtClr(String.format(prefix + "&7You are being tracked by &f%s&7.", p.getName())));
+                    p.sendMessage(Utils.fmtClr(String.format(Tags.prefix + "&7You are now tracking player &f%s&7.", pl.getName())));
+                    pl.sendMessage(Utils.fmtClr(String.format(Tags.prefix + "&7You are being tracked by &f%s&7.", p.getName())));
                     return true;
                 }
-                p.sendMessage(Utils.fmtClr(prefix + "&cThe player you are attempting to track is not found."));
+                p.sendMessage(Utils.fmtClr(Tags.prefix + "&cThe player you are attempting to track is not found."));
 
                 return true;
             }
@@ -157,8 +156,8 @@ public class CompassCommand implements CommandExecutor, TabCompleter
             {
                 if (args.length != 5)
                 {
-                    p.sendMessage(Utils.fmtClr(prefix + "&cInsufficient amount of arguments."));
-                    p.sendMessage(Utils.fmtClr(usage + "&7/compass trk loc &f-x -y -z&7."));
+                    p.sendMessage(Utils.fmtClr(Tags.prefix + "&cInsufficient amount of arguments."));
+                    p.sendMessage(Utils.fmtClr(Tags.usage + "&7/compass trk loc &f-x -y -z&7."));
                     return true;
                 }
 
@@ -175,30 +174,30 @@ public class CompassCommand implements CommandExecutor, TabCompleter
                                     z > 100000 || z < -100000
                             )
                     {
-                        p.sendMessage(Utils.fmtClr(prefix + "&cValues are too large."));
+                        p.sendMessage(Utils.fmtClr(Tags.prefix + "&cValues are too large."));
                         return true;
                     }
 
                     Main.taskManager.refresh(p);
-                    p.sendMessage(Utils.fmtClr(String.format(prefix + "&7You are now tracking coordinates &f%s&7, &f%s&7, &f%s&7.", x, y, z)));
+                    p.sendMessage(Utils.fmtClr(String.format(Tags.prefix + "&7You are now tracking coordinates &f%s&7, &f%s&7, &f%s&7.", x, y, z)));
                     return true;
                 }
                 catch (Exception e)
                 {
-                    p.sendMessage(Utils.fmtClr(prefix + "&cThe coordinates you entered failed to parse, make sure you are using numbers."));
+                    p.sendMessage(Utils.fmtClr(Tags.prefix + "&cThe coordinates you entered failed to parse, make sure you are using numbers."));
                 }
             }
             else
             {
-                p.sendMessage(Utils.fmtClr(prefix + "&cInvalid tracking type."));
-                p.sendMessage(Utils.fmtClr(usage + "&7/compass trk &fpl &7or &7/compass trk &floc"));
+                p.sendMessage(Utils.fmtClr(Tags.prefix + "&cInvalid tracking type."));
+                p.sendMessage(Utils.fmtClr(Tags.usage + "&7/compass trk &fpl &7or &7/compass trk &floc"));
                 return true;
             }
         }
         else
         {
-            sender.sendMessage(Utils.fmtClr(prefix + "&cInvalid arguments."));
-            sender.sendMessage(Utils.fmtClr(usage + "&7/compass help"));
+            sender.sendMessage(Utils.fmtClr(Tags.prefix + "&cInvalid arguments."));
+            sender.sendMessage(Utils.fmtClr(Tags.usage + "&7/compass help"));
             return true;
         }
 
@@ -209,6 +208,13 @@ public class CompassCommand implements CommandExecutor, TabCompleter
     public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args)
     {
         ArrayList<String> list = new ArrayList<>();
+
+        if (!(sender instanceof Player))
+        {
+            return null;
+        }
+
+        Player p = (Player) sender;
 
         if (args.length == 1)
         {
@@ -246,16 +252,16 @@ public class CompassCommand implements CommandExecutor, TabCompleter
             {
                 if (!args[1].equals(""))
                 {
-                    for (String s : Main.themeManager.getThemes().keySet())
+                    for (Theme t : Main.themeManager.themesAccessibleTo(p))
                     {
-                        if (s.toLowerCase().startsWith(args[1].toLowerCase())) list.add(s);
+                        if (t.meta.name.toLowerCase().startsWith(args[1].toLowerCase())) list.add(t.meta.name);
                     }
                 }
                 else
                 {
-                    for (String s : Main.themeManager.getThemes().keySet())
+                    for (Theme t : Main.themeManager.themesAccessibleTo(p))
                     {
-                        list.add(s);
+                        list.add(t.meta.name);
                     }
                 }
             }
@@ -286,7 +292,6 @@ public class CompassCommand implements CommandExecutor, TabCompleter
         if ((args[0].equalsIgnoreCase("track") || args[0].equalsIgnoreCase("trk")) &&
                 (args[1].equals("location") || (args[1].equals("loc"))))
         {
-            Player p = (Player) sender;
             if (args.length == 3) list.add(String.valueOf(p.getLocation().getBlockX()));
             if (args.length == 4) list.add(String.valueOf(p.getLocation().getBlockY()));
             if (args.length == 5) list.add(String.valueOf(p.getLocation().getBlockZ()));

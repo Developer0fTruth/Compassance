@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="BossBarAPI">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/BossBarAPI.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

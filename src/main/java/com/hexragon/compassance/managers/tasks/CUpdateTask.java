@@ -8,8 +8,12 @@ import com.hexragon.compassance.managers.tasks.tracking.TrackedTarget;
 import com.hexragon.compassance.managers.themes.Theme;
 import com.hexragon.compassance.utils.ActionBar;
 import com.hexragon.compassance.utils.Utils;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.inventivetalent.bossbar.BossBar;
+import org.inventivetalent.bossbar.BossBarAPI;
+
 
 class CUpdateTask
 {
@@ -52,7 +56,9 @@ class CUpdateTask
             private final String id = Main.playerConfig.config.getString(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId().toString()));
             private final boolean cursor = Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_CURSOR.format(p.getPlayer().getUniqueId().toString()));
             private final boolean alwaysOn = Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_ALWAYSON.format(p.getPlayer().getUniqueId().toString()));
+            private final String position = Main.playerConfig.config.getString(PlayerConfig.SETTING_POSITION.format(p.getPlayer().getUniqueId().toString())).toLowerCase();
             private double yaw;
+            private BossBar barObj;
         }
         final TaskVariables thisTask = new TaskVariables();
 
@@ -60,7 +66,7 @@ class CUpdateTask
         {
             running = true;
 
-            taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.instance, new Runnable()
+            taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.plugin, new Runnable()
             {
                 @Override
                 public void run()
@@ -68,6 +74,11 @@ class CUpdateTask
                     if (!thisTask.alwaysOn && thisTask.yaw == p.getLocation().getYaw())
                     {
                         return;
+                    }
+
+                    if (Main.nmsver.startsWith("v1_9_") && thisTask.barObj != null)
+                    {
+                        thisTask.barObj.removePlayer(p);
                     }
 
                     final Theme th = Main.themeManager.getTheme(thisTask.id);
@@ -108,7 +119,29 @@ class CUpdateTask
                     {
                         gi = new CompassGenerator.GeneratorInfo(p, null, null, p.getLocation().getYaw(), thisTask.cursor);
                     }
-                    if (th.getGenerator().getString(gi) != null) ActionBar.send(p, th.getGenerator().getString(gi));
+                    if (th.getGenerator().getString(gi) != null)
+                    {
+                        if (thisTask.position.equals("actionbar"))
+                        {
+                            ActionBar.send(p, th.getGenerator().getString(gi));
+                        }
+                        else if (thisTask.position.equals("bossbar") && Main.bossbarAPIExist)
+                        {
+                            if (Main.nmsver.startsWith("v1_9_"))
+                            {
+                                thisTask.barObj = BossBarAPI.addBar(p, // The receiver of the BossBar
+                                        new TextComponent(th.getGenerator().getString(gi)), // Displayed message
+                                        BossBarAPI.Color.BLUE, // Color of the bar
+                                        BossBarAPI.Style.NOTCHED_20, // Bar style
+                                        1.0f, 10, 1);
+                            }
+                            else if (Main.nmsver.startsWith("v1_8_"))
+                            {
+                                BossBarAPI.setMessage(p, th.getGenerator().getString(gi));
+                            }
+
+                        }
+                    }
 
                     thisTask.yaw = p.getLocation().getYaw();
 

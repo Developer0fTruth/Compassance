@@ -15,4 +15,9 @@ public enum MainConfig
     {
         path = s;
     }
+
+    public String format(Object... obj)
+    {
+        return String.format(path, obj);
+    }
 }

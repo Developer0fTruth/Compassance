@@ -14,7 +14,7 @@ public class Listeners implements Listener
 {
     public Listeners()
     {
-        getPluginManager().registerEvents(this, Main.instance);
+        getPluginManager().registerEvents(this, Main.plugin);
     }
 
     @EventHandler

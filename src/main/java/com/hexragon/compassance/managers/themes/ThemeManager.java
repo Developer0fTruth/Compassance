@@ -21,11 +21,6 @@ public class ThemeManager
         defaultID = "default";
     }
 
-    /**
-     * Load all themes using the enabled-theme
-     * StringList, 'default' is expected to
-     * present at all times.
-     */
     public void loadThemes()
     {
         themes = new LinkedHashMap<>();
@@ -45,6 +40,7 @@ public class ThemeManager
             }
 
             Theme t = new Theme(s);
+            t.loadData();
 
             if (t.meta.name == null || t.meta.desc == null)
             {
@@ -65,13 +61,6 @@ public class ThemeManager
         Main.logger.log(errors >= 1 ? Level.WARNING : Level.INFO, String.format("Successfully loaded %s theme(s) with %s theme-related errors.", themes.size(), errors));
     }
 
-    /**
-     * Grabs the theme instance.
-     *
-     * @param s Theme id
-     *
-     * @return Theme instance
-     */
     public Theme getTheme(String s)
     {
         if (themes.get(s) == null)
@@ -99,13 +88,13 @@ public class ThemeManager
 
     public LinkedHashSet<Theme> themesAccessibleTo(Player p)
     {
-        LinkedHashSet<String> idList = new LinkedHashSet<>(Main.themeManager.getThemes().keySet());
+        LinkedHashSet<String> idList = new LinkedHashSet<>(getThemes().keySet());
         LinkedHashSet<Theme> themeList = new LinkedHashSet<>(); // If player do not have permission of themes, it is omitted.
         if (Main.mainConfig.config.getBoolean(MainConfig.USE_PERMISSIONS.path))
         {
             for (String id : idList)
             {
-                Theme t = Main.themeManager.getTheme(id);
+                Theme t = getTheme(id);
 
                 if (Utils.permHandle(p, t.meta.permission, true))
                 {
@@ -117,7 +106,7 @@ public class ThemeManager
         {
             for (String id : idList)
             {
-                Theme t = Main.themeManager.getTheme(id);
+                Theme t = getTheme(id);
                 themeList.add(t);
             }
         }
