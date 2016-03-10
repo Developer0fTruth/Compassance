@@ -4,7 +4,7 @@
 
     <groupId>com.hexragon</groupId>
     <artifactId>Compassance</artifactId>
-    <version>B-1.7.1-beta</version>
+    <version>B-1.8-snapshot</version>
     <url>https://github.com/Hexragon/Compassance</url>
 
     <build>
@@ -77,10 +77,6 @@
             <id>placeholderapi</id>
             <url>http://repo.extendedclip.com/content/repositories/placeholderapi</url>
         </repository>
-        <repository>
-            <id>inventive-repo</id>
-            <url>https://repo.inventivetalent.org/content/groups/public/</url>
-        </repository>
     </repositories>
 
     <dependencies>
@@ -106,11 +102,6 @@
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
             <version>2.0.8</version>
-        </dependency>
-        <dependency>
-            <groupId>org.inventivetalent</groupId>
-            <artifactId>bossbarapi</artifactId>
-            <version>2.0.1</version>
         </dependency>
     </dependencies>
 

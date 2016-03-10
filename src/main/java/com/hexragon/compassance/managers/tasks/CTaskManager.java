@@ -68,10 +68,8 @@ public class CTaskManager
 
     public void stopTaskAll()
     {
-        for (Player e : tasks.keySet())
-        {
-            stopTask(e);
-        }
+        for (Player e : tasks.keySet()) stopTask(e);
+
     }
 
     public void endTaskAll()
@@ -88,10 +86,7 @@ public class CTaskManager
 
     public void refresh(Player p)
     {
-        if (tasks.containsKey(p))
-        {
-            endTask(p);
-        }
+        if (tasks.containsKey(p)) endTask(p);
         newTask(p);
     }
 

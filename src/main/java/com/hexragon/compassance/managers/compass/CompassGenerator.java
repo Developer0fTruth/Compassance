@@ -1,6 +1,7 @@
 package com.hexragon.compassance.managers.compass;
 
 import com.hexragon.compassance.Main;
+import com.hexragon.compassance.managers.tasks.tracking.TrackedTarget;
 import com.hexragon.compassance.managers.themes.Theme;
 import com.hexragon.compassance.utils.Utils;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -30,9 +31,6 @@ public class CompassGenerator
     public String getString(GeneratorInfo gi)
     {
         double yaw = gi.yaw;
-        Location l1 = gi.l1;
-        Location l2 = gi.l2;
-        boolean cursor = gi.cursor;
 
         try
         {
@@ -73,28 +71,39 @@ public class CompassGenerator
                         {
                             String appending = arr[num];
 
-                            if (l1 != null && l2 != null)
+                            if (gi.targets != null)
                             {
-                                double angle = (Math.atan2(l1.getX() - l2.getX(), l1.getZ() - l2.getZ()));
-                                angle = (-(angle / Math.PI) * 360.0d) / 2.0d + 180.0d;
-
-                                int num1 = num + 1;
-                                if (num1 >= length) num1 -= length;
-                                else if (num1 < 0) num1 += length;
-
-                                if (angle >= step * num && angle <= step * num1)
+                                for (int trackNum : gi.targets.keySet())
                                 {
-                                    String targetNode = theme.func.target;
-                                    if (targetNode != null)
+                                    TrackedTarget target = gi.targets.get(trackNum);
+
+                                    Location l1 = gi.p.getLocation();
+                                    Location l2 = null;
+                                    if (target != null) l2 = target.getLocation();
+
+                                    if (l1 != null && l2 != null)
                                     {
-                                        targetNode = targetNode.replaceAll("%str%", appending).replaceAll(";", "");
-                                        appending = targetNode;
+                                        double angle = (Math.atan2(l1.getX() - l2.getX(), l1.getZ() - l2.getZ()));
+                                        angle = (-(angle / Math.PI) * 360.0d) / 2.0d + 180.0d;
+
+                                        int num1 = num + 1;
+                                        if (num1 >= length) num1 -= length;
+                                        else if (num1 < 0) num1 += length;
+
+                                        if (angle >= step * num && angle <= step * num1)
+                                        {
+                                            String targetNode = theme.func.target;
+                                            if (targetNode != null)
+                                            {
+                                                targetNode = targetNode.replaceAll("%str%", appending).replaceAll(";", "");
+                                                appending = targetNode;
+                                            }
+                                        }
                                     }
                                 }
-
                             }
 
-                            if (cursor)
+                            if (gi.cursor)
                             {
                                 if (i == (((length / 2) + 2) / 2))
                                 {
@@ -201,21 +210,17 @@ public class CompassGenerator
         public final double yaw;
         public final boolean cursor;
 
-        public final Location l1;
-        public final Location l2;
+        public final HashMap<Integer, TrackedTarget> targets;
 
         /**
-         * @param l1 Original location.
-         * @param l2 Targetted location.
          * @param y  Yaw rotational value.
          * @param c  Use a cursor.
          */
-        public GeneratorInfo(Player p, Location l1, Location l2, double y, boolean c)
+        public GeneratorInfo(Player p, HashMap<Integer, TrackedTarget> targets, double y, boolean c)
         {
             this.p = p;
             this.yaw = y;
-            this.l1 = l1;
-            this.l2 = l2;
+            this.targets = targets;
             this.cursor = c;
         }
     }

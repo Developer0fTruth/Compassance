@@ -1,8 +1,8 @@
 package com.hexragon.compassance.gui;
 
 import com.hexragon.compassance.Main;
-import com.hexragon.compassance.files.configs.MainConfig;
-import com.hexragon.compassance.files.configs.PlayerConfig;
+import com.hexragon.compassance.configs.ConfigurationPaths;
+import com.hexragon.compassance.language.Tags;
 import com.hexragon.compassance.utils.ItemBuilder;
 import com.hexragon.compassance.utils.Utils;
 import org.bukkit.Bukkit;
@@ -51,7 +51,7 @@ public class MainMenu implements Listener
                                 "&7theme using &f/compass theme -id"
                         ).toItemStack());
 
-        boolean b = Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_TRACKING.format(p.getPlayer().getUniqueId().toString()));
+        boolean b = Main.playerConfig.config.getBoolean(ConfigurationPaths.PlayerConfig.SETTING_TRACKING.format(p.getPlayer().getUniqueId().toString()));
 
         ItemBuilder trkItem = new ItemBuilder()
                 .material(b ? Material.EYE_OF_ENDER : Material.ENDER_PEARL)
@@ -69,7 +69,7 @@ public class MainMenu implements Listener
                         b ? "&7Click to disable." : "&7Click to enable."
                 );
 
-        if (!Main.mainConfig.config.getBoolean(MainConfig.USE_TRACKING.path))
+        if (!Main.mainConfig.config.getBoolean(ConfigurationPaths.MainConfig.USE_TRACKING.path))
         {
             trkItem.lore("", "&cTracking is globally disabled.", "");
         }
@@ -110,14 +110,14 @@ public class MainMenu implements Listener
                         Main.themeMenu.show(p);
                         break;
                     case 12:
-                        String str = PlayerConfig.SETTING_TRACKING.format(p.getPlayer().getUniqueId().toString());
+                        String str = ConfigurationPaths.PlayerConfig.SETTING_TRACKING.format(p.getPlayer().getUniqueId().toString());
                         boolean b = Main.playerConfig.config.getBoolean(str);
                         Main.playerConfig.config.set(str, !b);
 
-                        if (!Main.mainConfig.config.getBoolean(MainConfig.USE_TRACKING.path))
+                        if (!Main.mainConfig.config.getBoolean(ConfigurationPaths.MainConfig.USE_TRACKING.path))
                         {
                             Main.playerConfig.config.set(str, false);
-                            p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cTracking is globally disabled."));
+                            p.sendMessage(Utils.fmtClr(Tags.prefix + "&cTracking is globally disabled."));
                         }
                         if (b)
                         {

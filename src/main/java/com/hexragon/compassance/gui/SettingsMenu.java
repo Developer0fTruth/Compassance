@@ -1,8 +1,7 @@
 package com.hexragon.compassance.gui;
 
 import com.hexragon.compassance.Main;
-import com.hexragon.compassance.files.configs.PlayerConfig;
-import com.hexragon.compassance.utils.ActionBar;
+import com.hexragon.compassance.configs.ConfigurationPaths;
 import com.hexragon.compassance.utils.ItemBuilder;
 import com.hexragon.compassance.utils.Utils;
 import org.bukkit.Bukkit;
@@ -13,7 +12,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
-import org.inventivetalent.bossbar.BossBarAPI;
 
 import java.util.ArrayList;
 
@@ -37,24 +35,23 @@ public class SettingsMenu implements Listener
         Main.plugin.getServer().getPluginManager().registerEvents(this, Main.plugin);
     }
 
-    private String[] getSettingsPathOf(Player p)
+    private String[] settingsPathsOf(Player p)
     {
         String[] bl = new String[3];
-        bl[0] = PlayerConfig.SETTING_ENABLE.format(p.getPlayer().getUniqueId().toString());
-        bl[1] = PlayerConfig.SETTING_ALWAYSON.format(p.getPlayer().getUniqueId().toString());
-        bl[2] = PlayerConfig.SETTING_CURSOR.format(p.getPlayer().getUniqueId().toString());
+        bl[0] = ConfigurationPaths.PlayerConfig.SETTING_ENABLE.format(p.getPlayer().getUniqueId().toString());
+        bl[1] = ConfigurationPaths.PlayerConfig.SETTING_ALWAYSON.format(p.getPlayer().getUniqueId().toString());
+        bl[2] = ConfigurationPaths.PlayerConfig.SETTING_CURSOR.format(p.getPlayer().getUniqueId().toString());
         return bl;
     }
 
     public void show(Player p)
     {
-        Inventory inv = Bukkit.createInventory(p, 5 * 9, name);
+        Inventory inv = Bukkit.createInventory(p, 4 * 9, name);
 
         inv.setItem(10,
                 new ItemBuilder().material(Material.COMPASS).data((byte) 0).amt(1)
-                        .name("&a&lCompass")
+                        .name("&9&lCompass")
                         .lore("", "", "&7Toggle the compass feature.").toItemStack());
-
 
         inv.setItem(12,
                 new ItemBuilder().material(Material.BEACON).data((byte) 0).amt(1)
@@ -66,9 +63,13 @@ public class SettingsMenu implements Listener
                         .name("&cCursor")
                         .lore("&7Show a cursor right in the center of", "&7the action bar.").toItemStack());
 
+
+        String[] bl = settingsPathsOf(p);
+
         int i = 0;
-        for (String str : getSettingsPathOf(p))
+        for (String str : bl)
         {
+
             boolean b = Main.playerConfig.config.getBoolean(str);
 
             inv.setItem(19 + i,
@@ -84,39 +85,7 @@ public class SettingsMenu implements Listener
             i += 2;
         }
 
-        switch (Main.playerConfig.config.getString(PlayerConfig.SETTING_POSITION.format(p.getPlayer().getUniqueId().toString())).toLowerCase())
-        {
-            case "actionbar":
-                inv.setItem(25,
-                        new ItemBuilder()
-                                .material(Material.INK_SACK)
-                                .data((byte) 12)
-                                .amt(1)
-                                .name("&bSwitch options.")
-                                .lore(
-                                        "",
-                                        "&3❂ &bAction Bar",
-                                        "&7Click to switch.").toItemStack());
-                break;
-            case "bossbar":
-                inv.setItem(25,
-                        new ItemBuilder()
-                                .material(Material.INK_SACK)
-                                .data((byte) 9)
-                                .amt(1)
-                                .name("&dSwitch options.")
-                                .lore(
-                                        "",
-                                        "&5❂ &dBoss Bar",
-                                        "&7Click to switch.").toItemStack());
-                break;
-            default:
-                Main.playerConfig.config
-                        .set(PlayerConfig.SETTING_POSITION.format(p.getPlayer().getUniqueId().toString()), "actionbar");
-                break;
-        }
-
-        inv.setItem(40,
+        inv.setItem(25,
                 new ItemBuilder().material(Material.BARRIER).data((byte) 0).amt(1)
                         .name("&c&lExit")
                         .lore("", "&7Return to meta menu.").toItemStack());
@@ -139,34 +108,16 @@ public class SettingsMenu implements Listener
 
             if (inv.getContents()[e.getSlot()] != null && inv.getName().equalsIgnoreCase(name) && inv.getHolder() == p && users.contains(p))
             {
+                String[] bl = settingsPathsOf(p);
+
                 switch (e.getSlot())
                 {
                     case 25:
-                        switch (Main.playerConfig.config.getString(PlayerConfig.SETTING_POSITION.format(p.getPlayer().getUniqueId().toString())).toLowerCase())
-                        {
-                            case "actionbar":
-                                if (Main.bossbarAPIExist)
-                                {
-                                    Main.playerConfig.config
-                                            .set(PlayerConfig.SETTING_POSITION.format(p.getPlayer().getUniqueId().toString()), "bossbar");
-                                    ActionBar.send(p, "");
-                                }
-                                break;
-                            case "bossbar":
-                                Main.playerConfig.config
-                                        .set(PlayerConfig.SETTING_POSITION.format(p.getPlayer().getUniqueId().toString()), "actionbar");
-                                if (Main.bossbarAPIExist) BossBarAPI.removeBar(p);
-                                break;
-                        }
-                        Main.taskManager.refresh(p);
-                        show(p);
-                        return;
-                    case 40:
                         Main.mainMenu.show(p);
-                        break;
                     default:
+
                         int i = 0;
-                        for (String str : getSettingsPathOf(p))
+                        for (String str : bl)
                         {
                             boolean b = Main.playerConfig.config.getBoolean(str);
 
@@ -175,12 +126,6 @@ public class SettingsMenu implements Listener
                                 Main.playerConfig.config.set(str, !b);
                                 Main.taskManager.refresh(p);
                                 show(p);
-
-                                if (str.equals(PlayerConfig.SETTING_ENABLE.format(p.getPlayer().getUniqueId().toString())))
-                                {
-                                    ActionBar.send(p, "");
-                                }
-
                                 return;
                             }
                             i += 2;

@@ -5,15 +5,6 @@
 #   overwrite your changes with the server changes.
 # ==========================================================
 
-# ===== NOTE ===============================================
-#   You should not mess with the version node, it is a way
-#   for the plugin to detect if the templates do not match
-#   a possible new version or updates. Back up this file
-#   and download a new one if the plugin mentions any
-#   errors regarding 'player text outdated'.
-# ==========================================================
-version: 1.1
-
 players:
   default:
     settings:

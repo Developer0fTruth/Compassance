@@ -1,7 +1,7 @@
 package com.hexragon.compassance.commands;
 
 import com.hexragon.compassance.Main;
-import com.hexragon.compassance.files.configs.PlayerConfig;
+import com.hexragon.compassance.configs.ConfigurationPaths;
 import com.hexragon.compassance.managers.themes.Theme;
 import com.hexragon.compassance.utils.ActionBar;
 import com.hexragon.compassance.utils.ItemBuilder;
@@ -168,14 +168,14 @@ public class TestCommand implements CommandExecutor
         {
             Player p = (Player) sender;
             //String uuid = p.getUniqueId().toString();
-            boolean b = Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_ENABLE.format(p.getPlayer().getUniqueId().toString()));
+            boolean b = Main.playerConfig.config.getBoolean(ConfigurationPaths.PlayerConfig.SETTING_ENABLE.format(p.getPlayer().getUniqueId().toString()));
             if (b)
             {
-                Main.playerConfig.config.set(PlayerConfig.SETTING_ENABLE.format(p.getPlayer().getUniqueId().toString()), false);
+                Main.playerConfig.config.set(ConfigurationPaths.PlayerConfig.SETTING_ENABLE.format(p.getPlayer().getUniqueId().toString()), false);
             }
             else
             {
-                Main.playerConfig.config.set(PlayerConfig.SETTING_ENABLE.format(p.getPlayer().getUniqueId().toString()), true);
+                Main.playerConfig.config.set(ConfigurationPaths.PlayerConfig.SETTING_ENABLE.format(p.getPlayer().getUniqueId().toString()), true);
             }
             Main.taskManager.refresh(p);
             ActionBar.send(p, "");
@@ -240,7 +240,7 @@ public class TestCommand implements CommandExecutor
         {
             Player p = (Player) sender;
 
-            double rad = Math.pow(10, 2);
+            double rad = Math.pow(50, 2);
 
             Map<Double, Entity> list = new HashMap<>();
 

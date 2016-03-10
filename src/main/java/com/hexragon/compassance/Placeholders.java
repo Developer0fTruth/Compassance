@@ -1,6 +1,6 @@
 package com.hexragon.compassance;
 
-import com.hexragon.compassance.files.configs.PlayerConfig;
+import com.hexragon.compassance.configs.ConfigurationPaths;
 import com.hexragon.compassance.managers.compass.CompassGenerator;
 import com.hexragon.compassance.managers.tasks.tracking.TrackedTarget;
 import com.hexragon.compassance.managers.themes.Theme;
@@ -29,7 +29,7 @@ class Placeholders extends PlaceholderHook
 
         if (identifier.equals("p_selectedtheme"))
         {
-            return Main.playerConfig.config.getString(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getUniqueId()));
+            return Main.playerConfig.config.getString(ConfigurationPaths.PlayerConfig.SETTING_SELECTEDTHEME.format(p.getUniqueId()));
         }
 
         if (identifier.equals("p_target"))
@@ -86,8 +86,8 @@ class Placeholders extends PlaceholderHook
 
         if (identifier.equals("p_string"))
         {
-            String id = Main.playerConfig.config.getString(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId()));
-            boolean cursor = Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_CURSOR.format(p.getPlayer().getUniqueId().toString()));
+            String id = Main.playerConfig.config.getString(ConfigurationPaths.PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId()));
+            boolean cursor = Main.playerConfig.config.getBoolean(ConfigurationPaths.PlayerConfig.SETTING_CURSOR.format(p.getPlayer().getUniqueId().toString()));
             Theme theme = Main.themeManager.getTheme(id);
 
             if (theme == null)
@@ -96,22 +96,14 @@ class Placeholders extends PlaceholderHook
             }
 
             CompassGenerator.GeneratorInfo gi;
-            TrackedTarget target = Main.trackingManager.getTargetOf(p);
-            if (target != null && target.getLocation() != null)
-            {
-                gi = new CompassGenerator.GeneratorInfo(p, p.getLocation(), target.getLocation(), p.getLocation().getYaw(), cursor);
-            }
-            else
-            {
-                gi = new CompassGenerator.GeneratorInfo(p, null, null, p.getLocation().getYaw(), cursor);
-            }
+            gi = new CompassGenerator.GeneratorInfo(p, Main.trackingManager.getTargetsOf(p), p.getLocation().getYaw(), cursor);
             if (theme.getGenerator().getString(gi) != null) return theme.getGenerator().getString(gi);
         }
 
         if (identifier.startsWith("p_string_theme_"))
         {
             String id = identifier.replace("p_string_theme_", "");
-            boolean cursor = Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_CURSOR.format(p.getPlayer().getUniqueId().toString()));
+            boolean cursor = Main.playerConfig.config.getBoolean(ConfigurationPaths.PlayerConfig.SETTING_CURSOR.format(p.getPlayer().getUniqueId().toString()));
             Theme theme = Main.themeManager.getTheme(id);
 
             if (theme == null)
@@ -120,15 +112,7 @@ class Placeholders extends PlaceholderHook
             }
 
             CompassGenerator.GeneratorInfo gi;
-            TrackedTarget target = Main.trackingManager.getTargetOf(p);
-            if (target != null && target.getLocation() != null)
-            {
-                gi = new CompassGenerator.GeneratorInfo(p, p.getLocation(), target.getLocation(), p.getLocation().getYaw(), cursor);
-            }
-            else
-            {
-                gi = new CompassGenerator.GeneratorInfo(p, null, null, p.getLocation().getYaw(), cursor);
-            }
+            gi = new CompassGenerator.GeneratorInfo(p, Main.trackingManager.getTargetsOf(p), p.getLocation().getYaw(), cursor);
             if (theme.getGenerator().getString(gi) != null) return theme.getGenerator().getString(gi);
         }
 

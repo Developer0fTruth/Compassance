@@ -8,32 +8,53 @@ import java.util.HashMap;
 
 public class TrackingManager
 {
-    private final HashMap<Player, TrackedTarget> targetsMap;
+    private final HashMap<Player, HashMap<Integer, TrackedTarget>> targetsMap;
 
     public TrackingManager()
     {
         targetsMap = new HashMap<>();
     }
 
-    public void newTracking(Player p, Entity e)
+    public void newTracking(Player p, final Entity e)
     {
-        if (targetsMap.containsKey(p))
+        if (targetsMap.containsKey(p) && targetsMap.get(p) != null)
         {
-            targetsMap.remove(p);
+            targetsMap.get(p).put(1, new TrackedTarget(e));
         }
-        targetsMap.put(p, new TrackedTarget(e));
+        else
+        {
+            targetsMap.put(p, new HashMap<Integer, TrackedTarget>()
+                    {{
+                        put(1, new TrackedTarget(e));
+                    }}
+            );
+        }
     }
 
-    public void newTracking(Player p, Location l)
+    public void newTracking(Player p, final Location l)
     {
         if (targetsMap.containsKey(p))
         {
-            targetsMap.remove(p);
+            targetsMap.get(p).put(1, new TrackedTarget(l));
         }
-        targetsMap.put(p, new TrackedTarget(l));
+        else
+        {
+            targetsMap.put(p, new HashMap<Integer, TrackedTarget>()
+                    {{
+                        put(1, new TrackedTarget(l));
+                    }}
+            );
+        }
     }
+
 
     public TrackedTarget getTargetOf(Player p)
+    {
+        if (targetsMap.get(p) == null) return null;
+        return targetsMap.get(p).get(1);
+    }
+
+    public HashMap<Integer, TrackedTarget> getTargetsOf(Player p)
     {
         return targetsMap.get(p);
     }
@@ -42,7 +63,7 @@ public class TrackingManager
     {
         if (targetsMap.containsKey(p))
         {
-            targetsMap.remove(p);
+            targetsMap.get(p).remove(1);
         }
     }
 
@@ -50,9 +71,9 @@ public class TrackingManager
     {
         for (Player p : targetsMap.keySet())
         {
-            if (targetsMap.get(p).getTarget() == e)
+            if (targetsMap.get(p).get(1) != null && targetsMap.get(p).get(1) == e)
             {
-                targetsMap.remove(p);
+                targetsMap.get(p).remove(1);
             }
         }
     }

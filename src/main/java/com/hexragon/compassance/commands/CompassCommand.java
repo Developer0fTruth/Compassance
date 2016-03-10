@@ -1,8 +1,7 @@
 package com.hexragon.compassance.commands;
 
 import com.hexragon.compassance.Main;
-import com.hexragon.compassance.files.configs.MainConfig;
-import com.hexragon.compassance.files.configs.PlayerConfig;
+import com.hexragon.compassance.configs.ConfigurationPaths;
 import com.hexragon.compassance.language.Tags;
 import com.hexragon.compassance.managers.themes.Theme;
 import com.hexragon.compassance.utils.Utils;
@@ -27,6 +26,8 @@ public class CompassCommand implements CommandExecutor, TabCompleter
     {
         Main.plugin.getCommand("compass").setExecutor(this);
         Main.plugin.getCommand("compass").setTabCompleter(this);
+        Main.plugin.getCommand("compass").setPermission("compassance.command");
+        Main.plugin.getCommand("compass").setPermissionMessage(Tags.prefix + "&cYou do not have sufficient permission.");
     }
 
     @Override
@@ -83,10 +84,22 @@ public class CompassCommand implements CommandExecutor, TabCompleter
                 p.sendMessage(Utils.fmtClr(Tags.prefix + "&cTheme ID doesn't exist."));
                 return true;
             }
+            else
+            {
+                Theme t = Main.themeManager.getTheme(args[1]);
 
-            p.sendMessage(Utils.fmtClr(String.format(Tags.prefix + "&7Switching your selected theme to &r%s&7.", Main.themeManager.getTheme(args[1]).meta.name)));
-            Main.playerConfig.config.set(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId().toString()), args[1]);
-            Main.taskManager.refresh(p);
+                if (Utils.permHandle(p, t.meta.permission, true) || Utils.permHandle(p, "compassance.theme.*", false))
+                {
+                    p.sendMessage(Utils.fmtClr(String.format(Tags.prefix + "&7Switching your selected theme to &r%s&7.", Main.themeManager.getTheme(args[1]).meta.name)));
+                    Main.playerConfig.config.set(ConfigurationPaths.PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId().toString()), args[1]);
+                    Main.taskManager.refresh(p);
+                }
+                else
+                {
+                    p.sendMessage(Utils.fmtClr(Tags.prefix + "&cYou don't have permission for this theme."));
+                }
+            }
+
 
             return true;
         }
@@ -94,13 +107,13 @@ public class CompassCommand implements CommandExecutor, TabCompleter
         {
             Player p = (Player) sender;
 
-            if (!Main.mainConfig.config.getBoolean(MainConfig.USE_TRACKING.path))
+            if (!Main.mainConfig.config.getBoolean(ConfigurationPaths.MainConfig.USE_TRACKING.path))
             {
                 p.sendMessage(Utils.fmtClr(Tags.prefix + "&cTracking is globally disabled."));
                 return true;
             }
 
-            boolean b = Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_TRACKING.format(p.getUniqueId().toString()));
+            boolean b = Main.playerConfig.config.getBoolean(ConfigurationPaths.PlayerConfig.SETTING_TRACKING.format(p.getUniqueId().toString()));
             if (!b)
             {
                 p.sendMessage(Utils.fmtClr(Tags.prefix + "&cYou must enable tracking in the Compassance menu."));
@@ -125,17 +138,19 @@ public class CompassCommand implements CommandExecutor, TabCompleter
 
                 String targetName = args[2];
 
+                //noinspection deprecation
                 if (Bukkit.getPlayer(targetName) == p)
                 {
                     p.sendMessage(Utils.fmtClr(Tags.prefix + "&cYou can't track yourself."));
                     return true;
                 }
 
+                //noinspection deprecation
                 Player pl = Bukkit.getPlayer(targetName);
 
                 if (pl != null)
                 {
-                    boolean b1 = Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_TRACKING.format(pl.getUniqueId().toString()));
+                    boolean b1 = Main.playerConfig.config.getBoolean(ConfigurationPaths.PlayerConfig.SETTING_TRACKING.format(pl.getUniqueId().toString()));
                     if (!b1)
                     {
                         p.sendMessage(Utils.fmtClr(Tags.prefix + "&cThat player must enable tracking to be able to be tracked."));
@@ -254,14 +269,14 @@ public class CompassCommand implements CommandExecutor, TabCompleter
                 {
                     for (Theme t : Main.themeManager.themesAccessibleTo(p))
                     {
-                        if (t.meta.name.toLowerCase().startsWith(args[1].toLowerCase())) list.add(t.meta.name);
+                        if (t.id.toLowerCase().startsWith(args[1].toLowerCase())) list.add(t.id);
                     }
                 }
                 else
                 {
                     for (Theme t : Main.themeManager.themesAccessibleTo(p))
                     {
-                        list.add(t.meta.name);
+                        list.add(t.id);
                     }
                 }
             }

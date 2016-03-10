@@ -14,17 +14,13 @@ public class AdminCommand implements CommandExecutor
     public AdminCommand()
     {
         Main.plugin.getCommand("compass-admin").setExecutor(this);
+        Main.plugin.getCommand("compass-admin").setPermission("compassance.admincommand");
+        Main.plugin.getCommand("compass-admin").setPermissionMessage(Tags.prefix + "&cYou do not have sufficient permission.");
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
     {
-        if (!sender.isOp())
-        {
-            sender.sendMessage("Must be OP to use this command.");
-            return true;
-        }
-
         if (args.length == 0 || args[0].equalsIgnoreCase("help"))
         {
             ArrayList<String> arr = new ArrayList<>();

@@ -1,4 +1,4 @@
-package com.hexragon.compassance.files;
+package com.hexragon.compassance.configs;
 
 import com.hexragon.compassance.utils.FileUtil;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -22,7 +22,7 @@ import java.util.logging.Level;
  *
  * @author Hexragon
  */
-public class Gearbox
+public class ConfigurationManager
 {
     /**
      * File name of configuration grabbed
@@ -54,7 +54,7 @@ public class Gearbox
      * @param i Main plugin instance.
      * @param s Configuration file name.
      */
-    public Gearbox(JavaPlugin i, String s)
+    public ConfigurationManager(JavaPlugin i, String s)
     {
         instance = i;
         fileName = s;
@@ -97,7 +97,6 @@ public class Gearbox
 
     /**
      * Save the configuration to the file.
-     * WILL NOT SAVE COMMENTS.
      */
     public void save()
     {

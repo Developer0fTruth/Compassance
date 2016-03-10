@@ -1,7 +1,7 @@
 package com.hexragon.compassance.managers.themes;
 
 import com.hexragon.compassance.Main;
-import com.hexragon.compassance.files.configs.ThemeConfig;
+import com.hexragon.compassance.configs.ConfigurationPaths;
 import com.hexragon.compassance.managers.compass.CompassGenerator;
 
 import java.util.HashMap;
@@ -42,13 +42,13 @@ public class Theme
 
     public void loadData()
     {
-        meta.name = Main.themeConfig.config.getString(ThemeConfig.THEME_META_NAME.format(id));
-        meta.desc = Main.themeConfig.config.getString(ThemeConfig.THEME_META_DESC.format(id));
-        meta.permission = Main.themeConfig.config.getString(ThemeConfig.THEME_META_PERM.format(id));
+        meta.name = Main.themeConfig.config.getString(ConfigurationPaths.ThemeConfig.THEME_META_NAME.format(id));
+        meta.desc = Main.themeConfig.config.getString(ConfigurationPaths.ThemeConfig.THEME_META_DESC.format(id));
+        meta.permission = Main.themeConfig.config.getString(ConfigurationPaths.ThemeConfig.THEME_META_PERM.format(id));
 
         try
         {
-            meta.patternMap = Main.themeConfig.config.getString(ThemeConfig.THEME_DATA_MAIN_PATTERN_MAP.format(id));
+            meta.patternMap = Main.themeConfig.config.getString(ConfigurationPaths.ThemeConfig.THEME_DATA_MAIN_PATTERN_MAP.format(id));
 
             if (meta.patternMap != null)
             {
@@ -60,14 +60,14 @@ public class Theme
                      */
                     if (s.startsWith("<s/") && s.endsWith(">"))
                     {
-                        String subPatternMap = Main.themeConfig.config.getString(ThemeConfig.THEME_DATA_SUBPATTERN_MAP.format(id, s));
+                        String subPatternMap = Main.themeConfig.config.getString(ConfigurationPaths.ThemeConfig.THEME_DATA_SUBPATTERN_MAP.format(id, s));
 
                         String[] subPatternReplacers = subPatternMap.split(";");
                         HashMap<String, String> map = new HashMap<>();
 
                         for (String s2 : subPatternReplacers)
                         {
-                            map.put(s2, Main.themeConfig.config.getString(ThemeConfig.THEME_DATA_SUBPATTERN_MAP_REPLACER.format(id, s, s2)));
+                            map.put(s2, Main.themeConfig.config.getString(ConfigurationPaths.ThemeConfig.THEME_DATA_SUBPATTERN_MAP_REPLACER.format(id, s, s2)));
                         }
 
                         data.sub.pattern.put(s, subPatternMap);
@@ -79,7 +79,7 @@ public class Theme
                      */
                     else if (s.startsWith("<") && s.endsWith(">"))
                     {
-                        String d_replacer = Main.themeConfig.config.getString(ThemeConfig.THEME_DATA_DIRECT_REPLACER.format(id, s));
+                        String d_replacer = Main.themeConfig.config.getString(ConfigurationPaths.ThemeConfig.THEME_DATA_DIRECT_REPLACER.format(id, s));
                         data.replacers.put(s, d_replacer);
                     }
                 }
@@ -92,20 +92,20 @@ public class Theme
         /*
          * Search in final node.
          */
-            post.pattern = Main.themeConfig.config.getString(ThemeConfig.THEME_FINAL_MAIN_PATTERN_MAP.format(id));
+            post.pattern = Main.themeConfig.config.getString(ConfigurationPaths.ThemeConfig.THEME_FINAL_MAIN_PATTERN_MAP.format(id));
             String[] finalPatternReplacers = post.pattern.split(";");
 
             for (String s : finalPatternReplacers)
             {
                 if (s.startsWith("<") && s.endsWith(">"))
                 {
-                    String d_replacer = Main.themeConfig.config.getString(ThemeConfig.THEME_FINAL_DIRECT_REPLACER.format(id, s));
+                    String d_replacer = Main.themeConfig.config.getString(ConfigurationPaths.ThemeConfig.THEME_FINAL_DIRECT_REPLACER.format(id, s));
                     post.replacers.put(s, d_replacer);
                 }
             }
 
-            func.cursor = Main.themeConfig.config.getString(ThemeConfig.THEME_DATA_FUNC_CURSOR.format(id));
-            func.target = Main.themeConfig.config.getString(ThemeConfig.THEME_DATA_FUNC_TARGET.format(id));
+            func.cursor = Main.themeConfig.config.getString(ConfigurationPaths.ThemeConfig.THEME_DATA_FUNC_CURSOR.format(id));
+            func.target = Main.themeConfig.config.getString(ConfigurationPaths.ThemeConfig.THEME_DATA_FUNC_TARGET.format(id));
         }
         catch (Exception ignored)
         {

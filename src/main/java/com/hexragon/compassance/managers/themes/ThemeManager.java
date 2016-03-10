@@ -1,8 +1,7 @@
 package com.hexragon.compassance.managers.themes;
 
 import com.hexragon.compassance.Main;
-import com.hexragon.compassance.files.configs.MainConfig;
-import com.hexragon.compassance.files.configs.ThemeConfig;
+import com.hexragon.compassance.configs.ConfigurationPaths;
 import com.hexragon.compassance.utils.Utils;
 import org.bukkit.entity.Player;
 
@@ -29,7 +28,7 @@ public class ThemeManager
 
         LinkedHashSet<String> allThemes = new LinkedHashSet<>();
         allThemes.add("default");
-        allThemes.addAll(Main.themeConfig.config.getStringList(ThemeConfig.ENABLED_THEMES.path));
+        allThemes.addAll(Main.themeConfig.config.getStringList(ConfigurationPaths.ThemeConfig.ENABLED_THEMES.path));
 
         int i = 0;
         for (String s : allThemes)
@@ -90,13 +89,13 @@ public class ThemeManager
     {
         LinkedHashSet<String> idList = new LinkedHashSet<>(getThemes().keySet());
         LinkedHashSet<Theme> themeList = new LinkedHashSet<>(); // If player do not have permission of themes, it is omitted.
-        if (Main.mainConfig.config.getBoolean(MainConfig.USE_PERMISSIONS.path))
+        if (Main.mainConfig.config.getBoolean(ConfigurationPaths.MainConfig.USE_PERMISSIONS.path))
         {
             for (String id : idList)
             {
                 Theme t = getTheme(id);
 
-                if (Utils.permHandle(p, t.meta.permission, true))
+                if (Utils.permHandle(p, t.meta.permission, true) || Utils.permHandle(p, "compassance.theme.*", false))
                 {
                     themeList.add(t);
                 }

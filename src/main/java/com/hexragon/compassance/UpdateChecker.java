@@ -1,6 +1,6 @@
 package com.hexragon.compassance;
 
-import com.hexragon.compassance.files.configs.MainConfig;
+import com.hexragon.compassance.configs.ConfigurationPaths;
 import org.bukkit.Bukkit;
 
 import java.io.BufferedReader;
@@ -87,7 +87,7 @@ class UpdateChecker
                         stop();
                     }
                 }
-            }, 20 * 10L, 20L * Main.mainConfig.config.getLong(MainConfig.CHECKER_INTERVAL.path));
+            }, 20 * 10L, 20L * Main.mainConfig.config.getLong(ConfigurationPaths.MainConfig.CHECKER_INTERVAL.path));
         }
     }
 

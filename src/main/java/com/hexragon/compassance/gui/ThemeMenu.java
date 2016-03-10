@@ -1,10 +1,10 @@
 package com.hexragon.compassance.gui;
 
 import com.hexragon.compassance.Main;
-import com.hexragon.compassance.files.configs.PlayerConfig;
+import com.hexragon.compassance.configs.ConfigurationPaths;
 import com.hexragon.compassance.language.Tags;
+import com.hexragon.compassance.managers.compass.CompassGenerator;
 import com.hexragon.compassance.managers.compass.CompassGenerator.GeneratorInfo;
-import com.hexragon.compassance.managers.tasks.tracking.TrackedTarget;
 import com.hexragon.compassance.managers.themes.Theme;
 import com.hexragon.compassance.utils.ItemBuilder;
 import com.hexragon.compassance.utils.Utils;
@@ -49,7 +49,7 @@ public class ThemeMenu implements Listener
         int itemSlot = 10;
         int wrapCounter = 1;
 
-        String selectedId = Main.playerConfig.config.getString(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId()));
+        String selectedId = Main.playerConfig.config.getString(ConfigurationPaths.PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId()));
 
         LinkedHashSet<Theme> themeList = Main.themeManager.themesAccessibleTo(p); // If player do not have permission of themes, it is omitted.
         for (Theme t : themeList)
@@ -114,19 +114,16 @@ public class ThemeMenu implements Listener
                         // PREVIEW GENERATION
                         if (e.getClick() == ClickType.RIGHT)
                         {
-                            boolean cursor = Main.playerConfig.config.getBoolean(PlayerConfig.SETTING_CURSOR.format(p.getPlayer().getUniqueId().toString()));
+                            boolean cursor = Main.playerConfig.config.getBoolean(ConfigurationPaths.PlayerConfig.SETTING_CURSOR.format(p.getPlayer().getUniqueId().toString()));
 
                             GeneratorInfo gi;
-                            TrackedTarget target = Main.trackingManager.getTargetOf(p);
-                            if (target != null && target.getLocation() != null)
-                                gi = new GeneratorInfo(p, p.getLocation(), target.getLocation(), p.getLocation().getYaw(), cursor);
-                            else gi = new GeneratorInfo(p, null, null, p.getLocation().getYaw(), cursor);
+                            gi = new CompassGenerator.GeneratorInfo(p, Main.trackingManager.getTargetsOf(p), p.getLocation().getYaw(), cursor);
                             p.sendMessage(Utils.fmtClr(Tags.prefix + "&7Showing preview of " + t.meta.name + "&7."));
                             p.sendMessage(t.getGenerator().getString(gi));
                             return;
                         }
 
-                        Main.playerConfig.config.set(PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId()), t.id);
+                        Main.playerConfig.config.set(ConfigurationPaths.PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId()), t.id);
                         Main.taskManager.refresh(p);
 
                         e.getWhoClicked().sendMessage(

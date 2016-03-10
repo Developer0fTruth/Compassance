@@ -9,7 +9,7 @@ description: >
   capabilities, configurations, tracking and more; Compassance is a simple plugin
   that personalizes the Minecraft experience. Basically a cooler action bar.
 
-softdepend: [PlaceholderAPI, BossBarAPI]
+softdepend: [PlaceholderAPI]
 main: com.hexragon.compassance.Main
 version: ${project.version}
 
@@ -25,3 +25,20 @@ commands:
       description: Open up the compass settings menu.
       usage: /<command>
       aliases: [comp-a, compassance-a, cmps-a, compass-a]
+
+permissions:
+  compassance.*:
+    description: Gives access to all Compassance features.
+    children:
+      compassance.command: true
+      compassance.admincommand: true
+      compassance.theme.*: true
+  compassance.command:
+    description: Gives access to user compass command.
+    default: true
+  compassance.admincommand:
+    description: Gives access to admin compass command.
+    default: op
+  compassance.theme.*:
+    description: Give access to all themes.
+    default: op
