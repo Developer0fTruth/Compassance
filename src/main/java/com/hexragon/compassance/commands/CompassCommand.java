@@ -214,6 +214,10 @@ public class CompassCommand implements CommandExecutor, TabCompleter
                     return true;
             }
         }
+        else
+        {
+            Main.mainMenu.show((Player) sender);
+        }
         return true;
     }
 
@@ -229,77 +233,79 @@ public class CompassCommand implements CommandExecutor, TabCompleter
 
         Player p = (Player) sender;
 
-        if (args.length == 1)
+        switch (args.length)
         {
-            if (!args[0].equals(""))
-            {
-                for (String s : arg0)
+            case 1:
+                if (!args[0].equals(""))
                 {
-                    if (s.toLowerCase().startsWith(args[0].toLowerCase())) list.add(s);
-                }
-            }
-            else
-            {
-                Collections.addAll(list, arg0);
-            }
-        }
-
-        if (args.length == 2)
-        {
-            if (args[0].equalsIgnoreCase("track") || args[0].equalsIgnoreCase("trk"))
-            {
-                if (!args[1].equals(""))
-                {
-                    for (String s : arg1trk)
+                    for (String s : arg0)
                     {
-                        if (s.toLowerCase().startsWith(args[1].toLowerCase())) list.add(s);
+                        if (s.toLowerCase().startsWith(args[0].toLowerCase())) list.add(s);
                     }
                 }
                 else
                 {
-                    Collections.addAll(list, arg1trk);
+                    Collections.addAll(list, arg0);
                 }
-            }
+                break;
 
-            if (args[0].equalsIgnoreCase("theme"))
-            {
-                if (!args[1].equals(""))
+            case 2:
+                switch (args[0].toLowerCase())
                 {
-                    for (Theme t : Main.themeManager.themesAccessibleTo(p))
-                    {
-                        if (t.id.toLowerCase().startsWith(args[1].toLowerCase())) list.add(t.id);
-                    }
-                }
-                else
-                {
-                    for (Theme t : Main.themeManager.themesAccessibleTo(p))
-                    {
-                        list.add(t.id);
-                    }
-                }
-            }
-        }
+                    case "track":
+                    case "trk":
+                        if (!args[1].equals(""))
+                        {
+                            for (String s : arg1trk)
+                            {
+                                if (s.toLowerCase().startsWith(args[1].toLowerCase())) list.add(s);
+                            }
+                        }
+                        else
+                        {
+                            Collections.addAll(list, arg1trk);
+                        }
+                        break;
 
-        if (args.length == 3)
-        {
-            if ((args[0].equalsIgnoreCase("track") || args[0].equalsIgnoreCase("trk")) &&
-                    (args[1].equals("player") || (args[1].equals("pl"))))
-            {
-                if (!args[2].equals(""))
+                    case "theme":
+                        if (!args[1].equals(""))
+                        {
+                            for (Theme t : Main.themeManager.themesAccessibleTo(p))
+                            {
+                                if (t.id.toLowerCase().startsWith(args[1].toLowerCase())) list.add(t.id);
+                            }
+                        }
+                        else
+                        {
+                            for (Theme t : Main.themeManager.themesAccessibleTo(p))
+                            {
+                                list.add(t.id);
+                            }
+                        }
+                        break;
+                }
+                break;
+
+            case 3:
+                if ((args[0].equalsIgnoreCase("track") || args[0].equalsIgnoreCase("trk")) &&
+                        (args[1].equals("player") || (args[1].equals("pl"))))
                 {
-                    for (Player pl : Bukkit.getOnlinePlayers())
+                    if (!args[2].equals(""))
                     {
-                        if (pl.getName().toLowerCase().startsWith(args[2].toLowerCase())) list.add(pl.getName());
+                        for (Player pl : Bukkit.getOnlinePlayers())
+                        {
+                            if (pl.getName().toLowerCase().startsWith(args[2].toLowerCase())) list.add(pl.getName());
+                        }
+                    }
+                    else
+                    {
+                        for (Player pl : Bukkit.getOnlinePlayers())
+                        {
+                            list.add(pl.getName());
+                        }
                     }
                 }
-                else
-                {
-                    for (Player pl : Bukkit.getOnlinePlayers())
-                    {
-                        list.add(pl.getName());
-                    }
-                }
-            }
+                break;
         }
 
         if ((args[0].equalsIgnoreCase("track") || args[0].equalsIgnoreCase("trk")) &&
