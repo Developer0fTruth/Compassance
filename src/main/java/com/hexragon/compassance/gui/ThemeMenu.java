@@ -117,12 +117,11 @@ public class ThemeMenu implements Listener
                             boolean cursor = Main.playerConfig.config.getBoolean(ConfigurationPaths.PlayerConfig.SETTING_CURSOR.format(p.getPlayer().getUniqueId().toString()));
 
                             GeneratorInfo gi;
-                            gi = new CompassGenerator.GeneratorInfo(p, Main.trackingManager.getTargetsOf(p), p.getLocation().getYaw(), cursor);
+                            gi = new CompassGenerator.GeneratorInfo(p, Main.trackingManager.getTargetsOf(p), cursor);
                             p.sendMessage(Utils.fmtClr(Tags.prefix + "&7Showing preview of " + t.meta.name + "&7."));
                             p.sendMessage(t.getGenerator().getString(gi));
                             return;
                         }
-
                         Main.playerConfig.config.set(ConfigurationPaths.PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId()), t.id);
                         Main.taskManager.refresh(p);
 

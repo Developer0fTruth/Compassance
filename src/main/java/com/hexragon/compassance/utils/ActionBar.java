@@ -60,6 +60,7 @@ public class ActionBar
         {
             return;
         }
+
         try
         {
             Object pl = craftPlayer.cast(p);

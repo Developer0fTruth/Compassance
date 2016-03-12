@@ -1,4 +1,4 @@
-package com.hexragon.compassance.managers.tasks.tracking;
+package com.hexragon.compassance.managers.tracking;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;

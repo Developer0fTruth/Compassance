@@ -1,18 +1,18 @@
 package com.hexragon.compassance;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import static org.bukkit.Bukkit.getPluginManager;
 
 public class Listeners implements Listener
 {
     public Listeners()
     {
-        getPluginManager().registerEvents(this, Main.plugin);
+        Bukkit.getPluginManager().registerEvents(this, Main.plugin);
     }
 
     @EventHandler

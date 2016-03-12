@@ -1,7 +1,7 @@
 package com.hexragon.compassance;
 
 import com.hexragon.compassance.configs.ConfigurationPaths;
-import org.bukkit.Bukkit;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -10,12 +10,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 
-class UpdateChecker
+class UpdateChecker extends BukkitRunnable
 {
     private final String version;
-
-    private boolean running;
-    private int taskId;
+    private boolean active;
 
     public UpdateChecker()
     {
@@ -59,41 +57,40 @@ class UpdateChecker
 
     public void start()
     {
-        if (!running)
+        if (!active)
         {
-            running = true;
-
-            taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(Main.plugin, new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    String onlineVer = updateCheck();
-                    if (!onlineVer.equals(version))
-                    {
-                        if (onlineVer.equals("null") || onlineVer.equals("error"))
-                        {
-                            Main.logger.warning("Attempted to fetch data on the latest version but encountered an error!");
-                        }
-                        else
-                        {
-                            Main.logger.warning(String.format("Compassance is out of date [latest: %s]. Update available at:", onlineVer));
-                            Main.logger.warning("  https://www.spigotmc.org/resources/compassance.18327/");
-                        }
-                    }
-                    else
-                    {
-                        Main.logger.info(String.format("Running the latest version of Compassance %s.", version));
-                        stop();
-                    }
-                }
-            }, 20 * 10L, 20L * Main.mainConfig.config.getLong(ConfigurationPaths.MainConfig.CHECKER_INTERVAL.path));
+            active = true;
+            this.runTaskTimer(Main.plugin, 20 * 10L, 20L * Main.mainConfig.config.getLong(ConfigurationPaths.MainConfig.CHECKER_INTERVAL.path));
         }
     }
 
-    public void stop()
+    @Override
+    public void cancel()
     {
-        running = false;
-        Bukkit.getScheduler().cancelTask(taskId);
+        super.cancel();
+        active = false;
+    }
+
+    @Override
+    public void run()
+    {
+        String onlineVer = updateCheck();
+        if (!onlineVer.equals(version))
+        {
+            if (onlineVer.equals("null") || onlineVer.equals("error"))
+            {
+                Main.logger.warning("Attempted to fetch data on the latest version but encountered an error!");
+            }
+            else
+            {
+                Main.logger.warning(String.format("Compassance is out of date [latest: %s]. Update available at:", onlineVer));
+                Main.logger.warning("  https://www.spigotmc.org/resources/compassance.18327/");
+            }
+        }
+        else
+        {
+            Main.logger.info(String.format("Running the latest version of Compassance %s.", version));
+            cancel();
+        }
     }
 }

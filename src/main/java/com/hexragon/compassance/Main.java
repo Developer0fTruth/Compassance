@@ -1,6 +1,5 @@
 package com.hexragon.compassance;
 
-
 import com.hexragon.compassance.commands.AdminCommand;
 import com.hexragon.compassance.commands.CompassCommand;
 import com.hexragon.compassance.commands.TestCommand;
@@ -9,9 +8,9 @@ import com.hexragon.compassance.configs.ConfigurationPaths;
 import com.hexragon.compassance.gui.MainMenu;
 import com.hexragon.compassance.gui.SettingsMenu;
 import com.hexragon.compassance.gui.ThemeMenu;
-import com.hexragon.compassance.managers.tasks.CTaskManager;
-import com.hexragon.compassance.managers.tasks.tracking.TrackingManager;
+import com.hexragon.compassance.managers.tasks.CompassTaskManager;
 import com.hexragon.compassance.managers.themes.ThemeManager;
+import com.hexragon.compassance.managers.tracking.TrackingManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.MetricsLite;
@@ -28,7 +27,7 @@ public class Main extends JavaPlugin
     public static ConfigurationManager playerConfig;
     public static ConfigurationManager mainConfig;
 
-    public static CTaskManager taskManager;
+    public static CompassTaskManager taskManager;
     public static ThemeManager themeManager;
     public static TrackingManager trackingManager;
 
@@ -37,7 +36,7 @@ public class Main extends JavaPlugin
     public static ThemeMenu themeMenu;
 
     public static boolean placeholderAPIExist;
-    private UpdateChecker uct;
+    private UpdateChecker updateChecker;
 
     public void onEnable()
     {
@@ -56,7 +55,7 @@ public class Main extends JavaPlugin
 
         // MANAGERS INSTANTIATION
         themeManager = new ThemeManager();
-        taskManager = new CTaskManager();
+        taskManager = new CompassTaskManager();
         trackingManager = new TrackingManager();
 
         mainMenu = new MainMenu();
@@ -107,8 +106,8 @@ public class Main extends JavaPlugin
 
         if (mainConfig.config.getBoolean(ConfigurationPaths.MainConfig.UPDATE_CHECK.path))
         {
-            uct = new UpdateChecker();
-            uct.start();
+            updateChecker = new UpdateChecker();
+            updateChecker.start();
         }
 
         new Listeners();
@@ -120,7 +119,7 @@ public class Main extends JavaPlugin
     {
         playerConfig.save();
         taskManager.endTaskAll();
-        uct.stop();
+        updateChecker.cancel();
 
         plugin = null;
     }

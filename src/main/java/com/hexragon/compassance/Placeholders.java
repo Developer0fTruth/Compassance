@@ -2,8 +2,8 @@ package com.hexragon.compassance;
 
 import com.hexragon.compassance.configs.ConfigurationPaths;
 import com.hexragon.compassance.managers.compass.CompassGenerator;
-import com.hexragon.compassance.managers.tasks.tracking.TrackedTarget;
 import com.hexragon.compassance.managers.themes.Theme;
+import com.hexragon.compassance.managers.tracking.TrackedTarget;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.PlaceholderHook;
 import org.bukkit.Location;
@@ -96,7 +96,7 @@ class Placeholders extends PlaceholderHook
             }
 
             CompassGenerator.GeneratorInfo gi;
-            gi = new CompassGenerator.GeneratorInfo(p, Main.trackingManager.getTargetsOf(p), p.getLocation().getYaw(), cursor);
+            gi = new CompassGenerator.GeneratorInfo(p, Main.trackingManager.getTargetsOf(p), cursor);
             if (theme.getGenerator().getString(gi) != null) return theme.getGenerator().getString(gi);
         }
 
@@ -112,7 +112,7 @@ class Placeholders extends PlaceholderHook
             }
 
             CompassGenerator.GeneratorInfo gi;
-            gi = new CompassGenerator.GeneratorInfo(p, Main.trackingManager.getTargetsOf(p), p.getLocation().getYaw(), cursor);
+            gi = new CompassGenerator.GeneratorInfo(p, Main.trackingManager.getTargetsOf(p), cursor);
             if (theme.getGenerator().getString(gi) != null) return theme.getGenerator().getString(gi);
         }
 

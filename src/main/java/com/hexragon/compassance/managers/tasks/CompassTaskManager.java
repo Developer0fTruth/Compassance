@@ -1,16 +1,15 @@
 package com.hexragon.compassance.managers.tasks;
 
 import com.hexragon.compassance.Main;
-import com.hexragon.compassance.utils.Utils;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 
-public class CTaskManager
+public class CompassTaskManager
 {
-    private final HashMap<Player, CUpdateTask> tasks;
+    private final HashMap<Player, CompassTask> tasks;
 
-    public CTaskManager()
+    public CompassTaskManager()
     {
         tasks = new HashMap<>();
     }
@@ -19,33 +18,26 @@ public class CTaskManager
     {
         if (!tasks.containsKey(p))
         {
-            Utils.updateProfile(p);
-            CUpdateTask updateTask = new CUpdateTask(p);
+            CompassTask updateTask = new CompassTask(p);
             tasks.put(p, updateTask);
         }
     }
 
     public void startTask(Player p)
     {
-        if (tasks.containsKey(p))
+        CompassTask instance = tasks.get(p);
+        if (instance != null && !instance.active)
         {
-            CUpdateTask instance = tasks.get(p);
-            if (!instance.isActive())
-            {
-                instance.start();
-            }
+            instance.start();
         }
     }
 
     public void stopTask(Player p)
     {
-        if (tasks.containsKey(p))
+        CompassTask instance = tasks.get(p);
+        if (instance != null && instance.active)
         {
-            CUpdateTask instance = tasks.get(p);
-            if (instance.isActive())
-            {
-                instance.stop();
-            }
+            instance.cancel();
         }
     }
 

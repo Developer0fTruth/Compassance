@@ -1,8 +1,8 @@
 package com.hexragon.compassance.managers.compass;
 
 import com.hexragon.compassance.Main;
-import com.hexragon.compassance.managers.tasks.tracking.TrackedTarget;
 import com.hexragon.compassance.managers.themes.Theme;
+import com.hexragon.compassance.managers.tracking.TrackedTarget;
 import com.hexragon.compassance.utils.Utils;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.Location;
@@ -213,13 +213,12 @@ public class CompassGenerator
         public final HashMap<Integer, TrackedTarget> targets;
 
         /**
-         * @param y  Yaw rotational value.
-         * @param c  Use a cursor.
+         * @param c Use a cursor.
          */
-        public GeneratorInfo(Player p, HashMap<Integer, TrackedTarget> targets, double y, boolean c)
+        public GeneratorInfo(Player p, HashMap<Integer, TrackedTarget> targets, boolean c)
         {
             this.p = p;
-            this.yaw = y;
+            this.yaw = p.getLocation().getYaw();
             this.targets = targets;
             this.cursor = c;
         }
