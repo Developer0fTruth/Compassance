@@ -4,7 +4,7 @@
 
     <groupId>com.hexragon</groupId>
     <artifactId>Compassance</artifactId>
-    <version>B-1.8-snapshot</version>
+    <version>B-1.9</version>
     <url>https://github.com/Hexragon/Compassance</url>
 
     <build>
