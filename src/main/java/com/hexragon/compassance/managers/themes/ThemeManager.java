@@ -38,10 +38,10 @@ public class ThemeManager
                 break;
             }
 
-            Theme t = new Theme(s);
+            Theme t = new ReplacersTheme(s);
             t.loadData();
 
-            if (t.meta.name == null || t.meta.desc == null)
+            if (t.main.name == null || t.main.desc == null)
             {
                 if (s.equalsIgnoreCase(defaultID))
                 {
@@ -59,6 +59,12 @@ public class ThemeManager
         }
         Main.logger.log(errors >= 1 ? Level.WARNING : Level.INFO, String.format("Successfully loaded %s theme(s) with %s theme-related errors.", themes.size(), errors));
     }
+
+//    public void addTheme(Theme t)
+//    {
+//        themes.put(t.id, t);
+//        t.loadData();
+//    }
 
     public Theme getTheme(String s)
     {
@@ -95,7 +101,7 @@ public class ThemeManager
             {
                 Theme t = getTheme(id);
 
-                if (Utils.permHandle(p, t.meta.permission, true) || Utils.permHandle(p, "compassance.theme.*", false))
+                if (Utils.permHandle(p, t.main.permission, true) || Utils.permHandle(p, "compassance.theme.*", false))
                 {
                     themeList.add(t);
                 }

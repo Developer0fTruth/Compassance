@@ -1,6 +1,7 @@
 package com.hexragon.compassance.commands;
 
 import com.hexragon.compassance.Main;
+import com.hexragon.compassance.UpdateChecker;
 import com.hexragon.compassance.configs.ConfigurationPaths;
 import com.hexragon.compassance.language.Tags;
 import com.hexragon.compassance.managers.themes.Theme;
@@ -43,10 +44,11 @@ public class CompassCommand implements CommandExecutor, TabCompleter
         {
             Player p = (Player) sender;
 
+            ArrayList<String> arr;
             switch (args[0].toLowerCase())
             {
                 case "help":
-                    ArrayList<String> arr = new ArrayList<>();
+                    arr = new ArrayList<>();
                     arr.add("&8&m--------------------------------------------------");
                     arr.add("");
                     arr.add("        &9&lCompassance &7v&f&n" + Main.plugin.getDescription().getVersion());
@@ -86,9 +88,9 @@ public class CompassCommand implements CommandExecutor, TabCompleter
                     {
                         Theme t = Main.themeManager.getTheme(args[1]);
 
-                        if (Utils.permHandle(p, t.meta.permission, true) || Utils.permHandle(p, "compassance.theme.*", false))
+                        if (Utils.permHandle(p, t.main.permission, true) || Utils.permHandle(p, "compassance.theme.*", false))
                         {
-                            p.sendMessage(Utils.fmtClr(String.format(Tags.prefix + "&7Switching your selected theme to &r%s&7.", Main.themeManager.getTheme(args[1]).meta.name)));
+                            p.sendMessage(Utils.fmtClr(String.format(Tags.prefix + "&7Switching your selected theme to &r%s&7.", Main.themeManager.getTheme(args[1]).main.name)));
                             Main.playerConfig.config.set(ConfigurationPaths.PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId().toString()), args[1]);
                             Main.taskManager.refresh(p);
                         }
@@ -206,6 +208,22 @@ public class CompassCommand implements CommandExecutor, TabCompleter
 
                 case "ver":
                 case "version":
+                    arr = new ArrayList<>();
+                    arr.add("&8&m--------------------------------------------------");
+                    arr.add("");
+                    arr.add("        &9&lCompassance &7v&f&n" + Main.plugin.getDescription().getVersion());
+                    arr.add("");
+                    arr.add("    &7Made with love from &f&nAveral&7.");
+                    arr.add("    &7Original concept by &f&nMostFunGuy&7.");
+                    arr.add("");
+                    arr.add(UpdateChecker.isLatestVersion() ? "    &cNot running the latest version." : "    &aCurrently running the latest version.");
+                    arr.add("");
+                    arr.add("&8&m--------------------------------------------------");
+
+                    for (String s : arr)
+                    {
+                        sender.sendMessage(Utils.fmtClr(s));
+                    }
                     break;
 
                 default:

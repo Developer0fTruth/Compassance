@@ -10,9 +10,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
 
-class UpdateChecker extends BukkitRunnable
+public class UpdateChecker extends BukkitRunnable
 {
-    private final String version;
+    private static String version;
     private boolean active;
 
     public UpdateChecker()
@@ -20,7 +20,12 @@ class UpdateChecker extends BukkitRunnable
         version = Main.plugin.getDescription().getVersion();
     }
 
-    private static String updateCheck()
+    public static boolean isLatestVersion()
+    {
+        return updateCheck().equals(version);
+    }
+
+    public static String updateCheck()
     {
         String urlStr = "https://raw.githubusercontent.com/Hexragon/Compassance/master/latest-version";
         String text = null;

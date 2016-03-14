@@ -2,7 +2,6 @@ package com.hexragon.compassance.managers.tasks;
 
 import com.hexragon.compassance.Main;
 import com.hexragon.compassance.configs.ConfigurationPaths;
-import com.hexragon.compassance.managers.compass.CompassGenerator;
 import com.hexragon.compassance.managers.themes.Theme;
 import com.hexragon.compassance.utils.ActionBar;
 import com.hexragon.compassance.utils.Utils;
@@ -15,7 +14,6 @@ class CompassTask extends BukkitRunnable
     private final Player p;
     private final Theme th;
     public boolean active;
-    private boolean cursor;
     private boolean alwaysOn;
     private double yaw;
 
@@ -30,7 +28,6 @@ class CompassTask extends BukkitRunnable
         this.p = p;
         Utils.updateProfile(p);
 
-        cursor = Main.playerConfig.config.getBoolean(ConfigurationPaths.PlayerConfig.SETTING_CURSOR.format(p.getPlayer().getUniqueId().toString()));
         alwaysOn = Main.playerConfig.config.getBoolean(ConfigurationPaths.PlayerConfig.SETTING_ALWAYSON.format(p.getPlayer().getUniqueId().toString()));
         th = Main.themeManager.getTheme(Main.playerConfig.config.getString(ConfigurationPaths.PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId().toString())));
 
@@ -65,7 +62,7 @@ class CompassTask extends BukkitRunnable
             return;
         }
 
-        if ((!Utils.permHandle(p, th.meta.permission, true)) &&
+        if ((!Utils.permHandle(p, th.main.permission, true)) &&
                 Main.mainConfig.config.getBoolean(ConfigurationPaths.MainConfig.USE_PERMISSIONS.path))
         {
             if (th.id.equalsIgnoreCase(Main.themeManager.getDefaultID()))
@@ -83,13 +80,7 @@ class CompassTask extends BukkitRunnable
             }
         }
 
-        CompassGenerator.GeneratorInfo gi;
-        gi = new CompassGenerator.GeneratorInfo(p, Main.trackingManager.getTargetsOf(p), cursor);
-
-        if (th.getGenerator().getString(gi) != null)
-        {
-            ActionBar.send(p, th.getGenerator().getString(gi));
-        }
+        th.displayTo(p);
 
         yaw = p.getLocation().getYaw();
     }

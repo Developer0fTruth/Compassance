@@ -2,6 +2,7 @@ package com.hexragon.compassance.commands;
 
 import com.hexragon.compassance.Main;
 import com.hexragon.compassance.configs.ConfigurationPaths;
+import com.hexragon.compassance.managers.themes.ReplacersTheme;
 import com.hexragon.compassance.managers.themes.Theme;
 import com.hexragon.compassance.utils.ActionBar;
 import com.hexragon.compassance.utils.ItemBuilder;
@@ -51,7 +52,7 @@ public class TestCommand implements CommandExecutor
 
         if (args.length == 2 && args[0].equalsIgnoreCase("data"))
         {
-            Theme theme = Main.themeManager.getTheme(args[1]);
+            ReplacersTheme theme = (ReplacersTheme) Main.themeManager.getTheme(args[1]);
 
             if (theme == null)
             {
@@ -61,10 +62,10 @@ public class TestCommand implements CommandExecutor
             sender.sendMessage("Displaying parsed data for theme " + theme.id);
 
             sender.sendMessage(Utils.fmtClr("&9&lMeta :"));
-            sender.sendMessage(Utils.fmtClr("  &8Name : &r" + theme.meta.name));
-            sender.sendMessage(Utils.fmtClr("  &8Desc : &r" + theme.meta.desc));
-            sender.sendMessage(Utils.fmtClr("  &8Perm: &r" + theme.meta.permission));
-            sender.sendMessage(Utils.fmtClr("  &8Main Pattern Map : &r") + theme.meta.patternMap);
+            sender.sendMessage(Utils.fmtClr("  &8Name : &r" + theme.main.name));
+            sender.sendMessage(Utils.fmtClr("  &8Desc : &r" + theme.main.desc));
+            sender.sendMessage(Utils.fmtClr("  &8Perm: &r" + theme.main.permission));
+            sender.sendMessage(Utils.fmtClr("  &8Main Pattern Map : &r") + theme.data.mainPatternMap);
 
             sender.sendMessage(Utils.fmtClr("&9&lDirect Replacers :"));
             for (String s : theme.data.replacers.keySet())
@@ -101,8 +102,8 @@ public class TestCommand implements CommandExecutor
                 return true;
             }
 
-            p.sendMessage(theme.meta.permission == null ? "null" : theme.meta.permission);
-            p.sendMessage(String.valueOf(Utils.permHandle(p, theme.meta.permission, true)));
+            p.sendMessage(theme.main.permission == null ? "null" : theme.main.permission);
+            p.sendMessage(String.valueOf(Utils.permHandle(p, theme.main.permission, true)));
 
 
             return true;

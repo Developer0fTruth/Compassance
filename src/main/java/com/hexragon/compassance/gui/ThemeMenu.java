@@ -3,8 +3,6 @@ package com.hexragon.compassance.gui;
 import com.hexragon.compassance.Main;
 import com.hexragon.compassance.configs.ConfigurationPaths;
 import com.hexragon.compassance.language.Tags;
-import com.hexragon.compassance.managers.compass.CompassGenerator;
-import com.hexragon.compassance.managers.compass.CompassGenerator.GeneratorInfo;
 import com.hexragon.compassance.managers.themes.Theme;
 import com.hexragon.compassance.utils.ItemBuilder;
 import com.hexragon.compassance.utils.Utils;
@@ -58,8 +56,8 @@ public class ThemeMenu implements Listener
 
             ItemBuilder itmBuild1 =
                     new ItemBuilder().material(Material.STAINED_GLASS_PANE).data(data).amt(1)
-                            .name(Utils.fmtClr("&r" + t.meta.name))
-                            .lore("&7ID: &f" + t.id, "", Utils.fmtClr(t.meta.desc), "", "&fClick &7to select.", "&fRight Click &7to preview.")
+                            .name(Utils.fmtClr("&r" + t.main.name))
+                            .lore("&7ID: &f" + t.id, "", Utils.fmtClr(t.main.desc), "", "&fClick &7to select.", "&fRight Click &7to preview.")
                             .hideEnchants(selectedId.equals(t.id))
                             .enchant(selectedId.equals(t.id) ? Enchantment.DURABILITY : null, 1);
             inv.setItem(itemSlot, itmBuild1.toItemStack());
@@ -114,12 +112,7 @@ public class ThemeMenu implements Listener
                         // PREVIEW GENERATION
                         if (e.getClick() == ClickType.RIGHT)
                         {
-                            boolean cursor = Main.playerConfig.config.getBoolean(ConfigurationPaths.PlayerConfig.SETTING_CURSOR.format(p.getPlayer().getUniqueId().toString()));
-
-                            GeneratorInfo gi;
-                            gi = new CompassGenerator.GeneratorInfo(p, Main.trackingManager.getTargetsOf(p), cursor);
-                            p.sendMessage(Utils.fmtClr(Tags.prefix + "&7Showing preview of " + t.meta.name + "&7."));
-                            p.sendMessage(t.getGenerator().getString(gi));
+                            p.sendMessage(t.getString(p));
                             return;
                         }
                         Main.playerConfig.config.set(ConfigurationPaths.PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId()), t.id);
@@ -129,7 +122,7 @@ public class ThemeMenu implements Listener
                                 Utils.fmtClr(
                                         String.format(
                                                 Tags.prefix + "&7Switching your selected theme to &r%s&7.",
-                                                t.meta.name)));
+                                                t.main.name)));
                         show(p);
                         return;
                     }

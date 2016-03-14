@@ -1,7 +1,6 @@
 package com.hexragon.compassance;
 
 import com.hexragon.compassance.configs.ConfigurationPaths;
-import com.hexragon.compassance.managers.compass.CompassGenerator;
 import com.hexragon.compassance.managers.themes.Theme;
 import com.hexragon.compassance.managers.tracking.TrackedTarget;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -87,7 +86,6 @@ class Placeholders extends PlaceholderHook
         if (identifier.equals("p_string"))
         {
             String id = Main.playerConfig.config.getString(ConfigurationPaths.PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId()));
-            boolean cursor = Main.playerConfig.config.getBoolean(ConfigurationPaths.PlayerConfig.SETTING_CURSOR.format(p.getPlayer().getUniqueId().toString()));
             Theme theme = Main.themeManager.getTheme(id);
 
             if (theme == null)
@@ -95,15 +93,12 @@ class Placeholders extends PlaceholderHook
                 theme = Main.themeManager.getTheme(Main.themeManager.defaultID);
             }
 
-            CompassGenerator.GeneratorInfo gi;
-            gi = new CompassGenerator.GeneratorInfo(p, Main.trackingManager.getTargetsOf(p), cursor);
-            if (theme.getGenerator().getString(gi) != null) return theme.getGenerator().getString(gi);
+            return theme.getString(p);
         }
 
         if (identifier.startsWith("p_string_theme_"))
         {
             String id = identifier.replace("p_string_theme_", "");
-            boolean cursor = Main.playerConfig.config.getBoolean(ConfigurationPaths.PlayerConfig.SETTING_CURSOR.format(p.getPlayer().getUniqueId().toString()));
             Theme theme = Main.themeManager.getTheme(id);
 
             if (theme == null)
@@ -111,9 +106,7 @@ class Placeholders extends PlaceholderHook
                 return "Theme doesn't exist!";
             }
 
-            CompassGenerator.GeneratorInfo gi;
-            gi = new CompassGenerator.GeneratorInfo(p, Main.trackingManager.getTargetsOf(p), cursor);
-            if (theme.getGenerator().getString(gi) != null) return theme.getGenerator().getString(gi);
+            return theme.getString(p);
         }
 
         return null;

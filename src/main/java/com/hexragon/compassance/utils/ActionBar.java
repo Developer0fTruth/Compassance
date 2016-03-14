@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 
 public class ActionBar
 {
-    private static final String nmsver;
+    private static final String nmsVer;
     private static Class<?> craftPlayer;
     private static Class<?> chatSer;
     private static Class<?> chatBase;
@@ -22,25 +22,25 @@ public class ActionBar
     static
     {
         String bukkitPackage = Main.plugin.getServer().getClass().getPackage().getName();
-        nmsver = bukkitPackage.substring(bukkitPackage.lastIndexOf(".") + 1);
+        nmsVer = bukkitPackage.substring(bukkitPackage.lastIndexOf(".") + 1);
 
         try
         {
-            craftPlayer = Class.forName("org.bukkit.craftbukkit." + nmsver + ".entity.CraftPlayer");
-            pktPOChat = Class.forName("net.minecraft.server." + nmsver + ".PacketPlayOutChat");
+            craftPlayer = Class.forName("org.bukkit.craftbukkit." + nmsVer + ".entity.CraftPlayer");
+            pktPOChat = Class.forName("net.minecraft.server." + nmsVer + ".PacketPlayOutChat");
 
-            packet = Class.forName("net.minecraft.server." + nmsver + ".Packet");
+            packet = Class.forName("net.minecraft.server." + nmsVer + ".Packet");
 
-            if ((nmsver.equalsIgnoreCase("v1_8_R1") || !nmsver.startsWith("v1_8_")) && !nmsver.startsWith("v1_9_"))
+            if ((nmsVer.equalsIgnoreCase("v1_8_R1") || !nmsVer.startsWith("v1_8_")) && !nmsVer.startsWith("v1_9_"))
             {
-                chatSer = Class.forName("net.minecraft.server." + nmsver + ".ChatSerializer");
-                chatBase = Class.forName("net.minecraft.server." + nmsver + ".IChatBaseComponent");
+                chatSer = Class.forName("net.minecraft.server." + nmsVer + ".ChatSerializer");
+                chatBase = Class.forName("net.minecraft.server." + nmsVer + ".IChatBaseComponent");
                 a = chatSer.getDeclaredMethod("a", String.class);
             }
             else
             {
-                chatSer = Class.forName("net.minecraft.server." + nmsver + ".ChatComponentText");
-                chatBase = Class.forName("net.minecraft.server." + nmsver + ".IChatBaseComponent");
+                chatSer = Class.forName("net.minecraft.server." + nmsVer + ".ChatComponentText");
+                chatBase = Class.forName("net.minecraft.server." + nmsVer + ".IChatBaseComponent");
             }
             getHandle = craftPlayer.getDeclaredMethod("getHandle");
 
@@ -66,7 +66,7 @@ public class ActionBar
             Object pl = craftPlayer.cast(p);
             Object o;
             Object pkt;
-            if ((nmsver.equalsIgnoreCase("v1_8_R1") || !nmsver.startsWith("v1_8_")) && !nmsver.startsWith("v1_9_"))
+            if ((nmsVer.equalsIgnoreCase("v1_8_R1") || !nmsVer.startsWith("v1_8_")) && !nmsVer.startsWith("v1_9_"))
             {
                 o = chatBase.cast(a.invoke(chatSer, "{\"text\": \"" + str + "\"}"));
             }
