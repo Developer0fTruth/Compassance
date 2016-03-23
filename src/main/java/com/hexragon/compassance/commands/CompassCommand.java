@@ -20,8 +20,10 @@ import java.util.List;
 
 public class CompassCommand implements CommandExecutor, TabCompleter
 {
+
     private final String[] arg0 = {"help", "open", "theme", "track", "version"};
     private final String[] arg1trk = {"player", "location"};
+
 
     public CompassCommand()
     {

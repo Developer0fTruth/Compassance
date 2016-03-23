@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 
 public class ActionBar
 {
-    private static final String nmsVer;
+    public static final String nmsVer;
     private static Class<?> craftPlayer;
     private static Class<?> chatSer;
     private static Class<?> chatBase;

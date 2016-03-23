@@ -57,7 +57,7 @@ class CompassTask extends BukkitRunnable
         if (th == null)
         {
             p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cYour selected theme doesn't exist. Switching to default."));
-            Main.playerConfig.config.set(ConfigurationPaths.PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId()), Main.themeManager.getDefaultID());
+            Main.playerConfig.config.set(ConfigurationPaths.PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId()), Main.themeManager.defaultID);
             Main.taskManager.refresh(p);
             return;
         }
@@ -65,7 +65,7 @@ class CompassTask extends BukkitRunnable
         if ((!Utils.permHandle(p, th.main.permission, true)) &&
                 Main.mainConfig.config.getBoolean(ConfigurationPaths.MainConfig.USE_PERMISSIONS.path))
         {
-            if (th.id.equalsIgnoreCase(Main.themeManager.getDefaultID()))
+            if (th.id.equalsIgnoreCase(Main.themeManager.defaultID))
             {
                 p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cYou don't have permission for default theme. Toggling off compass."));
                 Main.playerConfig.config.set(ConfigurationPaths.PlayerConfig.SETTING_ENABLE.format(p.getPlayer().getUniqueId().toString()), false);
@@ -75,7 +75,7 @@ class CompassTask extends BukkitRunnable
             else
             {
                 p.sendMessage(Utils.fmtClr("&a&lCOMPASS &8» &cYou don't have permission for this theme. Switching to default."));
-                Main.playerConfig.config.set(ConfigurationPaths.PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId()), Main.themeManager.getDefaultID());
+                Main.playerConfig.config.set(ConfigurationPaths.PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId()), Main.themeManager.defaultID);
                 Main.taskManager.refresh(p);
             }
         }

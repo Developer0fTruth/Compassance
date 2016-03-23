@@ -2,6 +2,7 @@ package com.hexragon.compassance.managers.themes;
 
 import com.hexragon.compassance.Main;
 import com.hexragon.compassance.configs.ConfigurationPaths;
+import com.hexragon.compassance.managers.themes.replacers.ReplacersTheme;
 import com.hexragon.compassance.utils.Utils;
 import org.bukkit.entity.Player;
 
@@ -43,12 +44,6 @@ public class ThemeManager
 
             if (t.main.name == null || t.main.desc == null)
             {
-                if (s.equalsIgnoreCase(defaultID))
-                {
-                    defaultHasErrors = true;
-                    Main.logger.severe("Default theme has errors!");
-                    return;
-                }
                 errors++;
                 continue;
             }
@@ -60,11 +55,19 @@ public class ThemeManager
         Main.logger.log(errors >= 1 ? Level.WARNING : Level.INFO, String.format("Successfully loaded %s theme(s) with %s theme-related errors.", themes.size(), errors));
     }
 
-//    public void addTheme(Theme t)
-//    {
-//        themes.put(t.id, t);
-//        t.loadData();
-//    }
+    public boolean addTheme(Theme t)
+    {
+        try
+        {
+            themes.put(t.id, t);
+            t.loadData();
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
 
     public Theme getTheme(String s)
     {
@@ -79,11 +82,6 @@ public class ThemeManager
             return null;
         }
         return themes.get(s);
-    }
-
-    public String getDefaultID()
-    {
-        return defaultID;
     }
 
     public LinkedHashMap<String, Theme> getThemes()

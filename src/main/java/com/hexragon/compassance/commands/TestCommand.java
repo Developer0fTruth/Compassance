@@ -2,8 +2,8 @@ package com.hexragon.compassance.commands;
 
 import com.hexragon.compassance.Main;
 import com.hexragon.compassance.configs.ConfigurationPaths;
-import com.hexragon.compassance.managers.themes.ReplacersTheme;
 import com.hexragon.compassance.managers.themes.Theme;
+import com.hexragon.compassance.managers.themes.replacers.ReplacersTheme;
 import com.hexragon.compassance.utils.ActionBar;
 import com.hexragon.compassance.utils.ItemBuilder;
 import com.hexragon.compassance.utils.Utils;

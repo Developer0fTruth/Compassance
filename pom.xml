@@ -4,7 +4,7 @@
 
     <groupId>com.hexragon</groupId>
     <artifactId>Compassance</artifactId>
-    <version>B-1.9</version>
+    <version>B-1.9.2</version>
     <url>https://github.com/Hexragon/Compassance</url>
 
     <build>
@@ -78,6 +78,10 @@
             <id>placeholderapi</id>
             <url>http://repo.extendedclip.com/content/repositories/placeholderapi</url>
         </repository>
+        <repository>
+            <id>inventive-repo</id>
+            <url>https://repo.inventivetalent.org/content/groups/public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -98,6 +102,18 @@
             <artifactId>spigot-api</artifactId>
             <version>1.8.8-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.8.8-R0.1-SNAPSHOT</version>
+            <systemPath>${basedir}/lib/nmsServer.jar</systemPath>
+            <scope>system</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.inventivetalent</groupId>
+            <artifactId>bossbarapi</artifactId>
+            <version>2.3.6</version>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>

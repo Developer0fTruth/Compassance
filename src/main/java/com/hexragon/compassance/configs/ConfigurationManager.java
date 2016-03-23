@@ -1,24 +1,16 @@
 package com.hexragon.compassance.configs;
 
-import com.hexragon.compassance.utils.FileUtil;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 
 /**
  * A solution to easy configuration loading,
- * saving, and general management.
- * <p/>
- * Please have respect for the original
- * author and give proper credits for their
- * work.
+ * saving, and general management
  *
  * @author Hexragon
  */
@@ -60,6 +52,27 @@ public class ConfigurationManager
         fileName = s;
     }
 
+    public static void write(InputStream in, File file)
+    {
+        try
+        {
+            OutputStream out = new FileOutputStream(file);
+            byte[] buf = new byte[1024];
+            int len;
+
+            while ((len = in.read(buf)) > 0)
+            {
+                out.write(buf, 0, len);
+            }
+            out.close();
+            in.close();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Loads the config from the file name. This will
      * attempt to grab the file from the plugin folder.
@@ -84,7 +97,7 @@ public class ConfigurationManager
                 {
                     instance.getLogger().log(Level.INFO, String.format("Making directory for file '%s'.", fileName));
                 }
-                FileUtil.write(instance.getResource(fileName), file);
+                write(instance.getResource(fileName), file);
                 instance.getLogger().info(String.format("Copying file '%s' from jar to disk.", fileName));
             }
         }
@@ -115,4 +128,6 @@ public class ConfigurationManager
             e.printStackTrace();
         }
     }
+
 }
+

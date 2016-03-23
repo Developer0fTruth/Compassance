@@ -12,6 +12,11 @@
 update-checker: true
 checker-interval: 600           # 600 seconds is 10 minutes.
 
+# Options:
+#      action or actionbar
+#      boss or bossbar (Requires)
+display: action
+
 # ==========================================================
 #   This option will send data such as player count and
 #   java version to mcstats.org. Compassance uses

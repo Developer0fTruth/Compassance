@@ -33,7 +33,7 @@ public class Utils
         if (selectedTheme == null || Main.themeManager.getTheme(selectedTheme) == null)
         {
             Main.playerConfig.config
-                    .set(ConfigurationPaths.PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId().toString()), Main.themeManager.getDefaultID());
+                    .set(ConfigurationPaths.PlayerConfig.SETTING_SELECTEDTHEME.format(p.getPlayer().getUniqueId().toString()), Main.themeManager.defaultID);
 
             Main.playerConfig.config
                     .set(ConfigurationPaths.PlayerConfig.SETTING_ENABLE.format(p.getPlayer().getUniqueId().toString()),
