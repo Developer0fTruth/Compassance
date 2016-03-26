@@ -119,7 +119,7 @@ public class Main extends JavaPlugin
     {
         playerConfig.save();
         taskManager.endTaskAll();
-        updateChecker.cancel();
+        if (updateChecker != null) updateChecker.cancel();
 
         plugin = null;
     }
