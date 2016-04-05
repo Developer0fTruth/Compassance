@@ -18,9 +18,6 @@ commands:
     description: Open up the compass settings menu.
     usage: /<command>
     aliases: [comp, compassance, cmps]
-  test:
-    description: hi
-    usage: /<command>
   compass-admin:
       description: Open up the compass settings menu.
       usage: /<command>

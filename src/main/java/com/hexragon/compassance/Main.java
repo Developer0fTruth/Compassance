@@ -2,7 +2,6 @@ package com.hexragon.compassance;
 
 import com.hexragon.compassance.commands.AdminCommand;
 import com.hexragon.compassance.commands.CompassCommand;
-import com.hexragon.compassance.commands.TestCommand;
 import com.hexragon.compassance.configs.ConfigurationManager;
 import com.hexragon.compassance.configs.ConfigurationPaths;
 import com.hexragon.compassance.gui.MainMenu;
@@ -78,11 +77,6 @@ public class Main extends JavaPlugin
         else
         {
             getLogger().warning("Did not find PlaceholderAPI. Placeholder functionality will not work.");
-        }
-
-        if (mainConfig.config.getBoolean(ConfigurationPaths.MainConfig.DEBUG_MODE.path))
-        {
-            new TestCommand();
         }
 
         // METRICS
